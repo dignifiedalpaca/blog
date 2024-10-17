@@ -1,6 +1,6 @@
 # Smallblog
 
-Smallblog is an easy to use blog engine build with smallweb in mind.
+Smallblog is an easy to use blog engine build with [smallweb](https://www.smallweb.run/) in mind.
 
 ![smallblog frontpage](static/img/front_page.png) ![article](static/img/article.png)
 
