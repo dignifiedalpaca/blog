@@ -1,10 +1,10 @@
 # Smallblog
 
-Smallblog is an easy to use blog engine build with [smallweb](https://www.smallweb.run/) in mind.
+Smallblog is an easy-to-use blog engine build with [smallweb](https://www.smallweb.run/) in mind.
 
 ![smallblog frontpage](static/img/front_page.png) ![article](static/img/article.png)
 
-Smallblog is very efficient to use, you just have to write your article in a markdown format and it's directly online. Everything is generated directly by scanning a folder, your blog post is automatically publicated without any compilation, CI/CD, etc...
+Smallblog is very efficient to use, you just have to write your article in a Markdown format, and it's directly online. Everything is generated directly by scanning a folder, your blog post is automatically published without any compilation, CI/CD, etc...
 
 It includes all the features you need for a blog:
 
@@ -34,7 +34,7 @@ Smallblog doesn't come with an editor to write blog post. To write this article 
 * with your local vscode connected to the server through SSH
 * using [mutagen](https://docs.smallweb.run/hosting/vps.html#syncing-files-using-mutagen)
 
-When you're writting your posts don't forget to write the metadata section, as in this example:
+When you're writing your posts don't forget to write the metadata section, as in this example:
 
 ```markdown
 ---
@@ -51,7 +51,7 @@ date: 2024-10-08
 This is a text after the metadata.
 ```
 
-These metadata are displayed to the user, except for the `published` one. This property is used by the engine to not display articles whose its value is not set to `true` ([posts/private.md](posts/private.md) is an example).
+This metadata is displayed to the user, except for the `published` one. This property is used by the engine to not display articles whose its value is not set to `true` ([posts/private.md](posts/private.md) is an example).
 
 ### Serving static files
 
@@ -62,12 +62,12 @@ For example, in the file [posts/post_test.md](posts/post_test.md) you can see a 
 
 ### Adding custom scripts
 
-You may want to add custom scripts for analytics purposes (or anything else you may want). For this purpose, there is 2 variables in the configuration of smallblog:
+You may want to add custom scripts for analytics purposes (or anything else you may want). For this purpose, there are 2 variables in the configuration of smallblog:
 
-* `customHeaderScript`: The script will be added between the tags `<head></head>`, be careful, because of htmx boosting, they will only execute with full page refresh.
+* `customHeaderScript`: The script will be added between the tags `<head></head>`, be careful, because of HTMX boosting, they will only execute with full page refresh.
 * `customBodyScript`: The script will be placed at the top of the `<body></body>`, it will be executed at every page change.
 
-I configured [plausible.io](https://plausible.io) in my personal blog. They are asking you to set up their script in the header of the pages but I only got the tracking working correctly when I moved the script in the body.
+I configured [plausible.io](https://plausible.io) in my personal blog. They are asking you to set up their script in the header of the pages, but I only got the tracking working correctly when I moved the script in the body.
 
 ## Installation
 
@@ -80,11 +80,11 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 
 Incoming
 
-1. In your smallweb folder create a new folder (a.k.a subdomain).
-2. In this foder add a `main.tsx` file
+1. In your smallweb folder create a new folder (a.k.a. subdomain).
+2. In this folder add a `main.tsx` file
 3. Add the import statement: `import { createBlogApp } from ...`
 4. Export the result of the imported function with the configuration you want (see the example below)
-5. Enjoy, your blog is already runnning!
+5. Enjoy, your blog is already running!
 
 ```tsx
 import { createBlogApp } from "tayzen/smallblog";
@@ -119,7 +119,7 @@ export default createBlogApp({
 3. Edit the code
 4. Enjoy!
 
-To help you edit what you want, this is an overview of the code organisation:
+To help you edit what you want, this is an overview of the code organization:
 
 * To customize the pages and components, you can look into the `pages/` folder
 * To look at the "business logic", you can check the file `blog.ts`
@@ -130,11 +130,11 @@ To help you edit what you want, this is an overview of the code organisation:
 
 The list of technologies/libraries used:
 
-* hono for the routing
-* deno-gfm to render the markdown into blog posts
-* HTMX to boost the pages (avoiding full page refreshes) and make a "see result as you type" search feature
-* minisearch to do the search feature (which is executed server-side)
-* the RSS node package to dynamically create the rss feed
-* the sitemap node package to dynamically generate the sitemap
+* [hono](https://hono.dev/) for the routing
+* [deno-gfm](https://deno.land/x/gfm@0.6.0) to render the markdown into blog posts
+* [HTMX](https://htmx.org/) to boost the pages (avoiding full page refreshes) and make a "see result as you type" search feature
+* [minisearch](https://lucaong.github.io/minisearch/) to do the search feature (which is executed server-side)
+* the [RSS node package](https://www.npmjs.com/package/rss) to dynamically create the RSS feed
+* the [sitemap node package](https://www.npmjs.com/package/sitemap) to dynamically generate the sitemap
 
-I made the blog worked even without JS on the client without sacrificing too much on the experience (you just don't have page boosting and you have to type on enter to search for posts). So, all the features are executed serverside, even the pagination and the search.
+I made the blog worked even without JS on the client without sacrificing too much on the experience (you just don't have page boosting, and you have to type on enter to search for posts). So, all the features are executed server-side, even the pagination and the search.
