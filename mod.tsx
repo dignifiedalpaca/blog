@@ -11,7 +11,6 @@ import {
 import { getMimeType } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
-import type { HtmlEscapedString } from "hono/utils";
 
 type BlogAppOptions = {
   baseUrl: string;
@@ -21,8 +20,8 @@ type BlogAppOptions = {
   siteTitle: string;
   indexTitle: string;
   indexSubtitle: string;
-  customHeaderScript?: HtmlEscapedString;
-  customBodyScript?: HtmlEscapedString;
+  customHeaderScript?: string;
+  customBodyScript?: string;
 };
 
 export function createBlogApp(options: BlogAppOptions): Hono {
@@ -95,7 +94,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     });
   });
 
-  app.get("/sitemap.xml", async (c) => {
+  app.get("/sitemap.xml", async () => {
     const articles = getArticles(postsFolder);
     const xml = await getSitemap(baseUrl, articles);
     if (xml) {

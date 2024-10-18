@@ -8,7 +8,7 @@ Smallblog is an easy-to-use blog engine build with [smallweb](https://www.smallw
 
 Smallblog is very efficient to use, you just have to write your article in a Markdown format, and it's directly online. Everything is generated directly by scanning a folder, your blog post is automatically published without any compilation, CI/CD, etc...
 
-It includes all the features you need for a blog:
+It includes all the features you need for a blog (and more):
 
 * Easy syntax to write your articles (no need to edit HTML directly)
 * Good SEO (with `robot.txt`, `sitemap.xml`, metadata and good structure)
@@ -137,6 +137,6 @@ The list of technologies/libraries used:
 * [HTMX](https://htmx.org/) to boost the pages (avoiding full page refreshes) and make a "see result as you type" search feature
 * [minisearch](https://lucaong.github.io/minisearch/) to do the search feature (which is executed server-side)
 * the [RSS node package](https://www.npmjs.com/package/rss) to dynamically create the RSS feed
-* the [sitemap node package](https://www.npmjs.com/package/sitemap) to dynamically generate the sitemap
+* the [deno sitemap package](https://deno.land/x/deno_sitemap@0.1.3) to dynamically generate the sitemap
 
 I made the blog worked even without JS on the client without sacrificing too much on the experience (you just don't have page boosting, and you have to type on enter to search for posts). So, all the features are executed server-side, even the pagination and the search.

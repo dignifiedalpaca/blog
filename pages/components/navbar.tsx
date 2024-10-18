@@ -1,5 +1,5 @@
-import { FC } from "hono/jsx";
-import RssIcon from "jsr:@bureaudouble/icons/lucide/RssIcon";
+import type { FC } from "hono/jsx";
+import RssIcon from "@bureaudouble/icons/lucide/RssIcon";
 
 export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
     return (

@@ -1,24 +1,23 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
-import { Article } from "../blog.ts";
+import type { Article } from "../blog.ts";
 import { MetadataComponent } from "./components/metadata.tsx";
-import type { HtmlEscapedString } from "hono/utils";
 
 export const ArticlePage: FC<
   {
     article: Article;
     siteTitle: string;
     faviconPath: string;
-    bodyScript?: HtmlEscapedString;
-    headScript?: HtmlEscapedString;
+    bodyScript?: string;
+    headScript?: string;
   }
 > = (
   props: {
     article: Article;
     siteTitle: string;
     faviconPath: string;
-    bodyScript?: HtmlEscapedString;
-    headScript?: HtmlEscapedString;
+    bodyScript?: string;
+    headScript?: string;
   },
 ) => {
   const { article, siteTitle, faviconPath, bodyScript, headScript } = props;

@@ -1,5 +1,33 @@
 {
-  "imports": { "@std/path": "jsr:@std/path@^1.0.6", "hono": "npm:hono@^4.6.3" },
+  "name": "@tayzendev/smallblog",
+  "version": "0.1.0",
+  "exports": "./mod.tsx",
+  "imports": {
+    "@bureaudouble/icons": "jsr:@bureaudouble/icons@^0.0.8",
+    "@deno/gfm": "jsr:@deno/gfm@^0.9.0",
+    "@std/path": "jsr:@std/path@^1.0.6",
+    "@std/yaml": "jsr:@std/yaml@^1.0.5",
+    "hono": "npm:hono@^4.6.3",
+    "minisearch": "npm:minisearch@^7.1.0",
+    "rss": "npm:rss@^1.2.2"
+  },
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "mod.tsx",
+      "pages/**/*.tsx",
+      "blog.ts",
+      "utils.ts",
+      "static/robots.txt",
+      "static/loading_script.js",
+      "static/style.css"
+    ],
+    "exclude": [
+      "static/png",
+      "posts/"
+    ]
+  },
   "compilerOptions": {
     "jsx": "precompile",
     "jsxImportSource": "hono/jsx"

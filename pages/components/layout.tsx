@@ -1,5 +1,5 @@
 import type { FC } from "hono/jsx";
-import { CSS } from "jsr:@deno/gfm";
+import { CSS } from "@deno/gfm";
 import { Navbar } from "./navbar.tsx";
 
 export const Layout: FC = (

@@ -1,9 +1,9 @@
 import * as path from "@std/path";
-import { render } from "jsr:@deno/gfm";
-import { parse } from "jsr:@std/yaml";
-import RSS from "npm:rss";
-import { SitemapStream, streamToPromise } from "npm:sitemap";
-import MiniSearch from "npm:minisearch";
+import { render } from "@deno/gfm";
+import { parse } from "@std/yaml";
+import RSS from "rss";
+import { Sitemap } from "https://deno.land/x/deno_sitemap/mod.ts";
+import MiniSearch from "minisearch";
 import loadLanguages from "npm:prismjs@1.29.0/components/index.js";
 
 loadLanguages(); // should load all language highlightings
@@ -99,20 +99,17 @@ export function getRSS(baseUrl: string, articles: Article[]) {
 }
 
 export function getSitemap(baseUrl: string, articles: Article[]) {
-    const smStream = new SitemapStream({ hostname: baseUrl });
+    const sitemap: Sitemap = new Sitemap(baseUrl);
 
     for (const article of articles) {
-        smStream.write({
-            url: article.url,
+        sitemap.add(article.url, {
             changefreq: "weekly",
             priority: 1,
         });
     }
-    smStream.write({ url: "/", changefreq: "daily", priority: 0.8 });
+    sitemap.add("/", { changefreq: "daily", priority: 0.8 });
 
-    smStream.end();
-
-    return streamToPromise(smStream).then((sm) => sm).catch((e) => e.toString);
+    return sitemap.sitemap;
 }
 
 export function getArticle(name: string, postsFolder: string): Article {
