@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "exports": "./mod.tsx",
   "imports": {
     "@bureaudouble/icons": "jsr:@bureaudouble/icons@^0.0.8",
