@@ -2,7 +2,7 @@ import * as path from "@std/path";
 import { render } from "@deno/gfm";
 import { parse } from "@std/yaml";
 import RSS from "rss";
-import { Sitemap } from "https://deno.land/x/deno_sitemap/mod.ts";
+import { Sitemap } from "./sitemap.ts";
 import MiniSearch from "minisearch";
 import loadLanguages from "npm:prismjs@1.29.0/components/index.js";
 

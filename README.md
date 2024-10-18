@@ -137,6 +137,6 @@ The list of technologies/libraries used:
 * [HTMX](https://htmx.org/) to boost the pages (avoiding full page refreshes) and make a "see result as you type" search feature
 * [minisearch](https://lucaong.github.io/minisearch/) to do the search feature (which is executed server-side)
 * the [RSS node package](https://www.npmjs.com/package/rss) to dynamically create the RSS feed
-* the [deno sitemap package](https://deno.land/x/deno_sitemap@0.1.3) to dynamically generate the sitemap
+* a dynamic sitemap generator script heavily inspired by the [deno sitemap package](https://deno.land/x/deno_sitemap@0.1.3)
 
 I made the blog worked even without JS on the client without sacrificing too much on the experience (you just don't have page boosting, and you have to type on enter to search for posts). So, all the features are executed server-side, even the pagination and the search.
