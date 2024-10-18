@@ -129,15 +129,14 @@ export default createBlogApp({
 ### Method 2: Cloning the repo
 
 1. Go to your smallweb folder: `cd /path/to/your/smallweb/folder`
-2. Clone the repo with the folder name you want: `https://github.com/TayzenDev/smallblog.git folder_name`
+2. Clone the repo with the folder name you want: `git clone https://github.com/TayzenDev/smallblog.git folder_name`
 3. Edit the code
 4. Enjoy!
 
 To help you edit what you want, this is an overview of the code organization:
 
-* To customize the pages and components, you can look into the `pages/` folder
+* To customize the pages, components and style, you can look into the `pages/` folder
 * To look at the "business logic", you can check the file `blog.ts`
-* To edit only styling, the `style.css` is available in the static folder
 * The hono server and blog creation function are located in the `mod.ts` file.
 
 ## Technologies
