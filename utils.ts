@@ -1,5 +1,6 @@
 export function getMimeType(filename: string): string {
     const mimeTypes: { [key: string]: string } = {
+        ".txt": "text/plain",
         ".html": "text/html",
         ".css": "text/css",
         ".js": "application/javascript",
@@ -10,7 +11,6 @@ export function getMimeType(filename: string): string {
         ".gif": "image/gif",
         ".svg": "image/svg+xml",
         ".pdf": "application/pdf",
-        ".txt": "text/plain",
         ".xml": "application/xml",
         ".zip": "application/zip",
         ".mp3": "audio/mpeg",

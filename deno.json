@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "exports": "./mod.tsx",
   "imports": {
     "@bureaudouble/icons": "jsr:@bureaudouble/icons@^0.0.8",
@@ -17,18 +17,15 @@
       "LICENSE",
       "README.md",
       "mod.tsx",
-      "pages/**/*.tsx",
+      "pages/",
       "blog.ts",
       "sitemap.ts",
       "utils.ts",
-      "static/robots.txt",
-      "static/loading_script.js",
-      "static/style.css",
       "static/img/article.png",
       "static/img/front_page.png"
     ],
     "exclude": [
-      "static/png",
+      "static/",
       "posts/"
     ]
   },

@@ -80,17 +80,18 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 
 ### Method 1: JSR import
 
-Incoming
-
 1. In your smallweb folder create a new folder (a.k.a. subdomain).
 2. In this folder add a `main.tsx` file
 3. Add the import statement: `import { createBlogApp } from ...`
 4. Export the result of the imported function with the configuration you want (see the example below)
-5. Enjoy, your blog is already running!
+5. Create a `deno.json` file and complete it with the content below
+6. Enjoy, your blog is already running!
+
+`main.tsx`:
 
 ```tsx
-import { createBlogApp } from "tayzen/smallblog";
-import { html } from "hono/html";
+import { createBlogApp } from "jsr:@tayzendev/smallblog@0.1.1";
+import { html } from "jsr:@hono/hono@4.6.5/html";
 
 const url = "https://smallblog-demo.tayzen.dev";
 const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";
@@ -100,7 +101,7 @@ const siteTitle = "Smallblog demo";
 const indexTitle = "A blog about nothing";
 const indexSubtitle = "A nice demo of smallblog";
 const customBodyScript =
-  html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
+  await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
 
 export default createBlogApp({
   baseUrl: url,
@@ -112,6 +113,17 @@ export default createBlogApp({
   indexSubtitle,
   customBodyScript,
 });
+```
+
+`deno.json`:
+
+```json
+{
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "jsr:@hono/hono/jsx"
+  }
+}
 ```
 
 ### Method 2: Cloning the repo

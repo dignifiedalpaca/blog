@@ -2,6 +2,7 @@ import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
 import { Articles } from "./components/articles.tsx";
+import { html } from "hono/html";
 
 export const Index: FC<
   {
@@ -73,7 +74,26 @@ export const Index: FC<
         page={props.page}
         itemsPerPage={props.itemsPerPage}
       />
-      <script src="/loading_script.js"></script>
+      {
+        /* This script fixes an issue with htmx boosting and the search field.
+        In some conditions when you get back to the index page the searches value is
+        not in the input field anymore. */
+      }
+      {html`
+        <script>
+          document.addEventListener('htmx:historyRestore', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramValue = urlParams.get('search');
+
+            if (paramValue) {
+                const inputField = document.querySelector('input[name="search"]');
+                if (inputField) {
+                    inputField.value = paramValue;
+                }
+            }
+          });
+        </script>
+      `}
     </Layout>
   );
 };
