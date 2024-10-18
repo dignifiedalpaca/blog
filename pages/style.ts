@@ -1,3 +1,6 @@
+import { css } from "hono/css";
+
+export const style = css`
 :root {
     --color-text: #BFC7D5;
 }
@@ -300,3 +303,4 @@ a:active {
     color: var(--color-prettylights-syntax-markup-inserted-text);
     background-color: var(--color-prettylights-syntax-markup-inserted-bg)
 }
+`;
