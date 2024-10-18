@@ -25,7 +25,8 @@
       "static/img/front_page.png"
     ],
     "exclude": [
-      "static/",
+      "static/*",
+      "static/**/*",
       "posts/"
     ]
   },

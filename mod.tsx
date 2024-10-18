@@ -119,11 +119,6 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     });
   });
 
-  app.get("/style.css", () => {
-    const styleFile = Deno.readFileSync("pages/style.css");
-    return new Response(styleFile, { headers: { "content-type": "text/css" } });
-  });
-
   app.get("/article/:name", (c) => {
     const name = c.req.param("name");
 
