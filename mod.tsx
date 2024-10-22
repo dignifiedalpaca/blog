@@ -90,7 +90,6 @@ export function createBlogApp(options: BlogAppOptions): Hono {
 
   app.get("/rss.xml", (c) => {
     const baseUrl = getUrl(c);
-    console.log("baseUrl:", baseUrl);
     const articles = getArticles(postsFolder);
     const xml = getRSS(baseUrl, articles);
     return new Response(xml, {
