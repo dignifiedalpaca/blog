@@ -32,9 +32,9 @@ export function getArticles(postsFolder: string): Article[] {
 
     const articles: Article[] = postsNames.map((name) => {
         return new Article(name.slice(0, -3), getMarkdown(name, postsFolder));
-    }).filter((article) => article.metadata.published).filter((article) =>
-        article.content !== ""
-    );
+    }).filter((article) => article.metadata.published !== false).filter((
+        article,
+    ) => article.content !== "");
     return articles.sort((a, b) => {
         if (a?.metadata?.date && b?.metadata?.date) {
             return b?.metadata?.date?.getDate() - a?.metadata?.date?.getDate();

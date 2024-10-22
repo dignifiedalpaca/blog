@@ -15,6 +15,7 @@ import { Articles } from "./pages/components/articles.tsx";
 type BlogAppOptions = {
   baseUrl: string;
   postsFolder?: string;
+  draftsFolder?: string;
   staticFolder?: string;
   faviconPath?: string;
   siteTitle: string;
@@ -28,6 +29,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
   const {
     baseUrl,
     postsFolder = "posts/",
+    draftsFolder = "drafts/",
     staticFolder = "static/",
     faviconPath = "favicon.ico",
     siteTitle,
@@ -125,7 +127,30 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     const article = getArticle(name, postsFolder);
     const renderedArticle = article.html;
 
-    if (!renderedArticle || article.metadata.published === false) {
+    if (!renderedArticle) {
+      return new Response("Page not found", { status: 404 });
+    }
+
+    return c.html(
+      `<!DOCTYPE html>` + (
+        <ArticlePage
+          article={article}
+          siteTitle={siteTitle}
+          faviconPath={faviconPath}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+        />
+      ),
+    );
+  });
+
+  app.get("/drafts/:name", (c) => {
+    const name = c.req.param("name");
+
+    const article = getArticle(name, draftsFolder);
+    const renderedArticle = article.html;
+
+    if (!renderedArticle) {
       return new Response("Page not found", { status: 404 });
     }
 
