@@ -1,15 +1,15 @@
 import type { FC } from "hono/jsx";
-import { Metadata } from "../../blog.ts";
+import type { Article } from "../../blog.ts";
 
 interface MetadataProps {
-    metadata?: Metadata;
+    article?: Article;
 }
 
 export const MetadataComponent: FC = (props: MetadataProps) => {
-    const metadata = props.metadata;
-    if (!metadata) {
-        return null;
-    }
+    const { article } = props;
+    if (!article) return null;
+    const { metadata } = article;
+
     return (
         <div class={"metadata"}>
             {metadata.authors &&
@@ -24,6 +24,11 @@ export const MetadataComponent: FC = (props: MetadataProps) => {
                         {metadata.date?.toDateString()}
                     </span>
                 )}
+            {article.timeToReadMinutes && (
+                <span class={"non-tag-metadata"}>
+                    {article.timeToReadMinutes} min read
+                </span>
+            )}
             {metadata.tags && (
                 <span class={"tags"}>
                     {metadata.tags.map((tag) => (

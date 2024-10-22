@@ -32,7 +32,7 @@ export const ArticlePage: FC<
     >
       <header class={"article-header"}>
         <h1 class={"title"}>{article.title}</h1>
-        <MetadataComponent metadata={article.metadata} />
+        <MetadataComponent article={article} />
       </header>
       <article
         dangerouslySetInnerHTML={{ __html: article.html }}

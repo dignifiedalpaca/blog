@@ -1,5 +1,5 @@
 import type { FC } from "hono/jsx";
-import { Article } from "../../blog.ts";
+import type { Article } from "../../blog.ts";
 import { MetadataComponent } from "./metadata.tsx";
 
 export const Articles: FC<
@@ -31,7 +31,7 @@ export const Articles: FC<
             <a href={post.url}>
               <div>
                 <h2 class={"article-title"}>{post.title}</h2>
-                <MetadataComponent metadata={post.metadata} />
+                <MetadataComponent article={post} />
                 <div
                   class={"article-preview"}
                   dangerouslySetInnerHTML={{ __html: post.preview }}

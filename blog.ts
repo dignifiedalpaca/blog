@@ -139,6 +139,10 @@ function removeMetadataFromMD(markdown: string) {
     return markdown.substring(endOfMetadataIndex + 3);
 }
 
+function estimateTimeReadingMinutes(markdownSimplified: string): number {
+    return Math.round(markdownSimplified.split(" ").length / 250);
+}
+
 export class Metadata {
     title?: string;
     description?: string;
@@ -202,6 +206,7 @@ export class Article {
     html: string;
     metadata: Metadata;
     url: string;
+    timeToReadMinutes: number;
 
     constructor(
         name: string,
@@ -209,6 +214,7 @@ export class Article {
         title?: string,
         html?: string,
         metadata?: Metadata,
+        timeToReadMinutes?: number,
     ) {
         const cleanedContent = removingTitleFromMD(
             removeMetadataFromMD(content),
@@ -221,5 +227,7 @@ export class Article {
         this.preview = render(cleanedContent.slice(0, 300) + "...");
         this.html = html || render(cleanedContent);
         this.url = `/article/${this.name}`;
+        this.timeToReadMinutes = timeToReadMinutes ||
+            estimateTimeReadingMinutes(cleanedContent);
     }
 }
