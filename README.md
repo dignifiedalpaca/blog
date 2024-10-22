@@ -16,7 +16,7 @@ It includes all the features you need for a blog (and more):
 * Quick loading pages
 * RSS feed
 * Search feature
-* Automatic reading time estimation (incoming)
+* Automatic reading time estimation
 * It works well without JS
 
 ## Demo
@@ -27,7 +27,9 @@ A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.
 
 ### Writing an article
 
-When smallblog is correctly installed you just have to write your markdown files in your dedicated folder (this folder can change with the configuration, in this example, it is: `posts/`).
+When smallblog is correctly installed you just have to write your markdown files in your drafts folder and preview them on the route: `/drafts/your_file_name_without_extension`.
+
+Then, when you finished your writing, you can move the markdown file to the posts' folder (drafts and posts folders can change with the configuration, in this example, they are respectively: `drafts/` and `posts/`).
 
 Smallblog doesn't come with an editor to write blog post. To write this article you can use whatever way you want using the power of smallweb:
 
@@ -46,14 +48,13 @@ authors:
     - Tayzen
 tags:
     - test
-published: true
 date: 2024-10-08
 ---
 
 This is a text after the metadata.
 ```
 
-This metadata is displayed to the user, except for the `published` one. This property is used by the engine to not display articles whose its value is not set to `true` ([posts/private.md](posts/private.md) is an example).
+This metadata is displayed to the user, except for the `published` one. This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](posts/private.md) is an example).
 
 ### Serving static files
 
