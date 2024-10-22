@@ -1,7 +1,6 @@
 import { html } from "hono/html";
 import { createBlogApp } from "./mod.tsx";
 
-const url = "https://smallblog-demo.tayzen.dev";
 const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";
 const staticFolder = "static/";
 const faviconPath = "/favicon.ico";
@@ -12,7 +11,6 @@ const customBodyScript =
   await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
 
 export default createBlogApp({
-  baseUrl: url,
   postsFolder,
   staticFolder,
   faviconPath,

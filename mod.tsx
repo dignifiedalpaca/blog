@@ -1,5 +1,5 @@
 import * as path from "@std/path";
-import { Hono } from "hono";
+import { type Context, Hono } from "hono";
 import { Index } from "./pages/index.tsx";
 import {
   filterArticlesFTS,
@@ -13,7 +13,6 @@ import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 
 type BlogAppOptions = {
-  baseUrl: string;
   postsFolder?: string;
   draftsFolder?: string;
   staticFolder?: string;
@@ -25,9 +24,12 @@ type BlogAppOptions = {
   customBodyScript?: string;
 };
 
+function getUrl(c: Context): string {
+  return (new URL(c.req.url)).origin;
+}
+
 export function createBlogApp(options: BlogAppOptions): Hono {
   const {
-    baseUrl,
     postsFolder = "posts/",
     draftsFolder = "drafts/",
     staticFolder = "static/",
@@ -86,7 +88,9 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     );
   });
 
-  app.get("/rss.xml", () => {
+  app.get("/rss.xml", (c) => {
+    const baseUrl = getUrl(c);
+    console.log("baseUrl:", baseUrl);
     const articles = getArticles(postsFolder);
     const xml = getRSS(baseUrl, articles);
     return new Response(xml, {
@@ -96,7 +100,8 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     });
   });
 
-  app.get("/sitemap.xml", async () => {
+  app.get("/sitemap.xml", async (c) => {
+    const baseUrl = getUrl(c);
     const articles = getArticles(postsFolder);
     const xml = await getSitemap(baseUrl, articles);
     if (xml) {
@@ -108,7 +113,8 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     }
   });
 
-  app.get("/robots.txt", () => {
+  app.get("/robots.txt", (c) => {
+    const baseUrl = getUrl(c);
     const robotTxt = `
       User-agent: *
       Disallow:

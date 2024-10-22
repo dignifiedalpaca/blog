@@ -94,7 +94,6 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 import { createBlogApp } from "jsr:@tayzendev/smallblog@0.1.1";
 import { html } from "jsr:@hono/hono@4.6.5/html";
 
-const url = "https://smallblog-demo.tayzen.dev";
 const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";
 const staticFolder = "static/";
 const faviconPath = "/favicon.ico";
@@ -105,7 +104,6 @@ const customBodyScript =
   await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
 
 export default createBlogApp({
-  baseUrl: url,
   postsFolder,
   staticFolder,
   faviconPath,
