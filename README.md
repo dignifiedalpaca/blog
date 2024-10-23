@@ -91,8 +91,7 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 2. In this folder add a `main.tsx` file
 3. Add the import statement: `import { createBlogApp } from ...`
 4. Export the result of the imported function with the configuration you want (see the example below)
-5. Create a `deno.json` file and complete it with the content below
-6. Enjoy, your blog is already running!
+5. Enjoy, your blog is already running!
 
 `main.tsx`:
 
@@ -118,17 +117,6 @@ export default createBlogApp({
   indexSubtitle,
   customBodyScript,
 });
-```
-
-`deno.json`:
-
-```json
-{
-  "compilerOptions": {
-    "jsx": "precompile",
-    "jsxImportSource": "jsr:@hono/hono/jsx"
-  }
-}
 ```
 
 ### Method 2: Cloning the repo
