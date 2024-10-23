@@ -5,6 +5,7 @@
   "imports": {
     "@deno/gfm": "jsr:@deno/gfm@^0.9.0",
     "@libs/xml": "jsr:@libs/xml@^6.0.0",
+    "@smallweb/types": "jsr:@smallweb/types@^0.1.0",
     "@std/path": "jsr:@std/path@^1.0.6",
     "@std/yaml": "jsr:@std/yaml@^1.0.5",
     "hono": "npm:hono@^4.6.3",

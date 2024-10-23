@@ -12,6 +12,7 @@ import {
 import { getMimeType } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
+import type { App } from "@smallweb/types"
 
 type BlogAppOptions = {
   postsFolder?: string;
@@ -35,7 +36,7 @@ function getRequestedUrl(c: Context): string {
   return c.req.url;
 }
 
-export function createBlogApp(options: BlogAppOptions): Hono {
+export function createBlogApp(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
