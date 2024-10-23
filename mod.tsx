@@ -127,7 +127,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     const baseUrl = getBaseUrl(c);
     const robotTxt = `
       User-agent: *
-      Disallow:
+      Disallow: /drafts
       Sitemap: ${path.join(baseUrl, "/sitemap.xml")}
       `.replace(/  +/g, "").trim();
     return new Response(robotTxt, {
