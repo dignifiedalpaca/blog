@@ -82,6 +82,7 @@ export const Layout: FC<LayoutProps> = (
                 <meta property="og:url" content={url} />
                 {description && (
                     <>
+                        <meta property="description" content={description} />
                         <meta property="og:description" content={description} />
                         <meta
                             name="twitter:description"
@@ -113,10 +114,16 @@ export const Layout: FC<LayoutProps> = (
                         )}
                         {article.metadata.authors?.map(
                             (username) => (
-                                <meta
-                                    property="article:author"
-                                    content={username}
-                                />
+                                <>
+                                    <meta
+                                        property="article:author"
+                                        content={username}
+                                    />
+                                    <meta
+                                        property="author"
+                                        content={username}
+                                    />
+                                </>
                             ),
                         )}
                         {article.metadata.tags?.map(
