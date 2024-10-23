@@ -125,6 +125,7 @@ export const style = html`
     }
 
     .article-element {
+        width: 100%;
         margin-bottom: 2em;
         color: var(--color-text);
     }
