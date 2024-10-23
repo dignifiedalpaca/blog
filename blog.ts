@@ -188,7 +188,7 @@ export class Metadata {
 
         const actualAuthors = authors || author;
         if (typeof actualAuthors === "string") {
-            authors = [actualAuthors];
+            this.authors = [actualAuthors];
         } else {
             this.authors = actualAuthors;
         }
