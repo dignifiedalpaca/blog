@@ -13,7 +13,7 @@
     "npm:@types/node@*": "22.5.4",
     "npm:github-slugger@2": "2.0.0",
     "npm:he@^1.2.0": "1.2.0",
-    "npm:hono@^4.6.6": "4.6.6",
+    "npm:hono@^4.6.3": "4.6.6",
     "npm:katex@0.16": "0.16.11",
     "npm:marked-alert@2": "2.1.0_marked@12.0.2",
     "npm:marked-footnote@^1.2.0": "1.2.4_marked@12.0.2",
@@ -265,7 +265,7 @@
       "jsr:@libs/xml@6",
       "jsr:@std/path@^1.0.6",
       "jsr:@std/yaml@^1.0.5",
-      "npm:hono@^4.6.6",
+      "npm:hono@^4.6.3",
       "npm:minisearch@^7.1.0",
       "npm:rss@^1.2.2"
     ]
