@@ -4,20 +4,7 @@ import type { Article } from "../blog.ts";
 import { Articles } from "./components/articles.tsx";
 import { html } from "hono/html";
 
-export const Index: FC<
-  {
-    posts: Article[];
-    page: number;
-    itemsPerPage: number;
-    search: string;
-    siteTitle: string;
-    indexTitle: string;
-    indexSubtitle: string;
-    faviconPath: string;
-    bodyScript?: string;
-    headScript?: string;
-  }
-> = (props: {
+type IndexProps = {
   posts: Article[];
   page: number;
   itemsPerPage: number;
@@ -26,9 +13,14 @@ export const Index: FC<
   indexTitle: string;
   indexSubtitle: string;
   faviconPath: string;
+  url: string;
+  locale?: string;
+  description?: string;
   bodyScript?: string;
   headScript?: string;
-}) => {
+};
+
+export const Index: FC<IndexProps> = (props: IndexProps) => {
   const {
     posts,
     siteTitle,
@@ -37,6 +29,9 @@ export const Index: FC<
     faviconPath,
     bodyScript,
     headScript,
+    url,
+    locale,
+    description,
   } = props;
 
   return (
@@ -46,6 +41,9 @@ export const Index: FC<
       faviconPath={faviconPath}
       bodyScript={bodyScript}
       headScript={headScript}
+      url={url}
+      locale={locale}
+      description={description}
     >
       <header class={"index-header"}>
         <h1 class={"index-title"}>

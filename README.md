@@ -49,12 +49,18 @@ authors:
 tags:
     - test
 date: 2024-10-08
+section: Technology
 ---
 
 This is a text after the metadata.
 ```
 
-This metadata is displayed to the user, except for the `published` one. This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](posts/private.md) is an example).
+This metadata is displayed to the user, except for the `published` and `section` one, which are used as follows:
+
+* `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](posts/private.md) is an example)
+* `section`: This property is used to give more details to search engines about your article
+
+None of this metadata are required, but I highly recommend you to write them, they will improve your SEO, give useful insights to your users and in the index page the articles are sorted by date (so, no date will break the order of your posts).
 
 ### Serving static files
 

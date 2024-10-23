@@ -3,24 +3,28 @@ import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
 import { MetadataComponent } from "./components/metadata.tsx";
 
-export const ArticlePage: FC<
-  {
-    article: Article;
-    siteTitle: string;
-    faviconPath: string;
-    bodyScript?: string;
-    headScript?: string;
-  }
-> = (
-  props: {
-    article: Article;
-    siteTitle: string;
-    faviconPath: string;
-    bodyScript?: string;
-    headScript?: string;
-  },
+type ArticlePageProps = {
+  article: Article;
+  siteTitle: string;
+  faviconPath: string;
+  url: string;
+  locale?: string;
+  bodyScript?: string;
+  headScript?: string;
+};
+
+export const ArticlePage: FC<ArticlePageProps> = (
+  props: ArticlePageProps,
 ) => {
-  const { article, siteTitle, faviconPath, bodyScript, headScript } = props;
+  const {
+    article,
+    siteTitle,
+    faviconPath,
+    bodyScript,
+    headScript,
+    locale,
+    url,
+  } = props;
 
   return (
     <Layout
@@ -29,6 +33,10 @@ export const ArticlePage: FC<
       faviconPath={faviconPath}
       bodyScript={bodyScript}
       headScript={headScript}
+      url={url}
+      locale={locale}
+      description={article.metadata?.description}
+      article={article}
     >
       <header class={"article-header"}>
         <h1 class={"title"}>{article.title}</h1>

@@ -117,12 +117,18 @@ export function getArticle(name: string, postsFolder: string): Article {
     return article;
 }
 
-function getMetadataFromMD(markdown: string) {
+function getMetadataFromMD(markdown: string): Metadata {
     const charactersBetweenGroupedHyphens = /^---([\s\S]*?)---/;
     const metadataMatched = markdown.match(charactersBetweenGroupedHyphens);
     if (!metadataMatched) return new Metadata({});
-    const metadata = parse(metadataMatched[1]) as Metadata;
-    return metadata;
+    try {
+        const metadataJson = parse(metadataMatched[1]) as MetadataProps;
+        const metadata = new Metadata(metadataJson);
+        return metadata;
+    } catch (error) {
+        console.log("error while parsing metadata:", error);
+        return new Metadata({});
+    }
 }
 
 function removeMetadataFromMD(markdown: string) {
@@ -143,6 +149,18 @@ function estimateTimeReadingMinutes(markdownSimplified: string): number {
     return Math.round(markdownSimplified.split(" ").length / 250);
 }
 
+type MetadataProps = {
+    title?: string;
+    description?: string;
+    author?: string | string[];
+    authors?: string | string[];
+    tag?: string | string[];
+    tags?: string | string[];
+    published?: boolean;
+    date?: Date;
+    section?: string;
+};
+
 export class Metadata {
     title?: string;
     description?: string;
@@ -150,31 +168,41 @@ export class Metadata {
     tags?: string[];
     published?: boolean;
     date?: Date;
+    section?: string;
 
     constructor(
-        { title, description, authors, tags, published, date }: {
-            title?: string;
-            description?: string;
-            authors?: string | string[];
-            tags?: string | string[];
-            published?: boolean;
-            date?: Date;
-        },
+        {
+            title,
+            description,
+            authors,
+            author,
+            tags,
+            tag,
+            published,
+            date,
+            section,
+        }: MetadataProps,
     ) {
         this.title = title;
         this.description = description;
-        if (typeof authors === "string") {
-            authors = [authors];
+
+        const actualAuthors = authors || author;
+        if (typeof actualAuthors === "string") {
+            authors = [actualAuthors];
         } else {
-            this.authors = authors;
+            this.authors = actualAuthors;
         }
-        if (typeof tags === "string") {
-            tags = [tags];
+
+        const actualTags = tags || tag;
+        if (typeof actualTags === "string") {
+            this.tags = [actualTags];
         } else {
-            this.tags = tags;
+            this.tags = actualTags;
         }
+
         this.published = published;
         this.date = date;
+        this.section = section;
     }
 }
 

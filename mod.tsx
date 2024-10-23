@@ -18,14 +18,20 @@ type BlogAppOptions = {
   staticFolder?: string;
   faviconPath?: string;
   siteTitle: string;
+  siteDescription?: string;
   indexTitle: string;
   indexSubtitle: string;
+  locale?: string;
   customHeaderScript?: string;
   customBodyScript?: string;
 };
 
-function getUrl(c: Context): string {
+function getBaseUrl(c: Context): string {
   return (new URL(c.req.url)).origin;
+}
+
+function getRequestedUrl(c: Context): string {
+  return c.req.url;
 }
 
 export function createBlogApp(options: BlogAppOptions): Hono {
@@ -35,8 +41,10 @@ export function createBlogApp(options: BlogAppOptions): Hono {
     staticFolder = "static/",
     faviconPath = "favicon.ico",
     siteTitle,
+    siteDescription = `The blog: ${siteTitle}`,
     indexTitle,
     indexSubtitle,
+    locale,
     customHeaderScript,
     customBodyScript,
   } = options;
@@ -81,6 +89,9 @@ export function createBlogApp(options: BlogAppOptions): Hono {
             indexTitle={indexTitle}
             indexSubtitle={indexSubtitle}
             faviconPath={faviconPath}
+            url={c.req.url}
+            locale={locale}
+            description={siteDescription}
             bodyScript={customBodyScript}
             headScript={customHeaderScript}
           />
@@ -89,7 +100,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
   });
 
   app.get("/rss.xml", (c) => {
-    const baseUrl = getUrl(c);
+    const baseUrl = getBaseUrl(c);
     const articles = getArticles(postsFolder);
     const xml = getRSS(baseUrl, articles);
     return new Response(xml, {
@@ -100,7 +111,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
   });
 
   app.get("/sitemap.xml", async (c) => {
-    const baseUrl = getUrl(c);
+    const baseUrl = getBaseUrl(c);
     const articles = getArticles(postsFolder);
     const xml = await getSitemap(baseUrl, articles);
     if (xml) {
@@ -113,7 +124,7 @@ export function createBlogApp(options: BlogAppOptions): Hono {
   });
 
   app.get("/robots.txt", (c) => {
-    const baseUrl = getUrl(c);
+    const baseUrl = getBaseUrl(c);
     const robotTxt = `
       User-agent: *
       Disallow:
@@ -142,6 +153,8 @@ export function createBlogApp(options: BlogAppOptions): Hono {
           article={article}
           siteTitle={siteTitle}
           faviconPath={faviconPath}
+          url={c.req.url}
+          locale={locale}
           bodyScript={customBodyScript}
           headScript={customHeaderScript}
         />
@@ -165,6 +178,8 @@ export function createBlogApp(options: BlogAppOptions): Hono {
           article={article}
           siteTitle={siteTitle}
           faviconPath={faviconPath}
+          url={c.req.url}
+          locale={locale}
           bodyScript={customBodyScript}
           headScript={customHeaderScript}
         />

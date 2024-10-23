@@ -3,7 +3,7 @@ import RssIcon from "@bureaudouble/icons/lucide/RssIcon";
 
 export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
     return (
-        <navbar>
+        <navbar hx-preserve="true">
             <a href="/" class="navbar-home" hx-boost="false">
                 <strong>{props.title}</strong>
             </a>
