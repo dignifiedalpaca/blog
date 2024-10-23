@@ -144,6 +144,16 @@ To help you edit what you want, this is an overview of the code organization:
 * To look at the "business logic", you can check the file `blog.ts`
 * The hono server and blog creation function are located in the `mod.ts` file.
 
+### After installation
+
+If you want your drafts to be private, you can use the smallweb authentication on the `/drafts` route. To do so, you can add a file called `smallweb.json` in your project's folder and copy this configuration:
+
+```json
+{
+  "privateRoutes": ["/drafts"]
+}
+```
+
 ## Technologies
 
 The list of technologies/libraries used:
