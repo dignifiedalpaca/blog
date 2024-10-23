@@ -1,3 +1,4 @@
+/** @jsxImportSource hono/jsx */
 import * as path from "@std/path";
 import { type Context, Hono } from "hono";
 import { Index } from "./pages/index.tsx";
@@ -79,23 +80,23 @@ export function createBlogApp(options: BlogAppOptions): Hono {
 
     return c.html(
       `<!DOCTYPE html>` +
-        (
-          <Index
-            posts={filteredPosts}
-            page={Number(page)}
-            itemsPerPage={itemsPerPage}
-            search={search}
-            siteTitle={siteTitle}
-            indexTitle={indexTitle}
-            indexSubtitle={indexSubtitle}
-            faviconPath={faviconPath}
-            url={c.req.url}
-            locale={locale}
-            description={siteDescription}
-            bodyScript={customBodyScript}
-            headScript={customHeaderScript}
-          />
-        ),
+      (
+        <Index
+          posts={filteredPosts}
+          page={Number(page)}
+          itemsPerPage={itemsPerPage}
+          search={search}
+          siteTitle={siteTitle}
+          indexTitle={indexTitle}
+          indexSubtitle={indexSubtitle}
+          faviconPath={faviconPath}
+          url={c.req.url}
+          locale={locale}
+          description={siteDescription}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+        />
+      ),
     );
   });
 

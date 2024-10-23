@@ -1,3 +1,5 @@
+/** @jsxImportSource hono/jsx */
+
 import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";

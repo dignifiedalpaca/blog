@@ -1,3 +1,5 @@
+/** @jsxImportSource hono/jsx */
+
 import type { Child, FC } from "hono/jsx";
 import { CSS } from "@deno/gfm";
 import { Navbar } from "./navbar.tsx";

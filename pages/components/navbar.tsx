@@ -1,5 +1,6 @@
+/** @jsxImportSource hono/jsx */
+
 import type { FC } from "hono/jsx";
-import RssIcon from "@bureaudouble/icons/lucide/RssIcon";
 
 export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
     return (
@@ -11,7 +12,7 @@ export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
             <ul class={"navbar-links"}>
                 <li>
                     <a href="/rss.xml" hx-boost="false">
-                        <RssIcon /> RSS
+                        {/* <RssIcon /> RSS */}
                     </a>
                 </li>
             </ul>
