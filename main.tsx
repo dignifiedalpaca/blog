@@ -1,4 +1,5 @@
-import { html } from "hono/html";
+/** @jsxImportSource hono/jsx */
+import { html } from "hono/html"
 import { createBlogApp } from "./mod.tsx";
 
 const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";

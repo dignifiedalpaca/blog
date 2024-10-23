@@ -1,3 +1,5 @@
+/** @jsxImportSource hono/jsx */
+
 import type { FC } from "hono/jsx";
 import type { Article } from "../../blog.ts";
 

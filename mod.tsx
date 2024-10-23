@@ -1,3 +1,4 @@
+/** @jsxImportSource hono/jsx */
 import * as path from "@std/path";
 import { type Context, Hono } from "hono";
 import { Index } from "./pages/index.tsx";
@@ -11,6 +12,7 @@ import {
 import { getMimeType } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
+import type { App } from "@smallweb/types"
 
 type BlogAppOptions = {
   postsFolder?: string;
@@ -34,7 +36,7 @@ function getRequestedUrl(c: Context): string {
   return c.req.url;
 }
 
-export function createBlogApp(options: BlogAppOptions): Hono {
+export function createBlogApp(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
@@ -79,23 +81,23 @@ export function createBlogApp(options: BlogAppOptions): Hono {
 
     return c.html(
       `<!DOCTYPE html>` +
-        (
-          <Index
-            posts={filteredPosts}
-            page={Number(page)}
-            itemsPerPage={itemsPerPage}
-            search={search}
-            siteTitle={siteTitle}
-            indexTitle={indexTitle}
-            indexSubtitle={indexSubtitle}
-            faviconPath={faviconPath}
-            url={c.req.url}
-            locale={locale}
-            description={siteDescription}
-            bodyScript={customBodyScript}
-            headScript={customHeaderScript}
-          />
-        ),
+      (
+        <Index
+          posts={filteredPosts}
+          page={Number(page)}
+          itemsPerPage={itemsPerPage}
+          search={search}
+          siteTitle={siteTitle}
+          indexTitle={indexTitle}
+          indexSubtitle={indexSubtitle}
+          faviconPath={faviconPath}
+          url={c.req.url}
+          locale={locale}
+          description={siteDescription}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+        />
+      ),
     );
   });
 

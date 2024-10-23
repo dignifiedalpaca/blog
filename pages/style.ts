@@ -1,3 +1,5 @@
+/** @jsxImportSource hono/jsx */
+
 import { html } from "hono/html";
 
 export const style = html`
