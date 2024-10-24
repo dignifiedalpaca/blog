@@ -1,5 +1,5 @@
 /** @jsxImportSource hono/jsx */
-import { html } from "hono/html"
+import { html } from "hono/html";
 import { createBlogApp } from "./mod.tsx";
 
 const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";
@@ -15,6 +15,8 @@ export default createBlogApp({
   postsFolder,
   staticFolder,
   faviconPath,
+  siteDescription:
+    "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
   siteTitle,
   indexTitle,
   indexSubtitle,
