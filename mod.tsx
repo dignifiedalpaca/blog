@@ -12,17 +12,17 @@ import {
 import { getMimeType } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
-import type { App } from "@smallweb/types"
+import type { App } from "@smallweb/types";
 
 type BlogAppOptions = {
   postsFolder?: string;
   draftsFolder?: string;
   staticFolder?: string;
   faviconPath?: string;
-  siteTitle: string;
+  siteTitle?: string;
   siteDescription?: string;
-  indexTitle: string;
-  indexSubtitle: string;
+  indexTitle?: string;
+  indexSubtitle?: string;
   locale?: string;
   customHeaderScript?: string;
   customBodyScript?: string;
@@ -32,17 +32,13 @@ function getBaseUrl(c: Context): string {
   return (new URL(c.req.url)).origin;
 }
 
-function getRequestedUrl(c: Context): string {
-  return c.req.url;
-}
-
 export function createBlogApp(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
     staticFolder = "static/",
     faviconPath = "favicon.ico",
-    siteTitle,
+    siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
     indexTitle,
     indexSubtitle,
@@ -81,23 +77,23 @@ export function createBlogApp(options: BlogAppOptions): App {
 
     return c.html(
       `<!DOCTYPE html>` +
-      (
-        <Index
-          posts={filteredPosts}
-          page={Number(page)}
-          itemsPerPage={itemsPerPage}
-          search={search}
-          siteTitle={siteTitle}
-          indexTitle={indexTitle}
-          indexSubtitle={indexSubtitle}
-          faviconPath={faviconPath}
-          url={c.req.url}
-          locale={locale}
-          description={siteDescription}
-          bodyScript={customBodyScript}
-          headScript={customHeaderScript}
-        />
-      ),
+        (
+          <Index
+            posts={filteredPosts}
+            page={Number(page)}
+            itemsPerPage={itemsPerPage}
+            search={search}
+            siteTitle={siteTitle}
+            indexTitle={indexTitle}
+            indexSubtitle={indexSubtitle}
+            faviconPath={faviconPath}
+            url={c.req.url}
+            locale={locale}
+            description={siteDescription}
+            bodyScript={customBodyScript}
+            headScript={customHeaderScript}
+          />
+        ),
     );
   });
 

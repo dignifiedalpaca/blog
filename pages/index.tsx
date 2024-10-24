@@ -12,8 +12,8 @@ type IndexProps = {
   itemsPerPage: number;
   search: string;
   siteTitle: string;
-  indexTitle: string;
-  indexSubtitle: string;
+  indexTitle?: string;
+  indexSubtitle?: string;
   faviconPath: string;
   url: string;
   locale?: string;
@@ -48,12 +48,16 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
       description={description}
     >
       <header class={"index-header"}>
-        <h1 class={"index-title"}>
-          {indexTitle}
-        </h1>
-        <h2 class={"index-subtitle"}>
-          {indexSubtitle}
-        </h2>
+        {indexTitle && (
+          <h1 class={"index-title"}>
+            {indexTitle}
+          </h1>
+        )}
+        {indexSubtitle && (
+          <h2 class={"index-subtitle"}>
+            {indexSubtitle}
+          </h2>
+        )}
       </header>
       <form action="/?page=1" method="get">
         <input
