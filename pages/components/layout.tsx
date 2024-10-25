@@ -10,7 +10,6 @@ type LayoutProps = {
     children: Child;
     pageTitle: string;
     siteTitle: string;
-    faviconPath: string;
     bodyScript?: string;
     headScript?: string;
     url: string;
@@ -26,7 +25,6 @@ export const Layout: FC<LayoutProps> = (
         children,
         pageTitle,
         siteTitle,
-        faviconPath,
         bodyScript,
         headScript,
         url,
@@ -142,7 +140,7 @@ export const Layout: FC<LayoutProps> = (
                     hx-preserve="true"
                 />
                 {/* End of SEO Section */}
-                <link rel="icon" type="image/x-icon" href={faviconPath} />
+                <link rel="icon" type="image/x-icon" href="/favicon" />
                 {headScript}
             </head>
             <body

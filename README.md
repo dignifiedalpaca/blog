@@ -64,10 +64,12 @@ None of this metadata are required, but I highly recommend you to write them, th
 
 ### Serving static files
 
-A `staticFolder` is mandatory in the configuration of smallblog, in this example this value is `static/`. As its name implies, this folder should contain all the static files (images, videos or downloadable files) of your blog.
+There are two kinds of static files which are handled differently:
 
-When you want to use a static file in an article, the path to access it should be the one to the corresponding resource in the web browser (not your OS's path).
-For example, in the file [posts/post_test.md](posts/post_test.md) you can see a reference to the picture `deno_logo.png` and the path used is not `static/img/deno_logo.png` or `../static/img/deno_logo.png` but `/img/deno_logo.png` instead. That's because from the web browser this logo is accessible with the following URL: [smallblog-demo.tayzen.dev/img/deno_logo.png](https://smallblog-demo.tayzen.dev/img/deno_logo.png).
+1. The favicon: The favicon can be placed anywhere in your blog folder, its path has to be configured in smallblog
+2. The static files in your blog posts: They have to be in your drafts or posts folders (or a subfolder) and you can reference them in a relative manner in your markdown files as usual (the preview will work normally in any editors)
+
+In both ways smallblog will serve these files without you have to think about it.
 
 ### Adding custom scripts
 
@@ -90,31 +92,33 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 1. In your smallweb folder create a new folder (a.k.a. subdomain).
 2. In this folder add a `main.tsx` file
 3. Add the import statement: `import { createBlogApp } from ...`
-4. Export the result of the imported function with the configuration you want (see the example below)
+4. Export the result of the imported function with the configuration you want (see the examples below)
 5. Enjoy, your blog is already running!
 
-`main.tsx`:
+Minimal `main.tsx` to quick-start a project:
 
 ```tsx
 import { createBlogApp } from "jsr:@tayzendev/smallblog@0.1.1";
-import { html } from "jsr:@hono/hono@4.6.5/html";
 
-const postsFolder = Deno.env.get("POSTS_FOLDER") || "posts/";
-const staticFolder = "static/";
-const faviconPath = "/favicon.ico";
-const siteTitle = "Smallblog demo";
-const indexTitle = "A blog about nothing";
-const indexSubtitle = "A nice demo of smallblog";
+export default createBlogApp({});
+```
+
+A `main.tsx` with more parameters:
+
+```tsx
+import { html } from "hono/html";
+import { createBlogApp } from "./mod.tsx";
+
 const customBodyScript =
   await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
 
 export default createBlogApp({
-  postsFolder,
-  staticFolder,
-  faviconPath,
-  siteTitle,
-  indexTitle,
-  indexSubtitle,
+  faviconPath: "favicon.ico",
+  siteDescription:
+    "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
+  siteTitle: "Smallblog demo",
+  indexTitle: "A blog about nothing",
+  indexSubtitle: "A nice demo of smallblog",
   customBodyScript,
 });
 ```

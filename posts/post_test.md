@@ -87,4 +87,4 @@ print(f"result: {test_function([1, 2, 3])}")
 
 ### Image
 
-![Deno](/img/deno_logo.png)
+![Deno](img/deno_logo.png)

@@ -14,7 +14,6 @@ type IndexProps = {
   siteTitle: string;
   indexTitle?: string;
   indexSubtitle?: string;
-  faviconPath: string;
   url: string;
   locale?: string;
   description?: string;
@@ -28,7 +27,6 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
     siteTitle,
     indexTitle,
     indexSubtitle,
-    faviconPath,
     bodyScript,
     headScript,
     url,
@@ -40,7 +38,6 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
     <Layout
       pageTitle={siteTitle}
       siteTitle={siteTitle}
-      faviconPath={faviconPath}
       bodyScript={bodyScript}
       headScript={headScript}
       url={url}

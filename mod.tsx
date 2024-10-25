@@ -14,10 +14,9 @@ import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
 
-type BlogAppOptions = {
+export type BlogAppOptions = {
   postsFolder?: string;
   draftsFolder?: string;
-  staticFolder?: string;
   faviconPath?: string;
   siteTitle?: string;
   siteDescription?: string;
@@ -32,11 +31,61 @@ function getBaseUrl(c: Context): string {
   return (new URL(c.req.url)).origin;
 }
 
+function serveArticle(
+  c: Context,
+  name: string,
+  folder: string,
+  opts: BlogAppOptions,
+) {
+  const {
+    siteTitle = "Smallblog",
+    locale,
+    customHeaderScript,
+    customBodyScript,
+  } = opts;
+
+  const article = getArticle(name, folder);
+  const renderedArticle = article.html;
+
+  if (!renderedArticle) {
+    return new Response("Page not found", { status: 404 });
+  }
+
+  return c.html(
+    `<!DOCTYPE html>` + (
+      <ArticlePage
+        article={article}
+        siteTitle={siteTitle}
+        url={c.req.url}
+        locale={locale}
+        bodyScript={customBodyScript}
+        headScript={customHeaderScript}
+      />
+    ),
+  );
+}
+
+function serveStaticFile(name: string, folder?: string) {
+  try {
+    let file;
+    if (folder) {
+      file = Deno.readFileSync(path.join(folder, name));
+    } else {
+      file = Deno.readFileSync(name);
+    }
+    return new Response(file, {
+      headers: { "content-type": getMimeType(name) },
+    });
+  } catch (e) {
+    console.log("error while loading file:", e);
+    return new Response("Not found", { status: 404 });
+  }
+}
+
 export function createBlogApp(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
-    staticFolder = "static/",
     faviconPath = "favicon.ico",
     siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
@@ -86,7 +135,6 @@ export function createBlogApp(options: BlogAppOptions): App {
             siteTitle={siteTitle}
             indexTitle={indexTitle}
             indexSubtitle={indexSubtitle}
-            faviconPath={faviconPath}
             url={c.req.url}
             locale={locale}
             description={siteDescription}
@@ -95,6 +143,32 @@ export function createBlogApp(options: BlogAppOptions): App {
           />
         ),
     );
+  });
+
+  app.get("/article/:filename{.+$}", (c) => {
+    const filename = c.req.param("filename");
+    console.log("filename:", filename);
+
+    if (!filename) { // if the route is /article/
+      return new Response("Not found", { status: 404 });
+    }
+    if (path.extname(filename)) { // if the name contains an ext this is not an article
+      return serveStaticFile(filename, postsFolder);
+    }
+    return serveArticle(c, filename, postsFolder, options);
+  });
+
+  app.get("/drafts/:filename{.+$}", (c) => {
+    const filename = c.req.param("filename");
+    console.log("filename:", filename);
+
+    if (!filename) { // if the route is /article/
+      return new Response("Not found", { status: 404 });
+    }
+    if (path.extname(filename)) { // if the name contains an ext this is not an article
+      return serveStaticFile(filename, draftsFolder);
+    }
+    return serveArticle(c, filename, draftsFolder, options);
   });
 
   app.get("/rss.xml", (c) => {
@@ -135,67 +209,8 @@ export function createBlogApp(options: BlogAppOptions): App {
     });
   });
 
-  app.get("/article/:name", (c) => {
-    const name = c.req.param("name");
-
-    const article = getArticle(name, postsFolder);
-    const renderedArticle = article.html;
-
-    if (!renderedArticle) {
-      return new Response("Page not found", { status: 404 });
-    }
-
-    return c.html(
-      `<!DOCTYPE html>` + (
-        <ArticlePage
-          article={article}
-          siteTitle={siteTitle}
-          faviconPath={faviconPath}
-          url={c.req.url}
-          locale={locale}
-          bodyScript={customBodyScript}
-          headScript={customHeaderScript}
-        />
-      ),
-    );
-  });
-
-  app.get("/drafts/:name", (c) => {
-    const name = c.req.param("name");
-
-    const article = getArticle(name, draftsFolder);
-    const renderedArticle = article.html;
-
-    if (!renderedArticle) {
-      return new Response("Page not found", { status: 404 });
-    }
-
-    return c.html(
-      `<!DOCTYPE html>` + (
-        <ArticlePage
-          article={article}
-          siteTitle={siteTitle}
-          faviconPath={faviconPath}
-          url={c.req.url}
-          locale={locale}
-          bodyScript={customBodyScript}
-          headScript={customHeaderScript}
-        />
-      ),
-    );
-  });
-
-  app.get("*", (c) => {
-    const reqPath = c.req.path;
-    try {
-      const file = Deno.readFileSync(path.join(staticFolder, reqPath));
-      return new Response(file, {
-        headers: { "content-type": getMimeType(reqPath) },
-      });
-    } catch (e) {
-      console.log("error while loading file:", e);
-      return new Response("Not found", { status: 404 });
-    }
+  app.get("/favicon", () => {
+    return serveStaticFile(faviconPath);
   });
 
   return app;

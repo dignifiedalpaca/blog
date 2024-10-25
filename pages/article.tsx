@@ -8,7 +8,6 @@ import { MetadataComponent } from "./components/metadata.tsx";
 type ArticlePageProps = {
   article: Article;
   siteTitle: string;
-  faviconPath: string;
   url: string;
   locale?: string;
   bodyScript?: string;
@@ -21,7 +20,6 @@ export const ArticlePage: FC<ArticlePageProps> = (
   const {
     article,
     siteTitle,
-    faviconPath,
     bodyScript,
     headScript,
     locale,
@@ -32,7 +30,6 @@ export const ArticlePage: FC<ArticlePageProps> = (
     <Layout
       pageTitle={article.title}
       siteTitle={siteTitle}
-      faviconPath={faviconPath}
       bodyScript={bodyScript}
       headScript={headScript}
       url={url}
