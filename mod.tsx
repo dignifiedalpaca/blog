@@ -22,6 +22,7 @@ export type BlogAppOptions = {
   siteDescription?: string;
   indexTitle?: string;
   indexSubtitle?: string;
+  noArticlesMessage?: string;
   locale?: string;
   customHeaderScript?: string;
   customBodyScript?: string;
@@ -91,10 +92,14 @@ export function createBlogApp(options: BlogAppOptions): App {
     siteDescription = `The blog: ${siteTitle}`,
     indexTitle,
     indexSubtitle,
+    noArticlesMessage,
     locale,
     customHeaderScript,
     customBodyScript,
   } = options;
+
+  const defaultNoArticlesMessage =
+    `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
 
   const app = new Hono();
 
@@ -138,6 +143,7 @@ export function createBlogApp(options: BlogAppOptions): App {
             url={c.req.url}
             locale={locale}
             description={siteDescription}
+            noArticlesMessage={noArticlesMessage || defaultNoArticlesMessage}
             bodyScript={customBodyScript}
             headScript={customHeaderScript}
           />

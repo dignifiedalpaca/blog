@@ -120,6 +120,15 @@ export const style = html`
         color: var(--color-text);
     }
 
+    .no-articles {
+        max-width: 500px;
+        text-align: center;
+        margin: auto;
+        margin-top: 15vh;
+        font-size: 1em;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    }
+
     .articles-list {
         display: flex;
         flex-direction: column;

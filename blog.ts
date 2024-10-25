@@ -24,7 +24,14 @@ function getMarkdown(fileName: string, postsFolder: string) {
 
 export function getArticles(postsFolder: string): Article[] {
     let postsNames: string[] = [];
-    for (const entry of Deno.readDirSync(postsFolder)) {
+    let dir;
+    try {
+        dir = Deno.readDirSync(postsFolder);
+    } catch (e) {
+        console.error("Error while opening folder:", postsFolder, ":", e);
+        return [];
+    }
+    for (const entry of dir) {
         if (entry.isFile && entry.name.endsWith("md")) {
             postsNames = postsNames.concat(entry.name);
         }
@@ -35,6 +42,7 @@ export function getArticles(postsFolder: string): Article[] {
     }).filter((article) => article.metadata.published !== false).filter((
         article,
     ) => article.content !== "");
+
     return articles.sort((a, b) => {
         if (a?.metadata?.date && b?.metadata?.date) {
             return b?.metadata?.date?.getDate() - a?.metadata?.date?.getDate();

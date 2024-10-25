@@ -17,6 +17,7 @@ type IndexProps = {
   url: string;
   locale?: string;
   description?: string;
+  noArticlesMessage?: string;
   bodyScript?: string;
   headScript?: string;
 };
@@ -32,6 +33,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
     url,
     locale,
     description,
+    noArticlesMessage,
   } = props;
 
   return (
@@ -69,12 +71,21 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           value={props.search}
         />
       </form>
-      <Articles
-        posts={posts}
-        search={props.search}
-        page={props.page}
-        itemsPerPage={props.itemsPerPage}
-      />
+      {posts && posts.length > 0 &&
+        (
+          <Articles
+            posts={posts}
+            search={props.search}
+            page={props.page}
+            itemsPerPage={props.itemsPerPage}
+          />
+        )}
+      {(!posts || posts.length === 0) && (
+        <div
+          class="no-articles"
+          dangerouslySetInnerHTML={{ __html: noArticlesMessage || "" }}
+        />
+      )}
       {
         /* This script fixes an issue with htmx boosting and the search field.
         In some conditions when you get back to the index page the searches value is
