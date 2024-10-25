@@ -15,31 +15,30 @@ import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
 
 /**
- * The options to create your blog
- * @param postsFolder The folder where your posts are located (default: `posts/`)
- * @param draftsFolder The folder where your drafts are located (default: `drafts/`)
- * @param faviconPath The path to your favicon (default: `favicon.ico`)
- * @param siteTitle The title of your blog (default: `Smallblog`)
- * @param siteDescription The description of your blog (default: `The blog: ${siteTitle}`)
- * @param indexTitle The title of the index page (ex: `A blog about nothing`, no default)
- * @param indexSubtitle The subtitle of the index page (ex: `A nice demo of smallblog`, no default)
- * @param noArticlesMessage The message to display when there are no articles
- *    (ex: `Coming soon!`, default is a message to help you)
- * @param locale The locale of your blog
- * @param customHeaderScript The script to add to the header of your blog
- * @param customBodyScript The script to add to the body of your blog
+ * The options to create your blog.
  */
 export type BlogAppOptions = {
+  /** The folder where your posts are located (default: `posts/`). */
   postsFolder?: string;
+  /** The folder where your drafts are located (default: `drafts/`). */
   draftsFolder?: string;
+  /** The path to your favicon (default: `favicon.ico`). */
   faviconPath?: string;
+  /** The title of your blog (default: `Smallblog`). */
   siteTitle?: string;
+  /** The description of your blog (default: `The blog: ${siteTitle}`). */
   siteDescription?: string;
+  /** The title of the index page (ex: `A blog about nothing`, no default). */
   indexTitle?: string;
+  /** The subtitle of the index page (ex: `A nice demo of smallblog`, no default). */
   indexSubtitle?: string;
+  /** The message to display when there are no articles (ex: `Coming soon!`, default is a message to help you). */
   noArticlesMessage?: string;
+  /** The locale of your blog. */
   locale?: string;
+  /** The script to add to the header of your blog. */
   customHeaderScript?: string;
+  /** The script to add to the body of your blog. */
   customBodyScript?: string;
 };
 
