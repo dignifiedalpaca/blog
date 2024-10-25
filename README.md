@@ -4,7 +4,7 @@ Smallblog is an easy-to-use blog engine build with [smallweb](https://www.smallw
 
 | Homepage | Blog post |
 |---|---|
-|![smallblog frontpage](static/img/front_page.png) |![article](static/img/article.png) |
+|![smallblog frontpage](img/front_page.png) |![article](img/article.png) |
 
 Smallblog is very efficient to use, you just have to write your article in a Markdown format, and it's directly online. Everything is generated directly by scanning a folder, your blog post is automatically published without any compilation, CI/CD, etc...
 
