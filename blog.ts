@@ -1,6 +1,6 @@
 import * as path from "@std/path";
+import * as fm from "@std/front-matter";
 import { render } from "@deno/gfm";
-import { parse } from "@std/yaml";
 import RSS from "rss";
 import { Sitemap } from "./sitemap.ts";
 import MiniSearch from "minisearch";
@@ -125,34 +125,6 @@ export function getArticle(name: string, postsFolder: string): Article {
     return article;
 }
 
-function getMetadataFromMD(markdown: string): Metadata {
-    const charactersBetweenGroupedHyphens = /^---([\s\S]*?)---/;
-    const metadataMatched = markdown.match(charactersBetweenGroupedHyphens);
-    if (!metadataMatched) return new Metadata({});
-    try {
-        const metadataJson = parse(metadataMatched[1]) as MetadataProps;
-        const metadata = new Metadata(metadataJson);
-        return metadata;
-    } catch (error) {
-        console.log("error while parsing metadata:", error);
-        return new Metadata({});
-    }
-}
-
-function removeMetadataFromMD(markdown: string) {
-    const startOfMetadataIndex = markdown.indexOf("---");
-    if (
-        (!startOfMetadataIndex && startOfMetadataIndex !== 0) ||
-        startOfMetadataIndex === -1
-    ) return markdown;
-    const endOfMetadataIndex = markdown.indexOf(
-        "---",
-        startOfMetadataIndex + 1,
-    );
-    if (!endOfMetadataIndex || endOfMetadataIndex === -1) return markdown;
-    return markdown.substring(endOfMetadataIndex + 3);
-}
-
 function estimateTimeReadingMinutes(
     markdownSimplified: string,
 ): number | string {
@@ -230,10 +202,29 @@ function removingTitleFromMD(markdown: string) {
         return markdown;
     }
     const titlePosition = markdown.indexOf(titleMatched[0]);
-    if (!titlePosition || titlePosition === -1) {
+    if (titlePosition === undefined || titlePosition < 0) {
         return markdown;
     }
     return markdown.substring(titlePosition + titleMatched[0].length);
+}
+
+type ParsedMarkdown = {
+    metadata: Metadata;
+    body: string;
+};
+
+function parseMd(markdownData: string): ParsedMarkdown {
+    if (fm.test(markdownData)) {
+        const data = fm.extractYaml(markdownData);
+        return {
+            metadata: new Metadata(data.attrs as MetadataProps),
+            body: removingTitleFromMD(data.body).trim(),
+        };
+    }
+    return {
+        metadata: new Metadata({}),
+        body: removingTitleFromMD(markdownData).trim(),
+    };
 }
 
 export class Article {
@@ -254,11 +245,11 @@ export class Article {
         metadata?: Metadata,
         timeToReadMinutes?: number | string,
     ) {
-        const cleanedContent = removingTitleFromMD(
-            removeMetadataFromMD(content),
-        ).trim();
+        const { metadata: parsedMetadata, body: cleanedContent } = parseMd(
+            content,
+        );
 
-        this.metadata = metadata || getMetadataFromMD(content);
+        this.metadata = metadata || parsedMetadata;
         this.name = name;
         this.content = content;
         this.title = title || this.metadata.title || convertNameToLabel(name);

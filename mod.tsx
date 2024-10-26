@@ -98,7 +98,7 @@ function serveStaticFile(name: string, folder?: string) {
       },
     });
   } catch (e) {
-    console.log("error while loading file:", e);
+    console.error("error while loading file:", e);
     return new Response("Not found", { status: 404 });
   }
 }
@@ -208,7 +208,6 @@ export function createBlogApp(options: BlogAppOptions): App {
 
   app.get("/article/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
-    console.log("filename:", filename);
 
     if (!filename) { // if the route is /article/
       return new Response("Not found", { status: 404 });
@@ -221,7 +220,6 @@ export function createBlogApp(options: BlogAppOptions): App {
 
   app.get("/drafts/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
-    console.log("filename:", filename);
 
     if (!filename) { // if the route is /article/
       return new Response("Not found", { status: 404 });
