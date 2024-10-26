@@ -119,6 +119,10 @@ export const style = html`
         background-color: #2B2F42;
         color: var(--color-text);
     }
+    
+    .search-field::placeholder {
+        color: #7B8092;
+    }
 
     .no-articles {
         max-width: 500px;

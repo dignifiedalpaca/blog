@@ -7,7 +7,7 @@ export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
     return (
         <navbar hx-preserve="true">
             <a href="/" class="navbar-home" hx-boost="false">
-                <strong>{props.title}</strong>
+                {props.title}
             </a>
 
             <ul class={"navbar-links"}>
