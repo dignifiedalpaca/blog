@@ -1,5 +1,6 @@
 /** @jsxImportSource hono/jsx */
 import * as path from "@std/path";
+import * as fs from "@std/fs";
 import { type Context, Hono } from "hono";
 import { Index } from "./pages/index.tsx";
 import {
@@ -9,10 +10,11 @@ import {
   getRSS,
   getSitemap,
 } from "./blog.ts";
-import { getMimeType } from "./utils.ts";
+import { getMimeType, isDirectoryEmpty } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
+import { storeArticle } from "./article_generator.ts";
 
 /**
  * The options to create your blog.
@@ -97,6 +99,29 @@ function serveStaticFile(name: string, folder?: string) {
   }
 }
 
+async function getNoArticlesMessage(opts: BlogAppOptions) {
+  const { noArticlesMessage, postsFolder, draftsFolder } = opts;
+
+  if (noArticlesMessage) {
+    return noArticlesMessage;
+  }
+
+  const baseMessage =
+    `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
+
+  const writePermission = await Deno.permissions.query({
+    name: "write",
+    path: ".",
+  });
+
+  if (writePermission.state === "granted") {
+    return baseMessage +
+      `<p><a class="button" href="/init">Let smallblog do it for you!</a></p>`;
+  }
+
+  return baseMessage;
+}
+
 /**
  * The function to create your blog, you configure your blog with the options
  * and then you just have to write your files
@@ -113,18 +138,23 @@ export function createBlogApp(options: BlogAppOptions): App {
     siteDescription = `The blog: ${siteTitle}`,
     indexTitle,
     indexSubtitle,
-    noArticlesMessage,
     locale,
     customHeaderScript,
     customBodyScript,
   } = options;
 
-  const defaultNoArticlesMessage =
-    `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
+  const completeOptions = {
+    ...options,
+    postsFolder,
+    draftsFolder,
+    faviconPath,
+    siteTitle,
+    siteDescription,
+  };
 
   const app = new Hono();
 
-  app.get("/", (c) => {
+  app.get("/", async (c) => {
     const page = c.req.query("page") || 1;
     const search = c.req.query("search") || "";
     const itemsPerPage = 5;
@@ -164,7 +194,7 @@ export function createBlogApp(options: BlogAppOptions): App {
             url={c.req.url}
             locale={locale}
             description={siteDescription}
-            noArticlesMessage={noArticlesMessage || defaultNoArticlesMessage}
+            noArticlesMessage={await getNoArticlesMessage(completeOptions)}
             bodyScript={customBodyScript}
             headScript={customHeaderScript}
           />
@@ -182,7 +212,7 @@ export function createBlogApp(options: BlogAppOptions): App {
     if (path.extname(filename)) { // if the name contains an ext this is not an article
       return serveStaticFile(filename, postsFolder);
     }
-    return serveArticle(c, filename, postsFolder, options);
+    return serveArticle(c, filename, postsFolder, completeOptions);
   });
 
   app.get("/drafts/:filename{.+$}", (c) => {
@@ -195,7 +225,7 @@ export function createBlogApp(options: BlogAppOptions): App {
     if (path.extname(filename)) { // if the name contains an ext this is not an article
       return serveStaticFile(filename, draftsFolder);
     }
-    return serveArticle(c, filename, draftsFolder, options);
+    return serveArticle(c, filename, draftsFolder, completeOptions);
   });
 
   app.get("/rss.xml", (c) => {
@@ -238,6 +268,18 @@ export function createBlogApp(options: BlogAppOptions): App {
 
   app.get("/favicon", () => {
     return serveStaticFile(faviconPath);
+  });
+
+  app.get("/init", async (c) => {
+    console.log("init folder:", postsFolder, draftsFolder);
+    fs.ensureDirSync(draftsFolder);
+    fs.ensureDirSync(postsFolder);
+    if (await isDirectoryEmpty(postsFolder)) {
+      storeArticle(postsFolder, "My first article", "first-article.md");
+      fs.ensureDirSync(path.join(postsFolder, "first-article"));
+    }
+
+    return c.redirect("/");
   });
 
   return app;

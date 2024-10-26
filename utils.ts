@@ -1,3 +1,5 @@
+import { expandGlob } from "@std/fs";
+
 export function getMimeType(filename: string): string {
     const mimeTypes: { [key: string]: string } = {
         ".txt": "text/plain",
@@ -22,4 +24,11 @@ export function getMimeType(filename: string): string {
         .toLowerCase();
 
     return mimeTypes[ext] || "application/octet-stream"; // Default to binary stream if not found
+}
+
+export async function isDirectoryEmpty(dirPath: string): Promise<boolean> {
+    for await (const _ of expandGlob(`${dirPath}/*`)) {
+        return false;
+    }
+    return true;
 }

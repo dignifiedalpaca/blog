@@ -128,6 +128,38 @@ export const style = html`
         font-size: 1em;
         font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     }
+    
+    .no-articles .button {
+        display: block;
+        max-width: 300px;
+        height: 25px;
+        background: #4C527D;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        color: var(--color-text);
+        font-weight: bold;
+        line-height: 25px;
+        margin: auto;
+        margin-top: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 
+                    0 2px 4px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease, transform 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    .no-articles .button:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 
+                    0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre plus intense au survol */
+        transform: translateY(-2px); /* Effet de levée */
+    }
+
+    .no-articles .button:active {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 
+                    0 1px 2px rgba(0, 0, 0, 0.1); /* Ombre plus discrète au clic */
+        transform: translateY(1px); /* Enfoncement léger */
+    }
 
     .articles-list {
         display: flex;

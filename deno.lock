@@ -8,7 +8,9 @@
     "jsr:@libs/xml@*": "6.0.0",
     "jsr:@libs/xml@6": "6.0.0",
     "jsr:@smallweb/types@0.1": "0.1.0",
+    "jsr:@std/fs@^1.0.5": "1.0.5",
     "jsr:@std/path@^1.0.6": "1.0.6",
+    "jsr:@std/path@^1.0.7": "1.0.7",
     "jsr:@std/yaml@*": "1.0.5",
     "jsr:@std/yaml@^1.0.5": "1.0.5",
     "npm:@types/node@*": "22.5.4",
@@ -60,8 +62,17 @@
     "@smallweb/types@0.1.0": {
       "integrity": "eae1f09cc954c18129dea767a2165e70ae1cf50f8f52bb4112ed81299eb6eb9d"
     },
+    "@std/fs@1.0.5": {
+      "integrity": "41806ad6823d0b5f275f9849a2640d87e4ef67c51ee1b8fb02426f55e02fd44e",
+      "dependencies": [
+        "jsr:@std/path@^1.0.7"
+      ]
+    },
     "@std/path@1.0.6": {
       "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+    },
+    "@std/path@1.0.7": {
+      "integrity": "76a689e07f0e15dcc6002ec39d0866797e7156629212b28f27179b8a5c3b33a1"
     },
     "@std/yaml@1.0.5": {
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
@@ -268,6 +279,7 @@
       "jsr:@deno/gfm@0.9",
       "jsr:@libs/xml@6",
       "jsr:@smallweb/types@0.1",
+      "jsr:@std/fs@^1.0.5",
       "jsr:@std/path@^1.0.6",
       "jsr:@std/yaml@^1.0.5",
       "npm:hono@^4.6.3",
