@@ -1,6 +1,7 @@
 /** @jsxImportSource hono/jsx */
 import * as path from "@std/path";
 import * as fs from "@std/fs";
+import { contentType } from "@std/media-types";
 import { type Context, Hono } from "hono";
 import { Index } from "./pages/index.tsx";
 import {
@@ -10,7 +11,7 @@ import {
   getRSS,
   getSitemap,
 } from "./blog.ts";
-import { getMimeType, isDirectoryEmpty } from "./utils.ts";
+import { isDirectoryEmpty } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
@@ -91,7 +92,10 @@ function serveStaticFile(name: string, folder?: string) {
       file = Deno.readFileSync(name);
     }
     return new Response(file, {
-      headers: { "content-type": getMimeType(name) },
+      headers: {
+        "content-type": contentType(name.substring(name.lastIndexOf("."))) ||
+          "application/octet-stream",
+      },
     });
   } catch (e) {
     console.log("error while loading file:", e);
