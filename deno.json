@@ -23,7 +23,8 @@
       "sitemap.ts",
       "utils.ts",
       "img/article.png",
-      "img/front_page.png"
+      "img/front_page.png",
+      "article_generator.ts"
     ],
     "exclude": [
       "favicon.ico",
