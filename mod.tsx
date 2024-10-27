@@ -3,6 +3,8 @@ import * as path from "@std/path";
 import * as fs from "@std/fs";
 import { contentType } from "@std/media-types";
 import { type Context, Hono } from "hono";
+import { cache } from "hono/cache";
+import { compress } from "hono/compress";
 import { Index } from "./pages/index.tsx";
 import {
   filterArticlesFTS,
@@ -157,6 +159,17 @@ export function createBlogApp(options: BlogAppOptions): App {
   };
 
   const app = new Hono();
+
+  app.use(compress());
+
+  app.get(
+    "*",
+    cache({
+      cacheName: "smallblog",
+      cacheControl: "max-age=3600",
+      wait: true,
+    }),
+  );
 
   app.get("/", async (c) => {
     const page = c.req.query("page") || 1;
