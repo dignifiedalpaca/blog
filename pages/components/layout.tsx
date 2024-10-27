@@ -45,7 +45,7 @@ export const Layout: FC<LayoutProps> = (
                 {style}
                 <link
                     href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-                    rel="preload stylesheet"
+                    rel="preconnect preload stylesheet"
                     as="style"
                     hx-preserve="true"
                 >
@@ -54,12 +54,16 @@ export const Layout: FC<LayoutProps> = (
                     <style>{".js-only { display: none }"}</style>
                 </noscript>
                 <script
-                    src="https://unpkg.com/htmx.org@2.0.3"
+                    src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.min.js"
+                    rel="preconnect preload"
                     hx-preserve="true"
+                    defer
                 />
                 <script
-                    src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"
+                    src="https://unpkg.com/htmx-ext-head-support@2.0.3/head-support.js"
+                    rel="preconnect preload"
                     hx-preserve="true"
+                    defer
                 />
                 <title>{pageTitle}</title>
                 {/* SEO Section */}

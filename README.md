@@ -98,7 +98,7 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 Minimal `main.tsx` to quick-start a project:
 
 ```tsx
-import { createBlogApp } from "jsr:@tayzendev/smallblog@0.6.12";
+import { createBlogApp } from "jsr:@tayzendev/smallblog@0.6.13";
 
 export default createBlogApp({});
 ```
@@ -107,7 +107,7 @@ A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createBlogApp } from "jsr:@tayzendev/smallblog@0.6.12";
+import { createBlogApp } from "jsr:@tayzendev/smallblog@0.6.13";
 
 const customBodyScript =
   await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
