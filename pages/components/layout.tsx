@@ -63,51 +63,85 @@ export const Layout: FC<LayoutProps> = (
                 />
                 <title>{pageTitle}</title>
                 {/* SEO Section */}
-                <meta name="generator" content="smallblog" hx-preserve="true" />
+                <meta
+                    name="generator"
+                    property="generator"
+                    content="smallblog"
+                    hx-preserve="true"
+                />
                 {locale &&
                     (
                         <meta
                             name="og:locale"
+                            property="og:locale"
                             content={locale}
                             hx-preserve="true"
                         />
                     )}
                 <meta
                     name="og:site_name"
+                    property="og:site_name"
                     content={siteTitle}
                     hx-preserve="true"
                 />
-                <meta property="og:title" content={pageTitle} />
-                <meta name="twitter:title" content={pageTitle} />
-                <meta property="og:url" content={url} />
+                <meta name="og:title" property="og:title" content={pageTitle} />
+                <meta
+                    name="twitter:title"
+                    property="twitter:title"
+                    content={pageTitle}
+                />
+                <meta name="og:url" property="og:url" content={url} />
                 {description && (
                     <>
-                        <meta property="description" content={description} />
-                        <meta property="og:description" content={description} />
+                        <meta
+                            name="description"
+                            property="description"
+                            content={description}
+                        />
+                        <meta
+                            name="og:description"
+                            property="og:description"
+                            content={description}
+                        />
                         <meta
                             name="twitter:description"
+                            property="twitter:description"
                             content={description}
                         />
                     </>
                 )}
                 {!article && (
                     <>
-                        <meta property="og:type" content="website" />
-                        <meta name="revisit-after" content="1 day" />
+                        <meta
+                            name="og:type"
+                            property="og:type"
+                            content="website"
+                        />
+                        <meta
+                            name="revisit-after"
+                            property="revisit-after"
+                            content="1 day"
+                        />
                     </>
                 )}
                 {article && (
                     <>
-                        <meta property="og:type" content="article" />
+                        <meta
+                            name="og:type"
+                            property="og:type"
+                            content="article"
+                        />
                         {article.metadata?.section &&
                             (
                                 <meta
+                                    name="article:section"
                                     property="article:section"
                                     content={article.metadata.section}
                                 />
                             )}
                         {article.metadata?.date && (
                             <meta
+                                name="article:published_time"
                                 property="article:published_time"
                                 content={article.metadata.date.toISOString()}
                             />
@@ -116,10 +150,12 @@ export const Layout: FC<LayoutProps> = (
                             (username) => (
                                 <>
                                     <meta
+                                        name="article:author"
                                         property="article:author"
                                         content={username}
                                     />
                                     <meta
+                                        name="author"
                                         property="author"
                                         content={username}
                                     />
@@ -128,14 +164,23 @@ export const Layout: FC<LayoutProps> = (
                         )}
                         {article.metadata.tags?.map(
                             (tag) => (
-                                <meta property="article:tag" content={tag} />
+                                <meta
+                                    name="article:tag"
+                                    property="article:tag"
+                                    content={tag}
+                                />
                             ),
                         )}
-                        <meta name="revisit-after" content="7 days" />
+                        <meta
+                            name="revisit-after"
+                            property="revisit-after"
+                            content="7 days"
+                        />
                     </>
                 )}
                 <meta
                     name="robots"
+                    property="robots"
                     content="index, follow"
                     hx-preserve="true"
                 />
