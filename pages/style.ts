@@ -219,6 +219,10 @@ export const style = html`
     .metadata span {
         margin-right: 0.5em;
         font-style: italic;
+        color: #91a0b1;
+    }
+    
+    .article-element a:hover .metadata span {
         color: var(--color-fg-muted);
     }
 
