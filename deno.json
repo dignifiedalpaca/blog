@@ -27,7 +27,8 @@
       "utils.ts",
       "img/article.png",
       "img/front_page.png",
-      "article_generator.ts"
+      "article_generator.ts",
+      "cli.ts"
     ],
     "exclude": ["favicon.ico", "posts/", "drafts/"]
   }
