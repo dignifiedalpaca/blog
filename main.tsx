@@ -1,10 +1,13 @@
 import { html } from "hono/html";
-import { createBlogApp } from "./mod.tsx";
+import { smallblog } from "./mod.tsx";
 
-const customBodyScript =
-  await html`<script defer data-domain="smallblog-demo.tayzen.dev" src="https://plausible.io/js/script.js"></script>`;
+const customBodyScript = await html`<script
+  defer
+  data-domain="smallblog-demo.tayzen.dev"
+  src="https://plausible.io/js/script.js"
+></script>`;
 
-export default createBlogApp({
+export default smallblog({
   faviconPath: "favicon.ico",
   siteDescription:
     "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
