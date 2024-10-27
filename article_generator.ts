@@ -1,15 +1,15 @@
 import * as path from "@std/path";
 
 function generateArticle(
-    title: string = "My first article",
-    content: string = "This is my first article",
-    published: boolean = true,
-    tags: string[] = ["markdown", "test"],
-    authors: string[] = ["Default author"],
-    date: string = new Date().toISOString().split("T")[0],
-    section: string = "tech",
+  title: string = "My first article",
+  content: string = "This is my first article",
+  published: boolean = true,
+  tags: string[] = ["markdown", "test"],
+  authors: string[] = ["Default author"],
+  date: string = new Date().toISOString().split("T")[0],
+  section: string = "tech",
 ): string {
-    return `---
+  return `---
     title: ${title}
     description: A post to test a small content
     authors:
@@ -22,28 +22,40 @@ function generateArticle(
     ---
 
     ${content}
-    `.replace(/  +/g, "").trim();
+    `
+    .replace(/  +/g, "")
+    .trim();
 }
 
 export function storeArticle(
-    folder: string,
-    title: string = "My first article",
-    filename: string = "first-article.md",
-    content: string = "This is my first article",
-    published: boolean = true,
-    tags: string[] = ["markdown", "test"],
-    authors: string[] = ["Default author"],
-    date: string = new Date().toISOString().split("T")[0],
-    section: string = "tech",
+  folder: string,
+  filename: string = "first-article.md",
+  params: {
+    title?: string;
+    content?: string;
+    published?: boolean;
+    tags?: string[];
+    authors?: string[];
+    date?: string;
+    section?: string;
+  } = {
+    title: "My first article",
+    content: "This is my first article",
+    published: true,
+    tags: ["markdown", "test"],
+    authors: ["Default author"],
+    date: new Date().toISOString().split("T")[0],
+    section: "tech",
+  },
 ) {
-    const article = generateArticle(
-        title,
-        content,
-        published,
-        tags,
-        authors,
-        date,
-        section,
-    );
-    Deno.writeTextFile(path.join(folder, filename), article);
+  const article = generateArticle(
+    params.title,
+    params.content,
+    params.published,
+    params.tags,
+    params.authors,
+    params.date,
+    params.section,
+  );
+  Deno.writeTextFile(path.join(folder, filename), article);
 }

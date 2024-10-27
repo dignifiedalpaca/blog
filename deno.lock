@@ -18,6 +18,7 @@
     "jsr:@std/yaml@*": "1.0.5",
     "jsr:@std/yaml@^1.0.5": "1.0.5",
     "npm:@types/node@*": "22.5.4",
+    "npm:commander@^12.1.0": "12.1.0",
     "npm:github-slugger@2": "2.0.0",
     "npm:he@^1.2.0": "1.2.0",
     "npm:hono@^4.6.3": "4.6.6",
@@ -120,6 +121,9 @@
     "arg@5.0.2": {
       "integrity": "sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg=="
     },
+    "commander@12.1.0": {
+      "integrity": "sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA=="
+    },
     "commander@8.3.0": {
       "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="
     },
@@ -181,7 +185,7 @@
     "katex@0.16.11": {
       "integrity": "sha512-RQrI8rlHY92OLf3rho/Ts8i/XvjgguEjOkO1BEXcU3N8BqPpSzBNwV/G0Ukr+P/l3ivvJUE/Fa/CwbS6HesGNQ==",
       "dependencies": [
-        "commander"
+        "commander@8.3.0"
       ]
     },
     "marked-alert@2.1.0_marked@12.0.2": {
@@ -307,6 +311,7 @@
       "jsr:@std/media-types@^1.0.3",
       "jsr:@std/path@^1.0.6",
       "jsr:@std/yaml@^1.0.5",
+      "npm:commander@^12.1.0",
       "npm:hono@^4.6.3",
       "npm:minisearch@^7.1.0",
       "npm:rss@^1.2.2"

@@ -18,6 +18,7 @@ import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
 import { storeArticle } from "./article_generator.ts";
+import { generateCli } from "./cli.ts";
 
 /**
  * The options to create your blog.
@@ -48,7 +49,7 @@ export type BlogAppOptions = {
 };
 
 function getBaseUrl(c: Context): string {
-  return (new URL(c.req.url)).origin;
+  return new URL(c.req.url).origin;
 }
 
 function serveArticle(
@@ -72,7 +73,8 @@ function serveArticle(
   }
 
   return c.html(
-    `<!DOCTYPE html>` + (
+    `<!DOCTYPE html>` +
+    (
       <ArticlePage
         article={article}
         siteTitle={siteTitle}
@@ -95,7 +97,8 @@ function serveStaticFile(name: string, folder?: string) {
     }
     return new Response(file, {
       headers: {
-        "content-type": contentType(name.substring(name.lastIndexOf("."))) ||
+        "content-type":
+          contentType(name.substring(name.lastIndexOf("."))) ||
           "application/octet-stream",
       },
     });
@@ -112,8 +115,7 @@ async function getNoArticlesMessage(opts: BlogAppOptions) {
     return noArticlesMessage;
   }
 
-  const baseMessage =
-    `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
+  const baseMessage = `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
 
   const writePermission = await Deno.permissions.query({
     name: "write",
@@ -121,8 +123,10 @@ async function getNoArticlesMessage(opts: BlogAppOptions) {
   });
 
   if (writePermission.state === "granted") {
-    return baseMessage +
-      `<p><a class="button" href="/init">Let smallblog do it for you!</a></p>`;
+    return (
+      baseMessage +
+      `<p><a class="button" href="/init">Let smallblog do it for you!</a></p>`
+    );
   }
 
   return baseMessage;
@@ -135,7 +139,7 @@ async function getNoArticlesMessage(opts: BlogAppOptions) {
  * @param options The parameters to create the blog.
  * @returns A smallweb/hono app with a fetch method
  */
-export function createBlogApp(options: BlogAppOptions): App {
+export function smallblog(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
@@ -199,33 +203,35 @@ export function createBlogApp(options: BlogAppOptions): App {
 
     return c.html(
       `<!DOCTYPE html>` +
-        (
-          <Index
-            posts={filteredPosts}
-            page={Number(page)}
-            itemsPerPage={itemsPerPage}
-            search={search}
-            siteTitle={siteTitle}
-            indexTitle={indexTitle}
-            indexSubtitle={indexSubtitle}
-            url={c.req.url}
-            locale={locale}
-            description={siteDescription}
-            noArticlesMessage={await getNoArticlesMessage(completeOptions)}
-            bodyScript={customBodyScript}
-            headScript={customHeaderScript}
-          />
-        ),
+      (
+        <Index
+          posts={filteredPosts}
+          page={Number(page)}
+          itemsPerPage={itemsPerPage}
+          search={search}
+          siteTitle={siteTitle}
+          indexTitle={indexTitle}
+          indexSubtitle={indexSubtitle}
+          url={c.req.url}
+          locale={locale}
+          description={siteDescription}
+          noArticlesMessage={await getNoArticlesMessage(completeOptions)}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+        />
+      ),
     );
   });
 
   app.get("/article/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
 
-    if (!filename) { // if the route is /article/
+    if (!filename) {
+      // if the route is /article/
       return new Response("Not found", { status: 404 });
     }
-    if (path.extname(filename)) { // if the name contains an ext this is not an article
+    if (path.extname(filename)) {
+      // if the name contains an ext this is not an article
       return serveStaticFile(filename, postsFolder);
     }
     return serveArticle(c, filename, postsFolder, completeOptions);
@@ -234,10 +240,12 @@ export function createBlogApp(options: BlogAppOptions): App {
   app.get("/drafts/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
 
-    if (!filename) { // if the route is /article/
+    if (!filename) {
+      // if the route is /article/
       return new Response("Not found", { status: 404 });
     }
-    if (path.extname(filename)) { // if the name contains an ext this is not an article
+    if (path.extname(filename)) {
+      // if the name contains an ext this is not an article
       return serveStaticFile(filename, draftsFolder);
     }
     return serveArticle(c, filename, draftsFolder, completeOptions);
@@ -254,10 +262,11 @@ export function createBlogApp(options: BlogAppOptions): App {
     });
   });
 
-  app.get("/sitemap.xml", async (c) => {
+  app.get("/sitemap.xml", (c) => {
     const baseUrl = getBaseUrl(c);
     const articles = getArticles(postsFolder);
-    const xml = await getSitemap(baseUrl, articles);
+    const xml = getSitemap(baseUrl, articles);
+    console.log(xml);
     if (xml) {
       return new Response(xml, {
         headers: {
@@ -265,6 +274,7 @@ export function createBlogApp(options: BlogAppOptions): App {
         },
       });
     }
+    return new Response("Not found", { status: 404 });
   });
 
   app.get("/robots.txt", (c) => {
@@ -273,7 +283,9 @@ export function createBlogApp(options: BlogAppOptions): App {
       User-agent: *
       Disallow: /drafts
       Sitemap: ${path.join(baseUrl, "/sitemap.xml")}
-      `.replace(/  +/g, "").trim();
+      `
+      .replace(/  +/g, "")
+      .trim();
     return new Response(robotTxt, {
       headers: {
         "content-type": "text/plain",
@@ -290,12 +302,17 @@ export function createBlogApp(options: BlogAppOptions): App {
     fs.ensureDirSync(draftsFolder);
     fs.ensureDirSync(postsFolder);
     if (await isDirectoryEmpty(postsFolder)) {
-      storeArticle(postsFolder, "My first article", "first-article.md");
+      storeArticle(postsFolder, "first-article.md", {
+        title: "My first article",
+      });
       fs.ensureDirSync(path.join(postsFolder, "first-article"));
     }
 
     return c.redirect("/");
   });
 
-  return app;
+  return {
+    ...app,
+    run: generateCli(postsFolder, draftsFolder),
+  };
 }
