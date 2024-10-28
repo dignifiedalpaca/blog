@@ -2,6 +2,7 @@ import { Command } from "commander";
 import * as fs from "@std/fs";
 import * as path from "@std/path";
 import { storeArticle } from "./article_generator.ts";
+import manifest from "./deno.json" with { type: "json" };
 
 type CLI = (args: string[]) => void;
 
@@ -9,8 +10,8 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
   const program = new Command();
 
   program
-    .name("smallblog")
-    .version("0.7.0")
+    .name(path.basename(Deno.cwd()))
+    .version(manifest.version)
     .description("Smallblog CLI, handle your articles from the terminal.");
 
   program
@@ -20,15 +21,12 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
     .argument("<name>", "The id of the post (no space allowed)")
     .option("-p, --published", "Create a published post")
     .option("-t, --title <title>", "The title of the post")
-    .option(
-      "-a, --authors <authors>",
-      "The author of the post (comma separated)",
-    )
+    .option("-a, --authors <authors...>", "The author of the post")
     .option(
       "-d, --date <date>",
       "The date of the post (YYYY-MM-DD, default: current date)",
     )
-    .option("--tags <tags...>", "The tags of the post (comma separated)")
+    .option("--tags <tags...>", "The tags of the post")
     .option("-s, --section <section>", "The section of the post")
     .option("-c, --content <content>", "The content of the post")
     .action((fileId, options) => {
@@ -38,12 +36,8 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
         const params = {
           title: options.title as string,
           content: options.content as string,
-          tags:
-            (options.tags && (options.tags.split(",") as string[])) ||
-            undefined,
-          authors:
-            (options.authors && (options.authors.split(",") as string[])) ||
-            undefined,
+          tags: (options.tags as string[]) || undefined,
+          authors: (options.authors as string[]) || undefined,
           date: options.date as string,
           section: options.section as string,
         };

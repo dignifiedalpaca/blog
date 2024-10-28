@@ -139,7 +139,7 @@ async function getNoArticlesMessage(opts: BlogAppOptions) {
  * @param options The parameters to create the blog.
  * @returns A smallweb/hono app with a fetch method
  */
-export function smallblog(options: BlogAppOptions): App {
+export function createSmallblog(options: BlogAppOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",

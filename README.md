@@ -23,6 +23,18 @@ It includes all the features you need for a blog (and more):
 
 A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.dev).
 
+## Quickstart
+
+Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
+
+```tsx
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.1";
+
+export default createSmallblog({});
+```
+
+You're already done! Have fun with your new blog!
+
 ## Usage
 
 ### Writing an article
@@ -71,6 +83,46 @@ There are two kinds of static files which are handled differently:
 
 In both ways smallblog will serve these files without you have to think about it.
 
+### Integrated CLI
+
+The integrated CLI helps you manipulate your posts. It can create your posts, open them in your editor of choice, publish them and more.
+
+It forces you to have the following workflow: each post should have a companion folder with the same name where you should put the static resources (images, etc...).
+
+In the following example, we suppose that the folder where you app is installed is `blog`. The steps are:
+
+- creating a new post
+- opening it in an editor
+- listing all the posts
+- publishing your new one
+- archiving it
+- removing it
+
+```sh
+smallweb run blog create --title="My new post" --content="Some content" --authors="Tayzen" --authors="Author2" --tags="tag1" --tags="tag2" my_article
+# Smallblog has created my_article.md in your drafts folder and a folder where you should put your images.
+smallweb run blog edit my_article
+# Smallblog open my_article.md in your editor (corresponding to the variable `$EDITOR`).
+smallweb run blog list
+# Posts:
+#
+# Published:
+#     -  post
+#     - post2
+#     - post3
+#
+# Drafts:
+#     - my_article
+smallweb run blog publish my_article
+# Smallblog has moved my_article.md and its companion folder in your posts folder, so it's now pusblished.
+smallweb run blog archive my_article
+# Smallblog has moved my_article.md and its companion folder in your drafts folder, so it's not public anymore.
+smallweb run blog remove my_article
+# Smallblog has removed my_article.md and its companion folder (you can only remove a post from the drafts folder, it's a security mechanism).
+```
+
+To know more about the commands, you can run `smallweb run blog --help` or `smallweb run blog help [subcommand]`.
+
 ### Adding custom scripts
 
 You may want to add custom scripts for analytics purposes (or anything else you may want). For this purpose, there are 2 variables in the configuration of smallblog:
@@ -80,7 +132,7 @@ You may want to add custom scripts for analytics purposes (or anything else you 
 
 I configured [plausible.io](https://plausible.io) in my personal blog. They are asking you to set up their script in the header of the pages, but I only got the tracking working correctly when I moved the script in the body.
 
-## Installation
+## Detailled installation
 
 2 methods of installation are available:
 
@@ -95,19 +147,19 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 4. Export the result of the imported function with the configuration you want (see the examples below)
 5. Enjoy, your blog is already running!
 
-Minimal `main.tsx` to quick-start a project:
+Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { createBlogApp } from "jsr:@tayzendev/smallblog@0.7.0";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.1";
 
-export default createBlogApp({});
+export default createSmallblog({});
 ```
 
 A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createBlogApp } from "jsr:@tayzendev/smallblog@0.7.0";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.1";
 
 const customBodyScript = await html`<script
   defer
@@ -115,7 +167,7 @@ const customBodyScript = await html`<script
   src="https://plausible.io/js/script.js"
 ></script>`;
 
-export default createBlogApp({
+export default createSmallblog({
   faviconPath: "favicon.ico",
   siteDescription:
     "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
@@ -125,6 +177,8 @@ export default createBlogApp({
   customBodyScript,
 });
 ```
+
+Please refer to the [documentation](https://jsr.io/@tayzendev/smallblog/doc/~/BlogAppOptions) for more details about the parameters.
 
 ### Method 2: Cloning the repo
 
