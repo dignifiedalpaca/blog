@@ -23,7 +23,7 @@ import { generateCli } from "./cli.ts";
 /**
  * The options to create your blog.
  */
-export type BlogAppOptions = {
+export type SmallblogOptions = {
   /** The folder where your posts are located (default: `posts/`). */
   postsFolder?: string;
   /** The folder where your drafts are located (default: `drafts/`). */
@@ -56,7 +56,7 @@ function serveArticle(
   c: Context,
   name: string,
   folder: string,
-  opts: BlogAppOptions,
+  opts: SmallblogOptions,
 ) {
   const {
     siteTitle = "Smallblog",
@@ -108,7 +108,7 @@ function serveStaticFile(name: string, folder?: string) {
   }
 }
 
-async function getNoArticlesMessage(opts: BlogAppOptions) {
+async function getNoArticlesMessage(opts: SmallblogOptions) {
   const { noArticlesMessage, postsFolder, draftsFolder } = opts;
 
   if (noArticlesMessage) {
@@ -139,7 +139,7 @@ async function getNoArticlesMessage(opts: BlogAppOptions) {
  * @param options The parameters to create the blog.
  * @returns A smallweb/hono app with a fetch method
  */
-export function createSmallblog(options: BlogAppOptions): App {
+export function createSmallblog(options: SmallblogOptions): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
