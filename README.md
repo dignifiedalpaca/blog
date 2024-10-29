@@ -92,7 +92,6 @@ It forces you to have the following workflow: each post should have a companion 
 In the following example, we suppose that the folder where you app is installed is `blog`. The steps are:
 
 - creating a new post
-- opening it in an editor
 - listing all the posts
 - publishing your new one
 - archiving it
@@ -101,8 +100,6 @@ In the following example, we suppose that the folder where you app is installed 
 ```sh
 smallweb run blog create --title="My new post" --content="Some content" --authors="Tayzen" --authors="Author2" --tags="tag1" --tags="tag2" my_article
 # Smallblog has created my_article.md in your drafts folder and a folder where you should put your images.
-smallweb run blog edit my_article
-# Smallblog open my_article.md in your editor (corresponding to the variable `$EDITOR`).
 smallweb run blog list
 # Posts:
 #
@@ -122,6 +119,8 @@ smallweb run blog remove my_article
 ```
 
 To know more about the commands, you can run `smallweb run blog --help` or `smallweb run blog help [subcommand]`.
+
+Note: edit and open commmands are not working yet. This should be available with a future smallweb release.
 
 ### Adding custom scripts
 
