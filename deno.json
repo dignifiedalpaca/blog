@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "exports": "./mod.tsx",
   "imports": {
     "@deno/gfm": "jsr:@deno/gfm@^0.9.0",
@@ -30,17 +30,11 @@
       "article_generator.ts",
       "cli.ts"
     ],
-    "exclude": [
-      "favicon.ico",
-      "posts/",
-      "drafts/"
-    ]
+    "exclude": ["favicon.ico", "posts/", "drafts/"]
   },
   "deploy": {
     "project": "d10affa2-1369-4a90-aba2-cc9ac3edf4cf",
-    "exclude": [
-      "**/node_modules"
-    ],
+    "exclude": ["**/node_modules"],
     "include": [],
     "entrypoint": "main.tsx"
   }

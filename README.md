@@ -1,6 +1,6 @@
 # Smallblog
 
-Smallblog is an easy-to-use blog engine build with [smallweb](https://www.smallweb.run/) in mind.
+Smallblog is an easy-to-use blog engine build with [smallweb](https://www.smallweb.run/) and deno deploy in mind.
 
 | Homepage                                   | Blog post                   |
 | ------------------------------------------ | --------------------------- |
@@ -28,7 +28,7 @@ A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.
 Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.0";
 
 export default createSmallblog({});
 ```
@@ -69,7 +69,7 @@ This is a text after the metadata.
 
 This metadata is displayed to the user, except for the `published` and `section` one, which are used as follows:
 
-- `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](posts/private.md) is an example)
+- `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](https://github.com/TayzenDev/smallblog/blob/main/posts/private.md) is an example)
 - `section`: This property is used to give more details to search engines about your article
 
 None of this metadata are required, but I highly recommend you to write them, they will improve your SEO, give useful insights to your users and in the index page the articles are sorted by date (so, no date will break the order of your posts).
@@ -137,6 +137,7 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 
 - Import from JSR: If you want the simplest way to use smallblog, this is for you.
 - Cloning this repo: If you want to customize the look and feel of your blog.
+- Using Deno deploy: If you want the most efficient, yet simple deployment of smallblog, you can simply use Deno deploy.
 
 ### Method 1: JSR import
 
@@ -149,7 +150,7 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.0";
 
 export default createSmallblog({});
 ```
@@ -158,7 +159,7 @@ A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.0";
 
 const customBodyScript = await html`<script
   defer
@@ -193,6 +194,16 @@ To help you edit what you want, this is an overview of the code organization:
 - The hono server and blog creation function are located in the `mod.ts` file.
 
 Note: If you want to customize the layout, you should remove the hono cache in `mod.ts`.
+
+### Method 3: Deno deploy
+
+To install smallblog using deno deploy, you just have to run `deployctl deploy --prod` in your blog's folder.
+
+I'm only recommand to use this setup in production because you loose one key feature of smallblog: the auto publishing of new articles, which can be really useful for writting and sharing a first preview of your posts.
+
+The setup can be totally automated inside a CI/CD pipeline.
+
+For more information, please refer to the [deployctl documentation](https://docs.deno.com/deploy/manual/)
 
 ### After installation
 
