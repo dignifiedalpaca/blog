@@ -3,7 +3,6 @@ import * as path from "@std/path";
 import * as fs from "@std/fs";
 import { contentType } from "@std/media-types";
 import { type Context, Hono } from "hono";
-import { cache } from "hono/cache";
 import { compress } from "hono/compress";
 import { Index } from "./pages/index.tsx";
 import {
@@ -166,14 +165,36 @@ export function createSmallblog(options: SmallblogOptions): App {
 
   app.use(compress());
 
-  app.get(
-    "*",
-    cache({
-      cacheName: "smallblog",
-      cacheControl: "max-age=3600",
-      wait: true,
-    }),
-  );
+  app.use("*", async (c, next) => {
+    // no cache for drafts
+    if (c.req.url.startsWith("/drafts")) {
+      await next();
+      return;
+    }
+
+    const cache = await caches.open("smallblog");
+    const cachedResponse = await cache.match(c.req.url);
+
+    const lastUpdateTime = new Date(Deno.statSync(postsFolder).mtime || 0);
+
+    if (cachedResponse) {
+      const cacheLastUpdate = new Date(
+        cachedResponse.headers.get("X-Last-Update") || 0,
+      );
+
+      if (cacheLastUpdate >= lastUpdateTime) {
+        return cachedResponse;
+      } else {
+        await cache.delete(c.req.url);
+      }
+    }
+
+    await next();
+
+    const response = c.res.clone();
+    response.headers.set("X-Last-Update", lastUpdateTime.toISOString());
+    await cache.put(c.req.url, response);
+  });
 
   app.get("/", async (c) => {
     const page = c.req.query("page") || 1;
