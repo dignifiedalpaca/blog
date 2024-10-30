@@ -293,7 +293,11 @@ export class Article {
     this.name = name;
     this.content = content;
     this.title = title || this.metadata.title || convertNameToLabel(name);
-    this.preview = customRender(cleanedContent.slice(0, 300) + "...");
+    this.preview = customRender(
+      cleanedContent.length > 300
+        ? cleanedContent.slice(0, 300) + "..."
+        : cleanedContent,
+    );
     this.html = html || customRender(cleanedContent);
     this.url = `/article/${this.name}`;
     this.timeToReadMinutes =
