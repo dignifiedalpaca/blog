@@ -30,6 +30,18 @@
       "article_generator.ts",
       "cli.ts"
     ],
-    "exclude": ["favicon.ico", "posts/", "drafts/"]
+    "exclude": [
+      "favicon.ico",
+      "posts/",
+      "drafts/"
+    ]
+  },
+  "deploy": {
+    "project": "d10affa2-1369-4a90-aba2-cc9ac3edf4cf",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "main.tsx"
   }
 }
