@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "exports": "./mod.tsx",
   "imports": {
     "@deno/gfm": "jsr:@deno/gfm@^0.9.0",

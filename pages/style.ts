@@ -321,6 +321,40 @@ export const style = html`
       vertical-align: middle;
     }
 
+    .markdown-body table {
+      border-collapse: collapse;
+      color: #d1d2e2;
+    }
+
+    .markdown-body th,
+    .markdown-body td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #2a2b3a;
+    }
+
+    .markdown-body th {
+      background-color: #4c527d;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .markdown-body tr:nth-child(even) td {
+      background-color: #3e415f;
+    }
+
+    .markdown-body tr:nth-child(odd) td {
+      background-color: #2a2d40;
+    }
+
+    .markdown-body tr:hover td {
+      background-color: #505377;
+    }
+
+    .octicon-link {
+      fill: #bfc7d5;
+    }
+
     .markdown-body .highlight .token.keyword,
     .gfm-highlight .token.keyword {
       color: var(--color-prettylights-syntax-keyword);

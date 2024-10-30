@@ -28,7 +28,7 @@ A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.
 Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.2";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
 
 export default createSmallblog({});
 ```
@@ -149,7 +149,7 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.2";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
 
 export default createSmallblog({});
 ```
@@ -158,7 +158,7 @@ A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.2";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.7.4";
 
 const customBodyScript = await html`<script
   defer
