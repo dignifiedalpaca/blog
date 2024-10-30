@@ -91,9 +91,9 @@ print(f"result: {test_function([1, 2, 3])}")
 
 ### Table
 
-| Column 1 | Column 2 | Column 3 |
-| -------- | -------- | -------- |
-| Row 1    | Data 1   | Data 2   |
-| Row 2    | Data 3   | Data 4   |
-| Row 3    | Data 5   | Data 6   |
-| Row 4    | Data 7   | Data 8   |
+| Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 |
+| -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| Row 1    | Data 1   | Data 2   | Data 3   | Data 4   | Data 5   | Data 6   | Data 7   | Data 8   | Data 9    | Data 10   | Data 11   | Data 12   | Data 13   | Data 14   |
+| Row 2    | Data 15  | Data 16  | Data 17  | Data 18  | Data 19  | Data 20  | Data 21  | Data 22  | Data 23   | Data 24   | Data 25   | Data 26   | Data 27   | Data 28   |
+| Row 3    | Data 29  | Data 30  | Data 31  | Data 32  | Data 33  | Data 34  | Data 35  | Data 36  | Data 37   | Data 38   | Data 39   | Data 40   | Data 41   | Data 42   |
+| Row 4    | Data 43  | Data 44  | Data 45  | Data 46  | Data 47  | Data 48  | Data 49  | Data 50  | Data 51   | Data 52   | Data 53   | Data 54   | Data 55   | Data 56   |
