@@ -14,17 +14,8 @@ type ArticlePageProps = {
   headScript?: string;
 };
 
-export const ArticlePage: FC<ArticlePageProps> = (
-  props: ArticlePageProps,
-) => {
-  const {
-    article,
-    siteTitle,
-    bodyScript,
-    headScript,
-    locale,
-    url,
-  } = props;
+export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
+  const { article, siteTitle, bodyScript, headScript, locale, url } = props;
 
   return (
     <Layout
@@ -39,7 +30,7 @@ export const ArticlePage: FC<ArticlePageProps> = (
     >
       <header class={"article-header"}>
         <h1 class={"title"}>{article.title}</h1>
-        <MetadataComponent article={article} />
+        <MetadataComponent article={article} withAnchors={true} />
       </header>
       <article
         dangerouslySetInnerHTML={{ __html: article.html }}

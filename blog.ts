@@ -60,6 +60,13 @@ export function filterArticlesFTS(
     return articles;
   }
 
+  const tagQuery = query.startsWith("tag::");
+  if (tagQuery) {
+    const tag = query.slice("tags::".length - 1);
+    console.log("tag", tag);
+    return filterByTag(articles, tag);
+  }
+
   const miniSearch = new MiniSearch({
     fields: ["title", "content", "tags"], // fields to index for full-text search
     storeFields: [], // fields to return with search results
@@ -81,6 +88,12 @@ export function filterArticlesFTS(
   });
 
   return result || [];
+}
+
+function filterByTag(articles: Article[], tag: string): Article[] {
+  return articles.filter((article) => {
+    return article.metadata.tags?.includes(tag);
+  });
 }
 
 export function getRSS(baseUrl: string, articles: Article[]) {
