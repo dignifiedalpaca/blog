@@ -56,7 +56,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           id="search-field"
           type="search"
           name="search"
-          placeholder="Search for specific articles..."
+          placeholder="Look up titles, tags or text"
           hx-get="/?page=1"
           hx-trigger="input changed delay:500ms, search"
           hx-target=".articles-list"
