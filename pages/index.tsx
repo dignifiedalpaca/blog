@@ -4,7 +4,7 @@ import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
 import { Articles } from "./components/articles.tsx";
-import { html } from "hono/html";
+import { scriptFixHtmxBoosting } from "./scripts.ts";
 
 type IndexProps = {
   posts: Article[];
@@ -47,16 +47,8 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
       description={description}
     >
       <header class={"index-header"}>
-        {indexTitle && (
-          <h1 class={"index-title"}>
-            {indexTitle}
-          </h1>
-        )}
-        {indexSubtitle && (
-          <h2 class={"index-subtitle"}>
-            {indexSubtitle}
-          </h2>
-        )}
+        {indexTitle && <h1 class={"index-title"}>{indexTitle}</h1>}
+        {indexSubtitle && <h2 class={"index-subtitle"}>{indexSubtitle}</h2>}
       </header>
       <form action="/?page=1" method="get">
         <input
@@ -71,41 +63,21 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           value={props.search}
         />
       </form>
-      {posts && posts.length > 0 &&
-        (
-          <Articles
-            posts={posts}
-            search={props.search}
-            page={props.page}
-            itemsPerPage={props.itemsPerPage}
-          />
-        )}
+      {posts && posts.length > 0 && (
+        <Articles
+          posts={posts}
+          search={props.search}
+          page={props.page}
+          itemsPerPage={props.itemsPerPage}
+        />
+      )}
       {(!posts || posts.length === 0) && (
         <div
           class="no-articles"
           dangerouslySetInnerHTML={{ __html: noArticlesMessage || "" }}
         />
       )}
-      {
-        /* This script fixes an issue with htmx boosting and the search field.
-        In some conditions when you get back to the index page the searches value is
-        not in the input field anymore. */
-      }
-      {html`
-        <script>
-          document.addEventListener('htmx:historyRestore', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramValue = urlParams.get('search');
-
-            if (paramValue) {
-                const inputField = document.querySelector('input[name="search"]');
-                if (inputField) {
-                    inputField.value = paramValue;
-                }
-            }
-          });
-        </script>
-      `}
+      {scriptFixHtmxBoosting}
     </Layout>
   );
 };
