@@ -410,6 +410,28 @@ export const style = html`
       fill: #bfc7d5;
     }
 
+    .markdown-body .copy-code-button {
+      position: absolute;
+      top: 10px;
+      right : 15px;
+      z-index : 10;
+      border : none;
+      padding : 5px;
+      border-radius : 5px;
+      background-color : #161B22;
+      white-space : normal;
+      cursor : pointer;
+      color : var(--color-fg-muted);
+    }
+
+    .markdown-body .copy-code-button:hover {
+      background-color: #262C36;
+    }
+
+    .markdown-body .highlight:has(.copy-code-button) {
+      position: relative;
+    }
+
     .markdown-body .highlight .token.keyword,
     .gfm-highlight .token.keyword {
       color: var(--color-prettylights-syntax-keyword);
