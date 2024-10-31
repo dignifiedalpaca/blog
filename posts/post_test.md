@@ -66,6 +66,8 @@ def test_function(ls)
 print(f"result: {test_function([1, 2, 3])}")
 ```
 
+This is a line containing some `inline code`. Does it render great?
+
 ### Lists
 
 #### Unordered list
