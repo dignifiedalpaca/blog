@@ -23,9 +23,13 @@ import { generateCli } from "./cli.ts";
  * The options to create your blog.
  */
 export type SmallblogOptions = {
-  /** The folder where your posts are located (default: `posts/`). */
+  /** The folder where your posts are located (default: `posts/`). The name of the folder will be
+   * used for the routes (ex: of you named your folder `abcd`, the route to a post will be
+   * `/abcd/my_post`). */
   postsFolder?: string;
-  /** The folder where your drafts are located (default: `drafts/`). */
+  /** The folder where your drafts are located (default: `drafts/`). The name of the folder will be
+   * used for the routes (ex: of you named your folder `abcd`, the route to a post will be
+   * `/abcd/my_post`). */
   draftsFolder?: string;
   /** The path to your favicon (default: `favicon.ico`). */
   faviconPath?: string;
@@ -37,7 +41,8 @@ export type SmallblogOptions = {
   indexTitle?: string;
   /** The subtitle of the index page (ex: `A nice demo of smallblog`, no default). */
   indexSubtitle?: string;
-  /** The message to display when there are no articles (ex: `Coming soon!`, default is a message to help you). */
+  /** The message to display when there are no articles (ex: `Coming soon!`, default is a message
+   * to help you starting). */
   noArticlesMessage?: string;
   /** The locale of your blog. */
   locale?: string;

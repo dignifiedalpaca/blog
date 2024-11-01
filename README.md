@@ -28,9 +28,9 @@ A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.
 Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.1";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.9.0";
 
-export default createSmallblog({});
+export default createSmallblog();
 ```
 
 You're already done! Have fun with your new blog!
@@ -69,10 +69,12 @@ This is a text after the metadata.
 
 This metadata is displayed to the user, except for the `published` and `section` one, which are used as follows:
 
-- `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](https://github.com/TayzenDev/smallblog/blob/main/posts/private.md) is an example)
+- `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](https://github.com/TayzenDev/smallblog/blob/main/posts/private.md) is an example). The article will not be indexed but you can still open it directly from its URL.
 - `section`: This property is used to give more details to search engines about your article
 
 None of this metadata are required, but I highly recommend you to write them, they will improve your SEO, give useful insights to your users and in the index page the articles are sorted by date (so, no date will break the order of your posts).
+
+Note: The configuration of the routes to posts and resources are defined by the name of the folders `posts` and `drafts`. All the readme is written with the default config in mind, in your setup routes can differ.
 
 ### Serving static files
 
@@ -150,16 +152,16 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.1";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.9.0";
 
-export default createSmallblog({});
+export default createSmallblog();
 ```
 
 A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.8.1";
+import { createSmallblog } from "jsr:@tayzendev/smallblog@0.9.0";
 
 const customBodyScript = await html`<script
   defer
@@ -214,6 +216,8 @@ If you want your drafts to be private, you can use the smallweb authentication o
   "privateRoutes": ["/drafts"]
 }
 ```
+
+Note: the `/drafts` route depends of the name of the `drafts` folder, please be careful.
 
 ## Technologies
 
