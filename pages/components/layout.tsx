@@ -5,6 +5,7 @@ import { CSS } from "@deno/gfm";
 import { Navbar } from "./navbar.tsx";
 import { style } from "../style.ts";
 import type { Article } from "../../blog.ts";
+import { scriptAddAnimations } from "../scripts.ts";
 
 type LayoutProps = {
   children: Child;
@@ -56,7 +57,7 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
           defer
         />
         <script
-          src="https://unpkg.com/htmx-ext-head-support@2.0.3/head-support.js"
+          src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"
           rel="preconnect preload"
           hx-preserve="true"
           defer
