@@ -165,6 +165,9 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
 
   const app = new Hono();
 
+  const postsRoute = path.join("/", postsFolder);
+  const draftsRoute = path.join("/", draftsFolder);
+
   app.use(compress());
 
   app.use("*", async (c, next) => {
@@ -174,19 +177,19 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     if (urlPath === "/favicon") {
       filePath = faviconPath;
     }
-    if (urlPath.startsWith(path.join("/", postsFolder))) {
+    if (urlPath.startsWith(postsRoute)) {
       filePath = path.join(
         ".",
-        urlPath.slice(1) + (path.extname(c.req.url) ? "" : ".md"),
+        urlPath + (path.extname(c.req.url) ? "" : ".md"),
       );
     }
-    if (urlPath.startsWith(path.join("/", draftsFolder))) {
+    if (urlPath.startsWith(draftsRoute)) {
       filePath = path.join(
         ".",
-        urlPath.slice(1) + (path.extname(c.req.url) ? "" : ".md"),
+        urlPath + (path.extname(c.req.url) ? "" : ".md"),
       );
     }
-    if (!filePath) {
+    if (!filePath || !fs.existsSync(filePath)) {
       await next();
       return;
     }
@@ -264,12 +267,12 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     );
   });
 
-  app.get(path.join("/", postsFolder, ":filename{.+$}"), (c) => {
+  app.get(path.join(postsRoute, ":filename{.+$}"), (c) => {
     console.log(c.req.url);
     const filename = c.req.param("filename");
 
     if (!filename) {
-      // if the route is /article/
+      // if the route is /posts/
       return new Response("Not found", { status: 404 });
     }
     if (path.extname(filename)) {
@@ -279,7 +282,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     return serveArticle(c, filename, postsFolder, completeOptions);
   });
 
-  app.get(path.join("/", draftsFolder, ":filename{.+$}"), (c) => {
+  app.get(path.join(draftsRoute, ":filename{.+$}"), (c) => {
     const filename = c.req.param("filename");
 
     if (!filename) {
