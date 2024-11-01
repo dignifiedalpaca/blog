@@ -13,10 +13,19 @@ type ArticlePageProps = {
   locale?: string;
   bodyScript?: string;
   headScript?: string;
+  favicon: boolean;
 };
 
 export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
-  const { article, siteTitle, bodyScript, headScript, locale, url } = props;
+  const {
+    article,
+    siteTitle,
+    bodyScript,
+    headScript,
+    locale,
+    url,
+    favicon = false,
+  } = props;
 
   return (
     <Layout
@@ -28,6 +37,7 @@ export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
       locale={locale}
       description={article.metadata?.description}
       article={article}
+      favicon={favicon}
     >
       {scriptAddCodeCopyButton}
       <header class={"article-header"}>
