@@ -45,6 +45,8 @@ export type SmallblogOptions = {
   customHeaderScript?: string;
   /** The script to add to the body of your blog. */
   customBodyScript?: string;
+  /** Whether to cache the responses or not. */
+  cacheEnabled?: boolean;
 };
 
 function getBaseUrl(c: Context): string {
@@ -147,6 +149,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     faviconPath = "favicon.ico",
     siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
+    cacheEnabled = true,
     indexTitle,
     indexSubtitle,
     locale,
@@ -171,6 +174,11 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   app.use(compress());
 
   app.use("*", async (c, next) => {
+    if (!cacheEnabled) {
+      await next();
+      return;
+    }
+
     let filePath: string | undefined = undefined;
     const urlPath = new URL(c.req.url).pathname;
 
