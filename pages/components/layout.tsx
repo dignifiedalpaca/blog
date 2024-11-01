@@ -5,7 +5,6 @@ import { CSS } from "@deno/gfm";
 import { Navbar } from "./navbar.tsx";
 import { style } from "../style.ts";
 import type { Article } from "../../blog.ts";
-import { scriptAddAnimations } from "../scripts.ts";
 
 type LayoutProps = {
   children: Child;
