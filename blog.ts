@@ -39,7 +39,11 @@ export function getArticles(postsFolder: string): Article[] {
 
   const articles: Article[] = postsNames
     .map((name) => {
-      return new Article(name.slice(0, -3), getMarkdown(name, postsFolder));
+      return new Article(
+        postsFolder,
+        name.slice(0, -3),
+        getMarkdown(name, postsFolder),
+      );
     })
     .filter((article) => article.metadata.published !== false)
     .filter((article) => article.content !== "");
@@ -133,7 +137,11 @@ export function getSitemap(baseUrl: string, articles: Article[]) {
 }
 
 export function getArticle(name: string, postsFolder: string): Article {
-  const article = new Article(name, getMarkdown(name + ".md", postsFolder));
+  const article = new Article(
+    postsFolder,
+    name,
+    getMarkdown(name + ".md", postsFolder),
+  );
   return article;
 }
 
@@ -293,6 +301,7 @@ export class Article {
   timeToReadMinutes: number | string;
 
   constructor(
+    postsFolder: string,
     name: string,
     content: string,
     title?: string,
@@ -312,7 +321,7 @@ export class Article {
         : cleanedContent,
     );
     this.html = html || customRender(cleanedContent);
-    this.url = `/article/${this.name}`;
+    this.url = path.join("/", postsFolder, this.name);
     this.timeToReadMinutes =
       timeToReadMinutes || estimateTimeReadingMinutes(cleanedContent);
   }

@@ -62,6 +62,7 @@ function serveArticle(
     locale,
     customHeaderScript,
     customBodyScript,
+    faviconPath,
   } = opts;
 
   const article = getArticle(name, folder);
@@ -81,6 +82,7 @@ function serveArticle(
         locale={locale}
         bodyScript={customBodyScript}
         headScript={customHeaderScript}
+        favicon={!!faviconPath}
       />
     ),
   );
@@ -138,7 +140,7 @@ async function getNoArticlesMessage(opts: SmallblogOptions) {
  * @param options The parameters to create the blog.
  * @returns A smallweb/hono app with a fetch method
  */
-export function createSmallblog(options: SmallblogOptions): App {
+export function createSmallblog(options: SmallblogOptions = {}): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
@@ -166,8 +168,25 @@ export function createSmallblog(options: SmallblogOptions): App {
   app.use(compress());
 
   app.use("*", async (c, next) => {
-    // no cache for drafts
-    if (c.req.url.startsWith("/drafts")) {
+    let filePath: string | undefined = undefined;
+    const urlPath = new URL(c.req.url).pathname;
+
+    if (urlPath === "/favicon") {
+      filePath = faviconPath;
+    }
+    if (urlPath.startsWith(path.join("/", postsFolder))) {
+      filePath = path.join(
+        ".",
+        urlPath.slice(1) + (path.extname(c.req.url) ? "" : ".md"),
+      );
+    }
+    if (urlPath.startsWith(path.join("/", draftsFolder))) {
+      filePath = path.join(
+        ".",
+        urlPath.slice(1) + (path.extname(c.req.url) ? "" : ".md"),
+      );
+    }
+    if (!filePath) {
       await next();
       return;
     }
@@ -175,7 +194,7 @@ export function createSmallblog(options: SmallblogOptions): App {
     const cache = await caches.open("smallblog");
     const cachedResponse = await cache.match(c.req.url);
 
-    const lastUpdateTime = new Date(Deno.statSync(postsFolder).mtime || 0);
+    const lastUpdateTime = new Date(Deno.statSync(filePath)?.mtime || 0);
 
     if (cachedResponse) {
       const cacheLastUpdate = new Date(
@@ -239,12 +258,14 @@ export function createSmallblog(options: SmallblogOptions): App {
           noArticlesMessage={await getNoArticlesMessage(completeOptions)}
           bodyScript={customBodyScript}
           headScript={customHeaderScript}
+          favicon={!!faviconPath}
         />
       ),
     );
   });
 
-  app.get("/article/:filename{.+$}", (c) => {
+  app.get(path.join("/", postsFolder, ":filename{.+$}"), (c) => {
+    console.log(c.req.url);
     const filename = c.req.param("filename");
 
     if (!filename) {
@@ -258,7 +279,7 @@ export function createSmallblog(options: SmallblogOptions): App {
     return serveArticle(c, filename, postsFolder, completeOptions);
   });
 
-  app.get("/drafts/:filename{.+$}", (c) => {
+  app.get(path.join("/", draftsFolder, ":filename{.+$}"), (c) => {
     const filename = c.req.param("filename");
 
     if (!filename) {
