@@ -14,6 +14,7 @@ type ArticlePageProps = {
   bodyScript?: string;
   headScript?: string;
   favicon: boolean;
+  faviconLink?: string;
 };
 
 export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
@@ -25,6 +26,7 @@ export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
     locale,
     url,
     favicon = false,
+    faviconLink,
   } = props;
 
   return (
@@ -38,6 +40,7 @@ export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
       description={article.metadata?.description}
       article={article}
       favicon={favicon}
+      faviconLink={faviconLink}
     >
       {scriptAddCodeCopyButton}
       <header class={"article-header"}>

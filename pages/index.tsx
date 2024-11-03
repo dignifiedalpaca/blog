@@ -21,6 +21,7 @@ type IndexProps = {
   bodyScript?: string;
   headScript?: string;
   favicon: boolean;
+  faviconLink?: string;
 };
 
 export const Index: FC<IndexProps> = (props: IndexProps) => {
@@ -36,6 +37,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
     description,
     noArticlesMessage,
     favicon = false,
+    faviconLink,
   } = props;
 
   return (
@@ -48,6 +50,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
       locale={locale}
       description={description}
       favicon={favicon}
+      faviconLink={faviconLink}
     >
       <header class={"index-header"}>
         {indexTitle && <h1 class={"index-title"}>{indexTitle}</h1>}
