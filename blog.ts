@@ -1,5 +1,6 @@
 import * as path from "@std/path";
 import * as fm from "@std/front-matter";
+import * as fs from "@std/fs";
 import { render } from "@deno/gfm";
 import RSS from "rss";
 import { Sitemap } from "./sitemap.ts";
@@ -24,17 +25,13 @@ function getMarkdown(fileName: string, postsFolder: string) {
 
 export function getArticles(postsFolder: string): Article[] {
   let postsNames: string[] = [];
-  let dir;
   try {
-    dir = Deno.readDirSync(postsFolder);
+    for (const entry of fs.expandGlobSync(path.join(postsFolder, "*.md"))) {
+      postsNames = postsNames.concat(entry.name);
+    }
   } catch (e) {
     console.error("Error while opening folder:", postsFolder, ":", e);
     return [];
-  }
-  for (const entry of dir) {
-    if (entry.isFile && entry.name.endsWith("md")) {
-      postsNames = postsNames.concat(entry.name);
-    }
   }
 
   const articles: Article[] = postsNames
@@ -50,7 +47,7 @@ export function getArticles(postsFolder: string): Article[] {
 
   return articles.sort((a, b) => {
     if (a?.metadata?.date && b?.metadata?.date) {
-      return b?.metadata?.date?.getDate() - a?.metadata?.date?.getDate();
+      return b?.metadata?.date?.getTime() - a?.metadata?.date?.getTime();
     }
     return -1;
   });
@@ -160,6 +157,9 @@ type MetadataProps = {
   tags?: string | string[];
   published?: boolean;
   date?: Date;
+  modificationDate?: Date;
+  redirect?: string;
+  preview?: string;
   section?: string;
 };
 
@@ -170,19 +170,34 @@ export class Metadata {
   tags?: string[];
   published?: boolean;
   date?: Date;
+  modificationDate?: Date;
+  redirect?: string;
+  preview?: string;
   section?: string;
 
-  constructor({
-    title,
-    description,
-    authors,
-    author,
-    tags,
-    tag,
-    published,
-    date,
-    section,
-  }: MetadataProps) {
+  constructor(
+    filePath: string,
+    {
+      title,
+      description,
+      authors,
+      author,
+      tags,
+      tag,
+      published,
+      date,
+      modificationDate,
+      redirect,
+      preview,
+      section,
+    }: MetadataProps,
+  ) {
+    let fileStats;
+    try {
+      fileStats = Deno.statSync(filePath);
+    } catch {
+      console.error(`File ${filePath} not found`);
+    }
     this.title = title;
     this.description = description;
 
@@ -201,7 +216,10 @@ export class Metadata {
     }
 
     this.published = published;
-    this.date = date;
+    this.date = date || fileStats?.birthtime || undefined;
+    this.modificationDate = modificationDate || fileStats?.mtime || undefined;
+    this.redirect = redirect;
+    this.preview = preview;
     this.section = section;
   }
 }
@@ -229,16 +247,16 @@ type ParsedMarkdown = {
   body: string;
 };
 
-function parseMd(markdownData: string): ParsedMarkdown {
+function parseMd(markdownData: string, filePath: string): ParsedMarkdown {
   if (fm.test(markdownData)) {
     const data = fm.extractYaml(markdownData);
     return {
-      metadata: new Metadata(data.attrs as MetadataProps),
+      metadata: new Metadata(filePath, data.attrs as MetadataProps),
       body: removingTitleFromMD(data.body).trim(),
     };
   }
   return {
-    metadata: new Metadata({}),
+    metadata: new Metadata(filePath, {}),
     body: removingTitleFromMD(markdownData).trim(),
   };
 }
@@ -309,17 +327,22 @@ export class Article {
     metadata?: Metadata,
     timeToReadMinutes?: number | string,
   ) {
-    const { metadata: parsedMetadata, body: cleanedContent } = parseMd(content);
+    const { metadata: parsedMetadata, body: cleanedContent } = parseMd(
+      content,
+      path.join(postsFolder, name + ".md"),
+    );
 
     this.metadata = metadata || parsedMetadata;
     this.name = name;
     this.content = content;
     this.title = title || this.metadata.title || convertNameToLabel(name);
-    this.preview = customRender(
-      cleanedContent.length > 300
-        ? cleanedContent.slice(0, 300) + "..."
-        : cleanedContent,
-    );
+    this.preview = this.metadata.preview
+      ? customRender(this.metadata.preview)
+      : customRender(
+          cleanedContent.length > 300
+            ? cleanedContent.slice(0, 300) + "..."
+            : cleanedContent,
+        );
     this.html = html || customRender(cleanedContent);
     this.url = path.join("/", postsFolder, this.name);
     this.timeToReadMinutes =
