@@ -26,7 +26,8 @@ export const scriptAddCodeCopyButton = html`<script defer>
           const codeText = Array.from(divElement.childNodes)
             .filter((node) => node !== button)
             .map((node) => node.textContent || "")
-            .join("");
+            .join("")
+            .trim();
 
           navigator.clipboard.writeText(codeText).then(() => {
             // Change to check icon
