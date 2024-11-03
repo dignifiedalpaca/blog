@@ -5,7 +5,6 @@ import { CSS } from "@deno/gfm";
 import { Navbar } from "./navbar.tsx";
 import { style } from "../style.ts";
 import type { Article } from "../../blog.ts";
-import { scriptAddAnimations } from "../scripts.ts";
 
 type LayoutProps = {
   children: Child;
@@ -18,6 +17,7 @@ type LayoutProps = {
   article?: Article;
   locale?: string;
   favicon: boolean;
+  faviconLink?: string;
 };
 
 export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
@@ -32,6 +32,7 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
     article,
     locale,
     favicon = false,
+    faviconLink,
   } = props;
 
   return (
@@ -164,7 +165,13 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
           hx-preserve="true"
         />
         {/* End of SEO Section */}
-        {favicon && <link rel="icon" type="image/x-icon" href="/favicon" />}
+        {favicon && (
+          <link
+            rel="icon"
+            type="image/x-icon"
+            href={faviconLink || "/favicon"}
+          />
+        )}
         {headScript}
       </head>
       <body

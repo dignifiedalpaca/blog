@@ -8,11 +8,12 @@ const customBodyScript = await html`<script
 ></script>`;
 
 export default createSmallblog({
-  faviconPath: "favicon.ico",
+  favicon: "favicon.ico",
   siteDescription:
     "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
   siteTitle: "Smallblog demo",
   indexTitle: "A blog about nothing",
   indexSubtitle: "A nice demo of smallblog",
   customBodyScript,
+  cacheEnabled: false,
 });

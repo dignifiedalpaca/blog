@@ -12,7 +12,7 @@ import {
   getRSS,
   getSitemap,
 } from "./blog.ts";
-import { isDirectoryEmpty } from "./utils.ts";
+import { isDirectoryEmpty, getMtime, isUrl } from "./utils.ts";
 import { ArticlePage } from "./pages/article.tsx";
 import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
@@ -31,8 +31,8 @@ export type SmallblogOptions = {
    * used for the routes (ex: of you named your folder `abcd`, the route to a post will be
    * `/abcd/my_post`). */
   draftsFolder?: string;
-  /** The path to your favicon (default: `favicon.ico`). */
-  faviconPath?: string;
+  /** The path or URL to your favicon (default: empty). */
+  favicon?: string;
   /** The title of your blog (default: `Smallblog`). */
   siteTitle?: string;
   /** The description of your blog (default: `The blog: ${siteTitle}`). */
@@ -62,6 +62,7 @@ function serveArticle(
   c: Context,
   name: string,
   folder: string,
+  faviconIsUrl: boolean,
   opts: SmallblogOptions,
 ) {
   const {
@@ -69,7 +70,7 @@ function serveArticle(
     locale,
     customHeaderScript,
     customBodyScript,
-    faviconPath,
+    favicon,
   } = opts;
 
   const article = getArticle(name, folder);
@@ -89,13 +90,17 @@ function serveArticle(
         locale={locale}
         bodyScript={customBodyScript}
         headScript={customHeaderScript}
-        favicon={!!faviconPath}
+        favicon={!!favicon}
+        faviconLink={faviconIsUrl ? favicon : undefined}
       />
     ),
   );
 }
 
-function serveStaticFile(name: string, folder?: string) {
+function serveStaticFile(name?: string, folder?: string) {
+  if (!name) {
+    return new Response("Not found", { status: 404 });
+  }
   try {
     let file;
     if (folder) {
@@ -151,7 +156,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
-    faviconPath = "favicon.ico",
+    favicon,
     siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
     cacheEnabled = true,
@@ -162,19 +167,19 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     customBodyScript,
   } = options;
 
-  const completeOptions = {
-    ...options,
-    postsFolder,
-    draftsFolder,
-    faviconPath,
-    siteTitle,
-    siteDescription,
-  };
-
   const app = new Hono();
 
   const postsRoute = path.join("/", postsFolder);
   const draftsRoute = path.join("/", draftsFolder);
+  const faviconIsUrl = isUrl(favicon || "");
+
+  const completeOptions = {
+    ...options,
+    postsFolder,
+    draftsFolder,
+    siteTitle,
+    siteDescription,
+  };
 
   app.use(compress());
 
@@ -187,8 +192,8 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     let filePath: string | undefined = undefined;
     const urlPath = new URL(c.req.url).pathname;
 
-    if (urlPath === "/favicon") {
-      filePath = faviconPath;
+    if (urlPath === "/favicon" && !faviconIsUrl) {
+      filePath = favicon;
     }
     if (urlPath.startsWith(postsRoute)) {
       filePath = path.join(
@@ -202,6 +207,9 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
         urlPath + (path.extname(c.req.url) ? "" : ".md"),
       );
     }
+    if (urlPath === "/") {
+      filePath = postsFolder;
+    }
     if (!filePath || !fs.existsSync(filePath)) {
       await next();
       return;
@@ -210,7 +218,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     const cache = await caches.open("smallblog");
     const cachedResponse = await cache.match(c.req.url);
 
-    const lastUpdateTime = new Date(Deno.statSync(filePath)?.mtime || 0);
+    const lastUpdateTime = new Date((await getMtime(filePath)) * 1000);
 
     if (cachedResponse) {
       const cacheLastUpdate = new Date(
@@ -218,8 +226,10 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       );
 
       if (cacheLastUpdate >= lastUpdateTime) {
+        console.log("Using cached response:", c.req.url);
         return cachedResponse;
       } else {
+        console.log("Cached response expired:", c.req.url);
         await cache.delete(c.req.url);
       }
     }
@@ -274,7 +284,8 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
           noArticlesMessage={await getNoArticlesMessage(completeOptions)}
           bodyScript={customBodyScript}
           headScript={customHeaderScript}
-          favicon={!!faviconPath}
+          favicon={!!favicon}
+          faviconLink={faviconIsUrl ? favicon : undefined}
         />
       ),
     );
@@ -292,7 +303,13 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       // if the name contains an ext this is not an article
       return serveStaticFile(filename, postsFolder);
     }
-    return serveArticle(c, filename, postsFolder, completeOptions);
+    return serveArticle(
+      c,
+      filename,
+      postsFolder,
+      faviconIsUrl,
+      completeOptions,
+    );
   });
 
   app.get(path.join(draftsRoute, ":filename{.+$}"), (c) => {
@@ -306,7 +323,13 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       // if the name contains an ext this is not an article
       return serveStaticFile(filename, draftsFolder);
     }
-    return serveArticle(c, filename, draftsFolder, completeOptions);
+    return serveArticle(
+      c,
+      filename,
+      draftsFolder,
+      faviconIsUrl,
+      completeOptions,
+    );
   });
 
   app.get("/rss.xml", (c) => {
@@ -352,7 +375,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   });
 
   app.get("/favicon", () => {
-    return serveStaticFile(faviconPath);
+    return serveStaticFile(favicon);
   });
 
   app.get("/init", async (c) => {
