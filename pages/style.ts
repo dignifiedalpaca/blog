@@ -53,6 +53,52 @@ export const style = html`
       margin-right: -8px;
     }
 
+    navbar .menu-toggle {
+      display: none;
+    }
+
+    navbar .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-with-pages .navbar-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        list-style: none;
+        /* gap: 1rem; */
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease-out;
+      }
+
+      .navbar-with-pages .navbar-links > li {
+        width: 100%;
+        text-align: right;
+      }
+
+      .navbar-with-pages .menu-toggle:checked ~ .navbar-links {
+        max-height: 500px;
+        transition: max-height 0.3s ease-in;
+      }
+
+      .navbar-with-pages .menu-toggle:checked + .hamburger + .navbar-links {
+        display: flex;
+      }
+
+      .navbar-with-pages .hamburger {
+        display: block;
+      }
+
+      .navbar-with-pages .menu-toggle:checked ~ .hamburger {
+        transform: rotate(-90deg);
+      }
+    }
+
     .page-header {
       margin-bottom: var(--row-gap-medium);
 
@@ -379,6 +425,8 @@ export const style = html`
     .markdown-body table {
       border-collapse: collapse;
       color: #d1d2e2;
+      border-radius: 6px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .markdown-body th,
@@ -406,6 +454,10 @@ export const style = html`
       background-color: #505377;
     }
 
+    p:has(img) {
+      text-align: center;
+    }
+
     .octicon-link {
       fill: #bfc7d5;
     }
@@ -430,6 +482,15 @@ export const style = html`
 
     .markdown-body .highlight:has(.copy-code-button) {
       position: relative;
+    }
+
+    .markdown-body .highlight pre {
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .markdown-body img {
+      border-radius: 6px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .markdown-body .highlight .token.keyword,
