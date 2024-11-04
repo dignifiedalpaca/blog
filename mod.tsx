@@ -4,7 +4,7 @@ import * as fs from "@std/fs";
 import { contentType } from "@std/media-types";
 import { type Context, Hono } from "hono";
 import { compress } from "hono/compress";
-import { Index } from "./pages/index.tsx";
+import { Index } from "./templates/index.tsx";
 import {
   filterArticlesFTS,
   getArticle,
@@ -13,12 +13,12 @@ import {
   getSitemap,
 } from "./blog.ts";
 import { isDirectoryEmpty, getMtime, isUrl } from "./utils.ts";
-import { ArticlePage } from "./pages/article.tsx";
-import { Articles } from "./pages/components/articles.tsx";
+import { ArticlePage } from "./templates/article.tsx";
+import { Articles } from "./templates/components/articles.tsx";
 import type { App } from "@smallweb/types";
 import { storeArticle } from "./article_generator.ts";
 import { generateCli } from "./cli.ts";
-import { CustomPage } from "./pages/customPage.tsx";
+import { CustomPage } from "./templates/customPage.tsx";
 
 /**
  * The options to create your blog.
@@ -185,7 +185,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
-    pagesFolder = "custom/", // TODO: change the default value to "pages/"
+    pagesFolder = "pages/",
     favicon,
     siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
