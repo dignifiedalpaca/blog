@@ -256,6 +256,16 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     if (urlPath === "/") {
       filePath = postsFolder;
     }
+    if (urlPath.startsWith("/")) {
+      const filename = c.req.path.slice(1);
+      const tmpPath = path.join(
+        pagesFolder,
+        filename + (!path.extname(filename) ? ".md" : ""),
+      );
+      if (filename && fs.existsSync(tmpPath)) {
+        filePath = tmpPath;
+      }
+    }
     if (!filePath || !fs.existsSync(filePath)) {
       await next();
       return;
@@ -272,10 +282,8 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       );
 
       if (cacheLastUpdate >= lastUpdateTime) {
-        console.log("Using cached response:", c.req.url);
         return cachedResponse;
       } else {
-        console.log("Cached response expired:", c.req.url);
         await cache.delete(c.req.url);
       }
     }
