@@ -51,6 +51,7 @@ export const style = html`
     navbar svg {
       height: 0.75rem;
       margin-right: -8px;
+      color: var(--color-fg-muted);
     }
 
     navbar .menu-toggle {
@@ -70,7 +71,7 @@ export const style = html`
         flex-direction: column;
         width: 100%;
         list-style: none;
-        /* gap: 1rem; */
+        gap: 1rem;
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease-out;
