@@ -503,6 +503,7 @@ export const style = html`
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
       display: block;
       margin: 1.5em auto;
+      max-width: 100%;
     }
 
     .markdown-body video {
