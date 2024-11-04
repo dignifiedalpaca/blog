@@ -18,6 +18,7 @@ type LayoutProps = {
   locale?: string;
   favicon: boolean;
   faviconLink?: string;
+  customPages?: { name: string; path: string; external: boolean }[];
 };
 
 export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
@@ -33,6 +34,7 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
     locale,
     favicon = false,
     faviconLink,
+    customPages = [],
   } = props;
 
   return (
@@ -183,7 +185,7 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
         style="background-color: #27293C; color: #BFC7D5;"
       >
         {bodyScript}
-        <Navbar title={siteTitle} />
+        <Navbar title={siteTitle} customPages={customPages} />
         <main>{children}</main>
       </body>
     </html>

@@ -2,19 +2,15 @@
 
 import type { FC } from "hono/jsx";
 import RssIcon from "./rss.tsx";
+import ExternalIcon from "./external.tsx";
 
-export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
-  const customPages = [
-    // {
-    //   name: "About",
-    //   path: "/about",
-    // },
-    // {
-    //   name: "Contact",
-    //   path: "/contact",
-    // },
-  ];
+type NavbarProps = {
+  title: string;
+  customPages?: { name: string; path: string; external: boolean }[];
+};
 
+export const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
+  const { customPages = [] } = props;
   return (
     <navbar
       hx-preserve="true"
@@ -30,6 +26,14 @@ export const Navbar: FC<{ title: string }> = (props: { title: string }) => {
       </label>
 
       <ul class={"navbar-links"}>
+        {customPages.map((page) => (
+          <li>
+            <a href={page.path}>
+              {page.name}
+              {page.external && <ExternalIcon />}
+            </a>
+          </li>
+        ))}
         <li>
           <a href="/rss.xml" hx-boost="false">
             <RssIcon /> RSS

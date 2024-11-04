@@ -3,10 +3,9 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
-import { MetadataComponent } from "./components/metadata.tsx";
 import { scriptAddCodeCopyButton } from "./scripts.ts";
 
-type ArticlePageProps = {
+type CustomPageProps = {
   article: Article;
   siteTitle: string;
   url: string;
@@ -18,7 +17,7 @@ type ArticlePageProps = {
   customPages?: { name: string; path: string; external: boolean }[];
 };
 
-export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
+export const CustomPage: FC<CustomPageProps> = (props: CustomPageProps) => {
   const {
     article,
     siteTitle,
@@ -48,7 +47,6 @@ export const ArticlePage: FC<ArticlePageProps> = (props: ArticlePageProps) => {
       {scriptAddCodeCopyButton}
       <header class={"article-header"}>
         <h1 class={"title"}>{article.title}</h1>
-        <MetadataComponent article={article} withAnchors={true} />
       </header>
       <article
         dangerouslySetInnerHTML={{ __html: article.html }}

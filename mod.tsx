@@ -18,6 +18,7 @@ import { Articles } from "./pages/components/articles.tsx";
 import type { App } from "@smallweb/types";
 import { storeArticle } from "./article_generator.ts";
 import { generateCli } from "./cli.ts";
+import { CustomPage } from "./pages/customPage.tsx";
 
 /**
  * The options to create your blog.
@@ -31,6 +32,10 @@ export type SmallblogOptions = {
    * used for the routes (ex: of you named your folder `abcd`, the route to a post will be
    * `/abcd/my_post`). */
   draftsFolder?: string;
+  /** The folder where your custom pages are located (default: `pages/`). These pages are displayed
+   * inside the navbar and their route starts with `/`, following by the name of the file without
+   * extension. */
+  pagesFolder?: string;
   /** The path or URL to your favicon (default: empty). */
   favicon?: string;
   /** The title of your blog (default: `Smallblog`). */
@@ -58,12 +63,14 @@ function getBaseUrl(c: Context): string {
   return new URL(c.req.url).origin;
 }
 
-function serveArticle(
+function servePage(
   c: Context,
   name: string,
   folder: string,
   faviconIsUrl: boolean,
+  customPages: { name: string; path: string; external: boolean }[] = [],
   opts: SmallblogOptions,
+  article: boolean = true,
 ) {
   const {
     siteTitle = "Smallblog",
@@ -73,18 +80,36 @@ function serveArticle(
     favicon,
   } = opts;
 
-  const article = getArticle(name, folder);
-  const renderedArticle = article.html;
+  const page = getArticle(name, folder);
+  const renderedPage = page.html;
 
-  if (!renderedArticle) {
+  if (!renderedPage) {
     return new Response("Page not found", { status: 404 });
   }
 
+  if (article) {
+    return c.html(
+      `<!DOCTYPE html>` +
+      (
+        <ArticlePage
+          article={page}
+          siteTitle={siteTitle}
+          url={c.req.url}
+          locale={locale}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+          favicon={!!favicon}
+          faviconLink={faviconIsUrl ? favicon : undefined}
+          customPages={customPages}
+        />
+      ),
+    );
+  }
   return c.html(
     `<!DOCTYPE html>` +
     (
-      <ArticlePage
-        article={article}
+      <CustomPage
+        article={page}
         siteTitle={siteTitle}
         url={c.req.url}
         locale={locale}
@@ -92,6 +117,7 @@ function serveArticle(
         headScript={customHeaderScript}
         favicon={!!favicon}
         faviconLink={faviconIsUrl ? favicon : undefined}
+        customPages={customPages}
       />
     ),
   );
@@ -99,7 +125,9 @@ function serveArticle(
 
 function serveStaticFile(name?: string, folder?: string) {
   if (!name) {
-    return new Response("Not found", { status: 404 });
+    console.error("name not found");
+    // return new Response("Not found", { status: 404 });
+    return new Response("Not found name:" + name);
   }
   try {
     let file;
@@ -117,7 +145,8 @@ function serveStaticFile(name?: string, folder?: string) {
     });
   } catch (e) {
     console.error("error while loading file:", e);
-    return new Response("Not found", { status: 404 });
+    // return new Response("Not found", { status: 404 });
+    return new Response("Server error: " + e);
   }
 }
 
@@ -156,6 +185,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   const {
     postsFolder = "posts/",
     draftsFolder = "drafts/",
+    pagesFolder = "custom/", // TODO: change the default value to "pages/"
     favicon,
     siteTitle = "Smallblog",
     siteDescription = `The blog: ${siteTitle}`,
@@ -173,12 +203,28 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   const draftsRoute = path.join("/", draftsFolder);
   const faviconIsUrl = isUrl(favicon || "");
 
+  const customPages = getArticles(pagesFolder, "/")
+    .map((article) => ({
+      name: article.title,
+      path: article.metadata?.redirect || article.url,
+      external: !!article.metadata?.redirect,
+      order: article.metadata?.order || Infinity,
+    }))
+    .sort((a, b) => {
+      if (a?.order && b?.order) {
+        return a?.order - b?.order;
+      }
+      return -1;
+    });
+
   const completeOptions = {
     ...options,
     postsFolder,
     draftsFolder,
+    pagesFolder,
     siteTitle,
     siteDescription,
+    cacheEnabled,
   };
 
   app.use(compress());
@@ -286,13 +332,13 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
           headScript={customHeaderScript}
           favicon={!!favicon}
           faviconLink={faviconIsUrl ? favicon : undefined}
+          customPages={customPages}
         />
       ),
     );
   });
 
   app.get(path.join(postsRoute, ":filename{.+$}"), (c) => {
-    console.log(c.req.url);
     const filename = c.req.param("filename");
 
     if (!filename) {
@@ -303,11 +349,12 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       // if the name contains an ext this is not an article
       return serveStaticFile(filename, postsFolder);
     }
-    return serveArticle(
+    return servePage(
       c,
       filename,
       postsFolder,
       faviconIsUrl,
+      customPages,
       completeOptions,
     );
   });
@@ -323,11 +370,12 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       // if the name contains an ext this is not an article
       return serveStaticFile(filename, draftsFolder);
     }
-    return serveArticle(
+    return servePage(
       c,
       filename,
       draftsFolder,
       faviconIsUrl,
+      customPages,
       completeOptions,
     );
   });
@@ -346,8 +394,10 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   app.get("/sitemap.xml", (c) => {
     const baseUrl = getBaseUrl(c);
     const articles = getArticles(postsFolder);
-    const xml = getSitemap(baseUrl, articles);
-    console.log(xml);
+    const customPages = getArticles(pagesFolder, "/").filter(
+      (page) => !!page?.metadata?.redirect !== true,
+    );
+    const xml = getSitemap(baseUrl, articles.concat(customPages));
     if (xml) {
       return new Response(xml, {
         headers: {
@@ -363,7 +413,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     const robotTxt = `
       User-agent: *
       Disallow: /drafts
-      Sitemap: ${path.join(baseUrl, "/sitemap.xml")}
+      Sitemap: ${new URL("/sitemap.xml", baseUrl).href}
       `
       .replace(/  +/g, "")
       .trim();
@@ -374,12 +424,11 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     });
   });
 
-  app.get("/favicon", () => {
+  app.on("GET", ["/favicon", "/favicon.ico"], () => {
     return serveStaticFile(favicon);
   });
 
   app.get("/init", async (c) => {
-    console.log("init folder:", postsFolder, draftsFolder);
     fs.ensureDirSync(draftsFolder);
     fs.ensureDirSync(postsFolder);
     if (await isDirectoryEmpty(postsFolder)) {
@@ -390,6 +439,20 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     }
 
     return c.redirect("/");
+  });
+
+  app.get("/:filename{.+$}", (c) => {
+    const filename = c.req.param("filename");
+
+    return servePage(
+      c,
+      filename,
+      pagesFolder,
+      faviconIsUrl,
+      customPages,
+      completeOptions,
+      false,
+    );
   });
 
   return {

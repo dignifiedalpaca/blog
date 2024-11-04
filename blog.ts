@@ -23,7 +23,10 @@ function getMarkdown(fileName: string, postsFolder: string) {
   return content;
 }
 
-export function getArticles(postsFolder: string): Article[] {
+export function getArticles(
+  postsFolder: string,
+  routeBase?: string,
+): Article[] {
   let postsNames: string[] = [];
   try {
     for (const entry of fs.expandGlobSync(path.join(postsFolder, "*.md"))) {
@@ -40,6 +43,7 @@ export function getArticles(postsFolder: string): Article[] {
         postsFolder,
         name.slice(0, -3),
         getMarkdown(name, postsFolder),
+        routeBase,
       );
     })
     .filter((article) => article.metadata.published !== false)
@@ -64,7 +68,6 @@ export function filterArticlesFTS(
   const tagQuery = query.startsWith("tag::");
   if (tagQuery) {
     const tag = query.slice("tags::".length - 1);
-    console.log("tag", tag);
     return filterByTag(articles, tag);
   }
 
@@ -102,7 +105,7 @@ export function getRSS(baseUrl: string, articles: Article[]) {
     title: "Tayzen's blog",
     description: "A blog about nerdy stuffs.",
     site_url: baseUrl,
-    feed_url: path.join(baseUrl, "rss.xml"),
+    feed_url: new URL("rss.xml", baseUrl).href,
     language: "en",
     categories: ["Technology", "Programming", "Self-hosting"],
   });
@@ -110,7 +113,7 @@ export function getRSS(baseUrl: string, articles: Article[]) {
     feed.item({
       title: article.title,
       description: article.html,
-      url: path.join(baseUrl, article.url),
+      url: new URL(article.url, baseUrl).href,
       date: article.metadata.date,
       categories: article.metadata.tags,
       author: article.metadata.authors?.join(", "),
@@ -133,9 +136,13 @@ export function getSitemap(baseUrl: string, articles: Article[]) {
   return sitemap.sitemap;
 }
 
-export function getArticle(name: string, postsFolder: string): Article {
+export function getArticle(
+  name: string,
+  postsFolder: string,
+  routeBase?: string,
+): Article {
   const article = new Article(
-    postsFolder,
+    routeBase || postsFolder,
     name,
     getMarkdown(name + ".md", postsFolder),
   );
@@ -161,6 +168,7 @@ type MetadataProps = {
   redirect?: string;
   preview?: string;
   section?: string;
+  order?: number;
 };
 
 export class Metadata {
@@ -174,6 +182,7 @@ export class Metadata {
   redirect?: string;
   preview?: string;
   section?: string;
+  order?: number;
 
   constructor(
     filePath: string,
@@ -190,6 +199,7 @@ export class Metadata {
       redirect,
       preview,
       section,
+      order,
     }: MetadataProps,
   ) {
     let fileStats;
@@ -221,6 +231,7 @@ export class Metadata {
     this.redirect = redirect;
     this.preview = preview;
     this.section = section;
+    this.order = order;
   }
 }
 
@@ -322,6 +333,7 @@ export class Article {
     postsFolder: string,
     name: string,
     content: string,
+    routeBase: string = postsFolder,
     title?: string,
     html?: string,
     metadata?: Metadata,
@@ -344,7 +356,7 @@ export class Article {
             : cleanedContent,
         );
     this.html = html || customRender(cleanedContent);
-    this.url = path.join("/", postsFolder, this.name);
+    this.url = path.join("/", routeBase, this.name);
     this.timeToReadMinutes =
       timeToReadMinutes || estimateTimeReadingMinutes(cleanedContent);
   }
