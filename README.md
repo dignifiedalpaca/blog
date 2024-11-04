@@ -133,6 +133,17 @@ You may want to add custom scripts for analytics purposes (or anything else you 
 
 I configured [plausible.io](https://plausible.io) in my personal blog. They are asking you to set up their script in the header of the pages, but I only got the tracking working correctly when I moved the script in the body.
 
+### Adding custom pages
+
+Smallblog enables you to add custom pages to your blog. By default, they are located in the `pages` folder. You can add your pages by creating a markdown file in this folder, it would be render the same way as the posts except there is no metadata.
+
+These new pages are accessible from the navbar (as you can see in the screenshots at the start of this document).
+
+2 metadatas are exclusive to the custom pages:
+
+- `redirect`: This will create a link to another website in the navbar (as you can see in the demo with the "GitHub" and "JSR" entries)
+- `order`: This is used to define the order in which the links are displayed in the navbar (in the demo/the screenshot GitHub have `order:1`, and JSR have a value of 2, contact has no value so it is at the end)
+
 ## Detailled installation
 
 2 methods of installation are available:
@@ -195,7 +206,7 @@ To help you edit what you want, this is an overview of the code organization:
 - To look at the "business logic", you can check the file `blog.ts`
 - The hono server and blog creation function are located in the `mod.ts` file.
 
-Note: If you want to customize the layout, you should remove the hono cache in `mod.ts`.
+Note: If you want to customize the layout, you should deactivate the cache in your config.
 
 ### Method 3: Deno deploy
 
