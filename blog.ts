@@ -306,7 +306,11 @@ function customRender(text: string) {
       <path d="m9 12 2 2 4-4" />
     </svg>`;
 
-  const firstRender = render(text);
+  const firstRender = render(text, {
+    disableHtmlSanitization: true,
+    allowIframes: true,
+    allowMath: true,
+  });
   return firstRender.replace(
     /<li>\s*<input\s+([^>]*?)type="checkbox"([^>]*?)>\s*([^<]*)<\/li>/g,
     (_, before, after, labelText) => {

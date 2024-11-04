@@ -494,6 +494,27 @@ export const style = html`
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
     }
 
+    .markdown-body p:has(video) {
+      text-align: center;
+    }
+
+    .markdown-body iframe {
+      border-radius: 6px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+      display: block;
+      margin: 1.5em auto;
+    }
+
+    .markdown-body video {
+      border-radius: 6px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    [aria-hidden="true"] {
+      /* Add your styles here */
+      display: none; /* For example, hiding the element */
+    }
+
     .markdown-body .highlight .token.keyword,
     .gfm-highlight .token.keyword {
       color: var(--color-prettylights-syntax-keyword);

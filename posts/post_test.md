@@ -99,3 +99,47 @@ This is a line containing some `inline code`. Does it render great?
 | Row 2    | Data 15  | Data 16  | Data 17  | Data 18  | Data 19  | Data 20  | Data 21  | Data 22  | Data 23   | Data 24   | Data 25   | Data 26   | Data 27   | Data 28   |
 | Row 3    | Data 29  | Data 30  | Data 31  | Data 32  | Data 33  | Data 34  | Data 35  | Data 36  | Data 37   | Data 38   | Data 39   | Data 40   | Data 41   | Data 42   |
 | Row 4    | Data 43  | Data 44  | Data 45  | Data 46  | Data 47  | Data 48  | Data 49  | Data 50  | Data 51   | Data 52   | Data 53   | Data 54   | Data 55   | Data 56   |
+
+### Video
+
+To include a video in your blog post, you can't unfortunately use the following syntax:
+
+```md
+![Deno 2.0 announcement video YouTube](https://www.youtube.com/watch?v=swXWUfufu2w)
+![Deno 2.0 announcement video](img/deno2.mp4)
+```
+
+But you can include it in a video tag or embed a YouTube video in an `iframe`:
+
+```html
+<video src="img/deno2.mp4" controls></video>
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube-nocookie.com/embed/swXWUfufu2w?si=VMwcZZ6k2HryDkC8"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+```
+
+Example with a YouTube video:
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/swXWUfufu2w?si=VMwcZZ6k2HryDkC8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+For YouTube videos, you can get this kind of `iframe` inside the `share` option so this is really easy to integrate.
+
+### Maths
+
+This is want math looks like in :
+
+$$
+x^2 + y^2 = z^2
+$$
+
+This is inline math: $x^2 + y^2 = z^2$.
+
+The syntax uses LaTeX math expressions surrounding by `$` for the inline rendering or `$$` for the block rendering.
