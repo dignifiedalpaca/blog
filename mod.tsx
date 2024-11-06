@@ -125,9 +125,7 @@ function servePage(
 
 function serveStaticFile(name?: string, folder?: string) {
   if (!name) {
-    console.error("name not found");
-    // return new Response("Not found", { status: 404 });
-    return new Response("Not found name:" + name);
+    return new Response("Not found", { status: 404 });
   }
   try {
     let file;
@@ -143,10 +141,8 @@ function serveStaticFile(name?: string, folder?: string) {
           "application/octet-stream",
       },
     });
-  } catch (e) {
-    console.error("error while loading file:", e);
-    // return new Response("Not found", { status: 404 });
-    return new Response("Server error: " + e);
+  } catch {
+    return new Response("Not found", { status: 404 });
   }
 }
 
