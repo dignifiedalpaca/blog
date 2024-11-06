@@ -439,6 +439,8 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     if (await isDirectoryEmpty(postsFolder)) {
       storeArticle(postsFolder, "first-article.md", {
         title: "My first article",
+        content:
+          "This is my first article. This is an image:\n\n![RSS](first-article/exampleImage.svg)",
       });
     }
 
