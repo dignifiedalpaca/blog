@@ -16,7 +16,7 @@
     "jsr:@std/toml@^1.0.1": "1.0.1",
     "jsr:@std/yaml@*": "1.0.5",
     "jsr:@std/yaml@^1.0.5": "1.0.5",
-    "jsr:@tayzendev/gfm@~0.14.2": "0.14.2",
+    "jsr:@tayzendev/gfm@~0.14.3": "0.14.3",
     "npm:@types/node@*": "22.5.4",
     "npm:commander@^12.1.0": "12.1.0",
     "npm:github-slugger@2": "2.0.0",
@@ -89,8 +89,8 @@
     "@std/yaml@1.0.5": {
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
     },
-    "@tayzendev/gfm@0.14.2": {
-      "integrity": "bab4690adb4133db0f8f958fa29d57240aba09eee352df8ab238f1fd94c3a5c5",
+    "@tayzendev/gfm@0.14.3": {
+      "integrity": "8fb87ead28ecd55604c378d4f91456743ace7448d07a3f5228ee2521de8371d6",
       "dependencies": [
         "jsr:@denosaurs/emoji",
         "jsr:@std/media-types",
@@ -315,7 +315,7 @@
       "jsr:@std/media-types@^1.0.3",
       "jsr:@std/path@^1.0.6",
       "jsr:@std/yaml@^1.0.5",
-      "jsr:@tayzendev/gfm@~0.14.2",
+      "jsr:@tayzendev/gfm@~0.14.3",
       "npm:commander@^12.1.0",
       "npm:hono@^4.6.3",
       "npm:minisearch@^7.1.0",
