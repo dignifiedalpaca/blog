@@ -355,7 +355,6 @@ export const style = html`
 
     .metadata a {
       color: #999aa5;
-      // text-decoration: none;
     }
 
     .animated-anchor:hover {
@@ -468,19 +467,19 @@ export const style = html`
     .markdown-body .copy-code-button {
       position: absolute;
       top: 10px;
-      right : 15px;
-      z-index : 10;
-      border : none;
-      padding : 5px;
-      border-radius : 5px;
-      background-color : #161B22;
-      white-space : normal;
-      cursor : pointer;
-      color : var(--color-fg-muted);
+      right: 15px;
+      z-index: 10;
+      border: none;
+      padding: 5px;
+      border-radius: 5px;
+      background-color: #161b22;
+      white-space: normal;
+      cursor: pointer;
+      color: var(--color-fg-muted);
     }
 
     .markdown-body .copy-code-button:hover {
-      background-color: #262C36;
+      background-color: #262c36;
     }
 
     .markdown-body .highlight:has(.copy-code-button) {
@@ -511,11 +510,6 @@ export const style = html`
     .markdown-body video {
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    [aria-hidden="true"] {
-      /* Add your styles here */
-      display: none; /* For example, hiding the element */
     }
   </style>
 `;
