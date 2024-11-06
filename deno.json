@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "exports": "./mod.tsx",
   "imports": {
     "@libs/xml": "jsr:@libs/xml@^6.0.0",
