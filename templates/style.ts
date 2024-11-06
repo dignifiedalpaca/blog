@@ -123,6 +123,8 @@ export const style = html`
 
     .markdown-body {
       margin-bottom: 50px;
+      background-color: inherit;
+      color: inherit;
     }
 
     .markdown-body h1 {
@@ -514,93 +516,6 @@ export const style = html`
     [aria-hidden="true"] {
       /* Add your styles here */
       display: none; /* For example, hiding the element */
-    }
-
-    .markdown-body .highlight .token.keyword,
-    .gfm-highlight .token.keyword {
-      color: var(--color-prettylights-syntax-keyword);
-    }
-
-    .markdown-body .highlight .token.tag .token.class-name,
-    .markdown-body .highlight .token.tag .token.script .token.punctuation,
-    .gfm-highlight .token.tag .token.class-name,
-    .gfm-highlight .token.tag .token.script .token.punctuation {
-      color: var(--color-prettylights-syntax-storage-modifier-import);
-    }
-
-    .markdown-body .highlight .token.operator,
-    .markdown-body .highlight .token.number,
-    .markdown-body .highlight .token.boolean,
-    .markdown-body .highlight .token.tag .token.punctuation,
-    .markdown-body
-      .highlight
-      .token.tag
-      .token.script
-      .token.script-punctuation,
-    .markdown-body .highlight .token.tag .token.attr-name,
-    .gfm-highlight .token.operator,
-    .gfm-highlight .token.number,
-    .gfm-highlight .token.boolean,
-    .gfm-highlight .token.tag .token.punctuation,
-    .gfm-highlight .token.tag .token.script .token.script-punctuation,
-    .gfm-highlight .token.tag .token.attr-name {
-      color: var(--color-prettylights-syntax-constant);
-    }
-
-    .markdown-body .highlight .token.atrule,
-    .gfm-highlight .token.atrule {
-      color: var(--color-prettylights-syntax-keyword);
-    }
-
-    .markdown-body .highlight .token.punctuation,
-    .gfm-highlight .token.punctuation,
-    .markdown-body .highlight .token.function,
-    .gfm-highlight .token.function {
-      color: var(--color-prettylights-syntax-entity);
-    }
-
-    .markdown-body .highlight .token.string,
-    .gfm-highlight .token.string {
-      color: var(--color-prettylights-syntax-string);
-    }
-
-    .markdown-body .highlight .token.comment,
-    .gfm-highlight .token.comment {
-      color: var(--color-prettylights-syntax-comment);
-    }
-
-    .markdown-body .highlight .token.class-name,
-    .gfm-highlight .token.class-name {
-      color: var(--color-prettylights-syntax-variable);
-    }
-
-    .markdown-body .highlight .token.regex,
-    .gfm-highlight .token.regex {
-      color: var(--color-prettylights-syntax-string);
-    }
-
-    .markdown-body .highlight .token.regex .regex-delimiter,
-    .gfm-highlight .token.regex .regex-delimiter {
-      color: var(--color-prettylights-syntax-constant);
-    }
-
-    .markdown-body .highlight .token.tag .token.tag,
-    .markdown-body .highlight .token.property,
-    .gfm-highlight .token.tag .token.tag,
-    .gfm-highlight .token.property {
-      color: var(--color-prettylights-syntax-entity-tag);
-    }
-
-    .markdown-body .highlight .token.deleted,
-    .gfm-highlight .token.deleted {
-      color: var(--color-prettylights-syntax-markup-deleted-text);
-      background-color: var(--color-prettylights-syntax-markup-deleted-bg);
-    }
-
-    .markdown-body .highlight .token.inserted,
-    .gfm-highlight .token.inserted {
-      color: var(--color-prettylights-syntax-markup-inserted-text);
-      background-color: var(--color-prettylights-syntax-markup-inserted-bg);
     }
   </style>
 `;

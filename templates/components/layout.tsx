@@ -1,7 +1,7 @@
 /** @jsxImportSource hono/jsx */
 
 import type { Child, FC } from "hono/jsx";
-import { CSS, KATEX_CSS } from "@deno/gfm";
+import { CSS, KATEX_CSS } from "@tayzendev/gfm";
 import { Navbar } from "./navbar.tsx";
 import { style } from "../style.ts";
 import type { Article } from "../../blog.ts";
@@ -42,10 +42,8 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charset="UTF-8" hx-preserve="true" />
-        <style hx-preserve="true">
-          {CSS}
-          {KATEX_CSS}
-        </style>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <style dangerouslySetInnerHTML={{ __html: KATEX_CSS }} />
         {style}
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
