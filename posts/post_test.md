@@ -102,35 +102,18 @@ This is a line containing some `inline code`. Does it render great?
 
 ### Video
 
-To include a video in your blog post, you can't unfortunately use the following syntax:
+To include a video in your blog post, you can use the following syntax:
 
 ```md
 ![Deno 2.0 announcement video YouTube](https://www.youtube.com/watch?v=swXWUfufu2w)
 ![Deno 2.0 announcement video](img/deno2.mp4)
 ```
 
-But you can include it in a video tag or embed a YouTube video in an `iframe`:
-
-```html
-<video src="img/deno2.mp4" controls></video>
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube-nocookie.com/embed/swXWUfufu2w?si=VMwcZZ6k2HryDkC8"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerpolicy="strict-origin-when-cross-origin"
-  allowfullscreen
-></iframe>
-```
+This only works with YouTube videos or videos hosted on your own server. For other sites, you can search in their documentation how to embed videos, you can use all the html you want in your markdown documents.
 
 Example with a YouTube video:
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/swXWUfufu2w?si=VMwcZZ6k2HryDkC8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-For YouTube videos, you can get this kind of `iframe` inside the `share` option so this is really easy to integrate.
+![Blabla](https://www.youtube.com/watch?v=swXWUfufu2w)
 
 ### Maths
 
@@ -143,3 +126,30 @@ $$
 This is inline math: $x^2 + y^2 = z^2$.
 
 The syntax uses LaTeX math expressions surrounding by `$` for the inline rendering or `$$` for the block rendering.
+
+### Mermaid
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+### Alerts
+
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+> [!CAUTION]
+> Negative potential consequences of an action.

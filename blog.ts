@@ -1,7 +1,7 @@
 import * as path from "@std/path";
 import * as fm from "@std/front-matter";
 import * as fs from "@std/fs";
-import { render } from "@deno/gfm";
+import { render } from "@tayzendev/gfm";
 import RSS from "rss";
 import { Sitemap } from "./sitemap.ts";
 import MiniSearch from "minisearch";
@@ -273,54 +273,11 @@ function parseMd(markdownData: string, filePath: string): ParsedMarkdown {
 }
 
 function customRender(text: string) {
-  const uncheckedIcon = `<svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-circle"
-    >
-      <circle cx="12" cy="12" r="10" />
-    </svg>
-    <!-- SVG content for unchecked state -->
-  </svg>`;
-
-  const checkedIcon = `<svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-circle-check"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>`;
-
-  const firstRender = render(text, {
+  return render(text, {
     disableHtmlSanitization: true,
     allowIframes: true,
     allowMath: true,
   });
-  return firstRender.replace(
-    /<li>\s*<input\s+([^>]*?)type="checkbox"([^>]*?)>\s*([^<]*)<\/li>/g,
-    (_, before, after, labelText) => {
-      const isChecked = /checked/.test(before + after);
-      const icon = isChecked ? checkedIcon : uncheckedIcon;
-
-      // Return a <li> with a <label> that wraps the SVG, input, and label text
-      return `<li><label>${icon}<input ${before} type="checkbox" ${after} style="display: none;"> ${labelText}</label></li>`;
-    },
-  );
 }
 
 export class Article {
