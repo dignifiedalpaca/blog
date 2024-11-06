@@ -435,11 +435,11 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   app.get("/init", async (c) => {
     fs.ensureDirSync(draftsFolder);
     fs.ensureDirSync(postsFolder);
+    fs.ensureDirSync(pagesFolder);
     if (await isDirectoryEmpty(postsFolder)) {
       storeArticle(postsFolder, "first-article.md", {
         title: "My first article",
       });
-      fs.ensureDirSync(path.join(postsFolder, "first-article"));
     }
 
     return c.redirect("/");

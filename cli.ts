@@ -42,7 +42,6 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
           section: options.section as string,
         };
         storeArticle(folder, fileId + ".md", params);
-        fs.ensureDirSync(path.join(folder, fileId));
         console.log("Post created.");
       } catch (e) {
         console.error("Error while creating post:", e);
