@@ -303,9 +303,7 @@ export const style = html`
       font-weight: 300;
     }
 
-    .article-element a,
-    a:visited,
-    a:active {
+    .article-element a {
       /* color: var(--color-fg-muted); */
       color: var(--color-text);
       text-decoration: none;
