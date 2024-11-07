@@ -272,11 +272,12 @@ function parseMd(markdownData: string, filePath: string): ParsedMarkdown {
   };
 }
 
-function customRender(text: string) {
+function customRender(text: string, noLinks: boolean = false) {
   return render(text, {
     disableHtmlSanitization: true,
     allowIframes: true,
     allowMath: true,
+    noLinks,
   });
 }
 
@@ -310,11 +311,12 @@ export class Article {
     this.content = content;
     this.title = title || this.metadata.title || convertNameToLabel(name);
     this.preview = this.metadata.preview
-      ? customRender(this.metadata.preview)
+      ? customRender(this.metadata.preview, true)
       : customRender(
           cleanedContent.length > 300
             ? cleanedContent.slice(0, 300) + "..."
             : cleanedContent,
+          true,
         );
     this.html = html || customRender(cleanedContent);
     this.url = path.join("/", routeBase, this.name);
