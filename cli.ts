@@ -19,11 +19,13 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
     .alias("c")
     .description("Create a new blog post as draft")
     .argument("<name>", "The id of the post (no space allowed)")
-    .option("-p, --published", "Create a published post")
+    .option("-P, --published", "Create a published post")
     .option("-t, --title <title>", "The title of the post")
+    .option("-p", "--preview <preview>", "The preview of the post")
+    .option("-d", "--description <description>", "The description of the post")
     .option("-a, --authors <authors...>", "The author of the post")
     .option(
-      "-d, --date <date>",
+      "-D, --date <date>",
       "The date of the post (YYYY-MM-DD, default: current date)",
     )
     .option("--tags <tags...>", "The tags of the post")
@@ -36,6 +38,8 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
         const params = {
           title: options.title as string,
           content: options.content as string,
+          description: options.description as string,
+          preview: options.preview as string,
           tags: (options.tags as string[]) || undefined,
           authors: (options.authors as string[]) || undefined,
           date: options.date as string,
@@ -76,8 +80,8 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
     .command("list")
     .alias("l")
     .description("List all blog posts")
-    .option("-d, --drafts", "List only draft posts")
-    .option("-p", "--published", "List only published posts")
+    .option("-D, --drafts", "List only draft posts")
+    .option("-P", "--published", "List only published posts")
     .option("-a, --all", "List all posts (default)")
     .action((options) => {
       console.log("Posts:");

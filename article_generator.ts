@@ -34,6 +34,8 @@ export function storeArticle(
   params: {
     title?: string;
     content?: string;
+    preview?: string;
+    description?: string;
     published?: boolean;
     tags?: string[];
     authors?: string[];
@@ -41,7 +43,10 @@ export function storeArticle(
     section?: string;
   } = {
     title: "My first article",
-    content: "This is my first article",
+    content:
+      "This is my first article. This is an image:\n\n![RSS](first-article/exampleImage.svg)",
+    preview: "This is the first article of this blog.",
+    description: "A post which contains the first article of this blog.",
     published: true,
     tags: ["markdown", "test"],
     authors: ["Default author"],
