@@ -256,7 +256,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       const filename = c.req.path.slice(1);
       const tmpPath = path.join(
         pagesFolder,
-        filename + (!path.extname(filename) ? ".md" : ""),
+        filename + (path.extname(filename) ? "" : ".md"),
       );
       if (filename && fs.existsSync(tmpPath)) {
         filePath = tmpPath;
@@ -270,7 +270,9 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     const cache = await caches.open("smallblog");
     const cachedResponse = await cache.match(c.req.url);
 
-    const lastUpdateTime = new Date((await getMtime(filePath)) * 1000);
+    const lastUpdateTime = new Date(
+      (await getMtime(filePath, pagesFolder)) * 1000,
+    );
 
     if (cachedResponse) {
       const cacheLastUpdate = new Date(
