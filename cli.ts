@@ -6,7 +6,7 @@ import manifest from "./deno.json" with { type: "json" };
 
 type CLI = (args: string[]) => void;
 
-export function generateCli(postsFolder: string, draftsFolder: string): CLI {
+export function createCli(postsFolder: string, draftsFolder: string): CLI {
   const program = new Command();
 
   program
