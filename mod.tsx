@@ -457,6 +457,14 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   app.get("/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
 
+    if (!filename) {
+      // if the route is /
+      return new Response("Not found", { status: 404 });
+    }
+    if (path.extname(filename)) {
+      // if the name contains an ext this is not an article
+      return serveStaticFile(filename, pagesFolder);
+    }
     return servePage(
       c,
       filename,
