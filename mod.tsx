@@ -19,6 +19,7 @@ import type { App } from "@smallweb/types";
 import { storeArticle } from "./article_generator.ts";
 import { generateCli } from "./cli.ts";
 import { CustomPage } from "./templates/customPage.tsx";
+import { ErrorPage } from "./templates/error.tsx";
 
 /**
  * The options to create your blog.
@@ -87,7 +88,7 @@ function servePage(
   const renderedPage = page.html;
 
   if (!renderedPage) {
-    return new Response("Page not found", { status: 404 });
+    throw new Error("File not found", { cause: 404 });
   }
 
   if (article) {
@@ -128,7 +129,7 @@ function servePage(
 
 function serveStaticFile(name?: string, folder?: string) {
   if (!name) {
-    return new Response("Not found", { status: 404 });
+    throw new Error("File not found", { cause: 404 });
   }
   try {
     let file;
@@ -145,7 +146,7 @@ function serveStaticFile(name?: string, folder?: string) {
       },
     });
   } catch {
-    return new Response("Not found", { status: 404 });
+    throw new Error("File not found", { cause: 404 });
   }
 }
 
@@ -354,7 +355,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
 
     if (!filename) {
       // if the route is /posts/
-      return new Response("Not found", { status: 404 });
+      throw new Error("File not found", { cause: 404 });
     }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
@@ -375,7 +376,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
 
     if (!filename) {
       // if the route is /article/
-      return new Response("Not found", { status: 404 });
+      throw new Error("File not found", { cause: 404 });
     }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
@@ -416,7 +417,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
         },
       });
     }
-    return new Response("Not found", { status: 404 });
+    throw new Error("File not found", { cause: 404 });
   });
 
   app.get("/robots.txt", (c) => {
@@ -457,10 +458,6 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
   app.get("/:filename{.+$}", (c) => {
     const filename = c.req.param("filename");
 
-    if (!filename) {
-      // if the route is /
-      return new Response("Not found", { status: 404 });
-    }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
       return serveStaticFile(filename, pagesFolder);
@@ -473,6 +470,47 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
       customPages,
       completeOptions,
       false,
+    );
+  });
+
+  app.onError((err, c) => {
+    console.error(err);
+    return c.html(
+      `<!DOCTYPE html>` +
+      (
+        <ErrorPage
+          errorNumber={typeof err.cause === "number" ? err.cause : 500}
+          errorMessage={err.message}
+          siteTitle={siteTitle}
+          url={c.req.url}
+          locale={locale}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+          favicon={!!favicon}
+          faviconLink={faviconIsUrl ? favicon : undefined}
+          customPages={customPages}
+        />
+      ),
+    );
+  });
+
+  app.notFound((c) => {
+    return c.html(
+      `<!DOCTYPE html>` +
+      (
+        <ErrorPage
+          errorNumber={404}
+          errorMessage="Not found"
+          siteTitle={siteTitle}
+          url={c.req.url}
+          locale={locale}
+          bodyScript={customBodyScript}
+          headScript={customHeaderScript}
+          favicon={!!favicon}
+          faviconLink={faviconIsUrl ? favicon : undefined}
+          customPages={customPages}
+        />
+      ),
     );
   });
 
