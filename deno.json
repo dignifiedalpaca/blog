@@ -20,6 +20,8 @@
     "include": [
       "LICENSE",
       "README.md",
+      "server.tsx",
+      "types.ts",
       "mod.tsx",
       "templates/",
       "blog.ts",
@@ -30,11 +32,18 @@
       "article_generator.ts",
       "cli.ts"
     ],
-    "exclude": ["favicon.ico", "posts/", "drafts/", "pages/"]
+    "exclude": [
+      "favicon.ico",
+      "posts/",
+      "drafts/",
+      "pages/"
+    ]
   },
   "deploy": {
     "project": "d10affa2-1369-4a90-aba2-cc9ac3edf4cf",
-    "exclude": ["**/node_modules"],
+    "exclude": [
+      "**/node_modules"
+    ],
     "include": [],
     "entrypoint": "main.tsx"
   }

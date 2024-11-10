@@ -18,7 +18,7 @@ import { ArticlePage } from "./templates/article.tsx";
 import { Articles } from "./templates/components/articles.tsx";
 import { storeArticle } from "./article_generator.ts";
 import { CustomPage } from "./templates/customPage.tsx";
-import type { SmallblogParams } from "./options.ts";
+import type { SmallblogParams } from "./types.ts";
 
 export function createServer(params: SmallblogParams) {
   const server = new Hono();

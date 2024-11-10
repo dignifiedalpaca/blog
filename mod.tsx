@@ -1,5 +1,5 @@
 /** @jsxImportSource hono/jsx */
-import type { SmallblogParams } from "./options.ts";
+import type { SmallblogParams } from "./types.ts";
 import { createServer } from "./server.tsx";
 import { createCli } from "./cli.ts";
 
