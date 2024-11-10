@@ -26,6 +26,7 @@ function getMarkdown(fileName: string, postsFolder: string) {
 export function getArticles(
   postsFolder: string,
   routeBase?: string,
+  defaultAuthors?: string[],
 ): Article[] {
   let postsNames: string[] = [];
   try {
@@ -44,6 +45,7 @@ export function getArticles(
         name.slice(0, -3),
         getMarkdown(name, postsFolder),
         routeBase,
+        defaultAuthors,
       );
     })
     .filter((article) => article.metadata.published !== false)
@@ -140,11 +142,14 @@ export function getArticle(
   name: string,
   postsFolder: string,
   routeBase?: string,
+  defaultAuthors?: string[],
 ): Article {
   const article = new Article(
     routeBase || postsFolder,
     name,
     getMarkdown(name + ".md", postsFolder),
+    routeBase,
+    defaultAuthors,
   );
   return article;
 }
@@ -201,7 +206,10 @@ export class Metadata {
       section,
       order,
     }: MetadataProps,
+    defaultAuthors?: string[],
   ) {
+    console.log("defaultAuthors in metadata:", defaultAuthors);
+    console.log("authors in metadata:", authors, author);
     let fileStats;
     try {
       fileStats = Deno.statSync(filePath);
@@ -211,7 +219,8 @@ export class Metadata {
     this.title = title;
     this.description = description;
 
-    const actualAuthors = authors || author;
+    const actualAuthors = authors || author || defaultAuthors;
+    console.log("actualAuthors in metadata:", actualAuthors);
     if (typeof actualAuthors === "string") {
       this.authors = [actualAuthors];
     } else {
@@ -258,16 +267,24 @@ type ParsedMarkdown = {
   body: string;
 };
 
-function parseMd(markdownData: string, filePath: string): ParsedMarkdown {
+function parseMd(
+  markdownData: string,
+  filePath: string,
+  defaultAuthors?: string[],
+): ParsedMarkdown {
   if (fm.test(markdownData)) {
     const data = fm.extractYaml(markdownData);
     return {
-      metadata: new Metadata(filePath, data.attrs as MetadataProps),
+      metadata: new Metadata(
+        filePath,
+        data.attrs as MetadataProps,
+        defaultAuthors,
+      ),
       body: removingTitleFromMD(data.body).trim(),
     };
   }
   return {
-    metadata: new Metadata(filePath, {}),
+    metadata: new Metadata(filePath, {}, defaultAuthors),
     body: removingTitleFromMD(markdownData).trim(),
   };
 }
@@ -296,6 +313,7 @@ export class Article {
     name: string,
     content: string,
     routeBase: string = postsFolder,
+    defaultAuthors?: string[],
     title?: string,
     html?: string,
     metadata?: Metadata,
@@ -304,6 +322,7 @@ export class Article {
     const { metadata: parsedMetadata, body: cleanedContent } = parseMd(
       content,
       path.join(postsFolder, name + ".md"),
+      defaultAuthors,
     );
 
     this.metadata = metadata || parsedMetadata;

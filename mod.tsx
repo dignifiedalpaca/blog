@@ -46,6 +46,8 @@ export type SmallblogOptions = {
   indexTitle?: string;
   /** The subtitle of the index page (ex: `A nice demo of smallblog`, no default). */
   indexSubtitle?: string;
+  /** The authors of the index page (ex: `["Tayzen"]`, empty list by default). */
+  defaultAuthors?: string[];
   /** The message to display when there are no articles (ex: `Coming soon!`, default is a message
    * to help you starting). */
   noArticlesMessage?: string;
@@ -78,9 +80,10 @@ function servePage(
     customHeaderScript,
     customBodyScript,
     favicon,
+    defaultAuthors,
   } = opts;
 
-  const page = getArticle(name, folder);
+  const page = getArticle(name, folder, undefined, defaultAuthors);
   const renderedPage = page.html;
 
   if (!renderedPage) {
@@ -188,6 +191,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     cacheEnabled = true,
     indexTitle,
     indexSubtitle,
+    defaultAuthors = [],
     locale,
     customHeaderScript,
     customBodyScript,
@@ -220,6 +224,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     pagesFolder,
     siteTitle,
     siteDescription,
+    defaultAuthors,
     cacheEnabled,
   };
 
@@ -297,7 +302,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
     const page = c.req.query("page") || 1;
     const search = c.req.query("search") || "";
     const itemsPerPage = 5;
-    const posts = getArticles(postsFolder);
+    const posts = getArticles(postsFolder, undefined, defaultAuthors);
 
     const filteredPosts = filterArticlesFTS(posts, search);
 
@@ -388,7 +393,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
 
   app.get("/rss.xml", (c) => {
     const baseUrl = getBaseUrl(c);
-    const articles = getArticles(postsFolder);
+    const articles = getArticles(postsFolder, undefined, defaultAuthors);
     const xml = getRSS(baseUrl, articles);
     return new Response(xml, {
       headers: {
@@ -399,7 +404,7 @@ export function createSmallblog(options: SmallblogOptions = {}): App {
 
   app.get("/sitemap.xml", (c) => {
     const baseUrl = getBaseUrl(c);
-    const articles = getArticles(postsFolder);
+    const articles = getArticles(postsFolder, undefined, defaultAuthors);
     const customPages = getArticles(pagesFolder, "/").filter(
       (page) => !!page?.metadata?.redirect !== true,
     );
