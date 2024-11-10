@@ -1,7 +1,7 @@
 {
   "name": "@tayzendev/smallblog",
   "version": "0.10.7",
-  "exports": "./mod.tsx",
+  "exports": "./mod.ts",
   "imports": {
     "@libs/xml": "jsr:@libs/xml@^6.0.0",
     "@smallweb/types": "jsr:@smallweb/types@^0.1.0",
@@ -22,7 +22,7 @@
       "README.md",
       "server.tsx",
       "types.ts",
-      "mod.tsx",
+      "mod.ts",
       "templates/",
       "blog.ts",
       "sitemap.ts",
@@ -45,6 +45,6 @@
       "**/node_modules"
     ],
     "include": [],
-    "entrypoint": "main.tsx"
+    "entrypoint": "main.ts"
   }
 }

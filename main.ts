@@ -1,5 +1,5 @@
 import { html } from "hono/html";
-import { Smallblog } from "./mod.tsx";
+import { Smallblog } from "./mod.ts";
 
 const customBodyScript = await html`<script
   defer
