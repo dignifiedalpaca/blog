@@ -78,7 +78,7 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
 
   program
     .command("list")
-    .alias("l")
+    .alias("ls")
     .description("List all blog posts")
     .option("-D, --drafts", "List only draft posts")
     .option("-P", "--published", "List only published posts")
@@ -104,6 +104,7 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
 
   program
     .command("archive")
+    .alias("a")
     .description("Archive a blog post as a draft")
     .argument("<name>", "The id of the post (no space allowed)")
     .action((fileId) => {
@@ -126,6 +127,7 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
 
   program
     .command("remove")
+    .alias("rm")
     .description(
       "Remove a blog post. You can only delete a draft post. If you want to delete a published post, use `smallblog archive` first.",
     )
@@ -154,7 +156,10 @@ export function generateCli(postsFolder: string, draftsFolder: string): CLI {
 
   program
     .command("clear-cache")
-    .description("A method to clear the cache of smallblog")
+    .alias("cc")
+    .description(
+      "A method to clear the cache of smallblog (must run server-side)",
+    )
     .action(() => {
       caches
         .delete("smallblog")
