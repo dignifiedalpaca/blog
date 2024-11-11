@@ -1,7 +1,7 @@
 {
   "name": "@tayzendev/smallblog",
   "version": "0.10.7",
-  "exports": "./mod.tsx",
+  "exports": "./mod.ts",
   "imports": {
     "@libs/xml": "jsr:@libs/xml@^6.0.0",
     "@smallweb/types": "jsr:@smallweb/types@^0.1.0",
@@ -20,7 +20,9 @@
     "include": [
       "LICENSE",
       "README.md",
-      "mod.tsx",
+      "server.tsx",
+      "types.ts",
+      "mod.ts",
       "templates/",
       "blog.ts",
       "sitemap.ts",
@@ -30,12 +32,19 @@
       "article_generator.ts",
       "cli.ts"
     ],
-    "exclude": ["favicon.ico", "posts/", "drafts/", "pages/"]
+    "exclude": [
+      "favicon.ico",
+      "posts/",
+      "drafts/",
+      "pages/"
+    ]
   },
   "deploy": {
     "project": "d10affa2-1369-4a90-aba2-cc9ac3edf4cf",
-    "exclude": ["**/node_modules"],
+    "exclude": [
+      "**/node_modules"
+    ],
     "include": [],
-    "entrypoint": "main.tsx"
+    "entrypoint": "main.ts"
   }
 }
