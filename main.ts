@@ -1,5 +1,5 @@
 import { html } from "hono/html";
-import { createSmallblog } from "./mod.tsx";
+import { Smallblog } from "./mod.ts";
 
 const customBodyScript = await html`<script
   defer
@@ -7,7 +7,7 @@ const customBodyScript = await html`<script
   src="https://plausible.io/js/script.js"
 ></script>`;
 
-export default createSmallblog({
+export default new Smallblog({
   favicon: "favicon.ico",
   siteDescription:
     "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",

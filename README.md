@@ -28,9 +28,9 @@ A demo is available at this URL: [Smallblog Demo](https://smallblog-demo.tayzen.
 Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.10.7";
+import { Smallblog } from "jsr:@tayzendev/smallblog@0.10.7";
 
-export default createSmallblog();
+export default new Smallblog()
 ```
 
 You're already done! Have fun with your new blog!
@@ -163,16 +163,16 @@ These new pages are accessible from the navbar (as you can see in the screenshot
 Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.10.7";
+import { Smallblog } from "jsr:@tayzendev/smallblog@0.10.7";
 
-export default createSmallblog();
+export default new Smallblog();
 ```
 
 A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { createSmallblog } from "jsr:@tayzendev/smallblog@0.10.7";
+import { Smallblog } from "jsr:@tayzendev/smallblog@0.10.7";
 
 const customBodyScript = await html`<script
   defer
@@ -180,7 +180,7 @@ const customBodyScript = await html`<script
   src="https://plausible.io/js/script.js"
 ></script>`;
 
-export default createSmallblog({
+export default new Smallblog({
   faviconPath: "favicon.ico",
   siteDescription:
     "A blog to demonstrate the capabilities of smallblog, the blog engine build for smallweb",
