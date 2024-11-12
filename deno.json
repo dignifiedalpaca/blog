@@ -1,6 +1,6 @@
 {
   "name": "@tayzendev/smallblog",
-  "version": "0.10.7",
+  "version": "1.0.0",
   "exports": "./mod.ts",
   "imports": {
     "@libs/xml": "jsr:@libs/xml@^6.0.0",
@@ -32,18 +32,11 @@
       "article_generator.ts",
       "cli.ts"
     ],
-    "exclude": [
-      "favicon.ico",
-      "posts/",
-      "drafts/",
-      "pages/"
-    ]
+    "exclude": ["favicon.ico", "posts/", "drafts/", "pages/"]
   },
   "deploy": {
     "project": "d10affa2-1369-4a90-aba2-cc9ac3edf4cf",
-    "exclude": [
-      "**/node_modules"
-    ],
+    "exclude": ["**/node_modules"],
     "include": [],
     "entrypoint": "main.ts"
   }
