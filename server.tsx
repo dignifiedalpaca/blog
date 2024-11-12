@@ -19,16 +19,16 @@ import { Articles } from "./templates/components/articles.tsx";
 import { storeArticle } from "./article_generator.ts";
 import { CustomPage } from "./templates/customPage.tsx";
 import { ErrorPage } from "./templates/error.tsx";
-import type { SmallblogParams } from "./types.ts";
+import type { SmallblogConfig } from "./types.ts";
 
-export function createServer(params: SmallblogParams) {
+export function createServer(config: SmallblogConfig) {
   const server = new Hono();
 
-  const postsRoute = path.join("/", params.postsFolder);
-  const draftsRoute = path.join("/", params.draftsFolder);
-  const faviconIsUrl = isUrl(params.favicon || "");
+  const postsRoute = path.join("/", config.postsFolder);
+  const draftsRoute = path.join("/", config.draftsFolder);
+  const faviconIsUrl = isUrl(config.favicon || "");
 
-  const customPages = getArticles(params.pagesFolder, "/")
+  const customPages = getArticles(config.pagesFolder, "/")
     .map((article) => ({
       name: article.title,
       path: article.metadata?.redirect || article.url,
@@ -45,7 +45,7 @@ export function createServer(params: SmallblogParams) {
   server.use(compress());
 
   server.use("*", async (c, next) => {
-    if (!params.cacheEnabled) {
+    if (!config.cacheEnabled) {
       await next();
       return;
     }
@@ -54,7 +54,7 @@ export function createServer(params: SmallblogParams) {
     const urlPath = new URL(c.req.url).pathname;
 
     if (urlPath === "/favicon" && !faviconIsUrl) {
-      filePath = params.favicon;
+      filePath = config.favicon;
     }
     if (urlPath.startsWith(postsRoute)) {
       filePath = path.join(
@@ -69,12 +69,12 @@ export function createServer(params: SmallblogParams) {
       );
     }
     if (urlPath === "/") {
-      filePath = params.postsFolder;
+      filePath = config.postsFolder;
     }
     if (urlPath.startsWith("/")) {
       const filename = c.req.path.slice(1);
       const tmpPath = path.join(
-        params.pagesFolder,
+        config.pagesFolder,
         filename + (path.extname(filename) ? "" : ".md"),
       );
       if (filename && fs.existsSync(tmpPath)) {
@@ -90,7 +90,7 @@ export function createServer(params: SmallblogParams) {
     const cachedResponse = await cache.match(c.req.url);
 
     const lastUpdateTime = new Date(
-      (await getMtime(filePath, params.pagesFolder)) * 1000,
+      (await getMtime(filePath, config.pagesFolder)) * 1000,
     );
 
     if (cachedResponse) {
@@ -117,9 +117,9 @@ export function createServer(params: SmallblogParams) {
     const search = c.req.query("search") || "";
     const itemsPerPage = 5;
     const posts = getArticles(
-      params.postsFolder,
+      config.postsFolder,
       undefined,
-      params.defaultAuthors,
+      config.defaultAuthors,
     );
 
     const filteredPosts = filterArticlesFTS(posts, search);
@@ -150,17 +150,17 @@ export function createServer(params: SmallblogParams) {
           page={Number(page)}
           itemsPerPage={itemsPerPage}
           search={search}
-          siteTitle={params.siteTitle}
-          indexTitle={params.indexTitle}
-          indexSubtitle={params.indexSubtitle}
+          siteTitle={config.siteTitle}
+          indexTitle={config.indexTitle}
+          indexSubtitle={config.indexSubtitle}
           url={c.req.url}
-          locale={params.locale}
-          description={params.siteDescription}
-          noArticlesMessage={await getNoArticlesMessage(params)}
-          bodyScript={params.customBodyScript}
-          headScript={params.customHeaderScript}
-          favicon={!!params.favicon}
-          faviconLink={faviconIsUrl ? params.favicon : undefined}
+          locale={config.locale}
+          description={config.siteDescription}
+          noArticlesMessage={await getNoArticlesMessage(config)}
+          bodyScript={config.customBodyScript}
+          headScript={config.customHeaderScript}
+          favicon={!!config.favicon}
+          faviconLink={faviconIsUrl ? config.favicon : undefined}
           customPages={customPages}
         />
       ),
@@ -176,15 +176,15 @@ export function createServer(params: SmallblogParams) {
     }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
-      return serveStaticFile(filename, params.postsFolder);
+      return serveStaticFile(filename, config.postsFolder);
     }
     return servePage(
       c,
       filename,
-      params.postsFolder,
+      config.postsFolder,
       faviconIsUrl,
       customPages,
-      params,
+      config,
     );
   });
 
@@ -197,24 +197,24 @@ export function createServer(params: SmallblogParams) {
     }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
-      return serveStaticFile(filename, params.draftsFolder);
+      return serveStaticFile(filename, config.draftsFolder);
     }
     return servePage(
       c,
       filename,
-      params.draftsFolder,
+      config.draftsFolder,
       faviconIsUrl,
       customPages,
-      params,
+      config,
     );
   });
 
   server.get("/rss.xml", (c) => {
     const baseUrl = getBaseUrl(c);
     const articles = getArticles(
-      params.postsFolder,
+      config.postsFolder,
       undefined,
-      params.defaultAuthors,
+      config.defaultAuthors,
     );
     const xml = getRSS(baseUrl, articles);
     return new Response(xml, {
@@ -227,11 +227,11 @@ export function createServer(params: SmallblogParams) {
   server.get("/sitemap.xml", (c) => {
     const baseUrl = getBaseUrl(c);
     const articles = getArticles(
-      params.postsFolder,
+      config.postsFolder,
       undefined,
-      params.defaultAuthors,
+      config.defaultAuthors,
     );
-    const customPages = getArticles(params.pagesFolder, "/").filter(
+    const customPages = getArticles(config.pagesFolder, "/").filter(
       (page) => !!page?.metadata?.redirect !== true,
     );
     const xml = getSitemap(baseUrl, articles.concat(customPages));
@@ -262,15 +262,15 @@ export function createServer(params: SmallblogParams) {
   });
 
   server.on("GET", ["/favicon", "/favicon.ico"], () => {
-    return serveStaticFile(params.favicon);
+    return serveStaticFile(config.favicon);
   });
 
   server.get("/init", async (c) => {
-    fs.ensureDirSync(params.draftsFolder);
-    fs.ensureDirSync(params.postsFolder);
-    fs.ensureDirSync(params.pagesFolder);
-    if (await isDirectoryEmpty(params.postsFolder)) {
-      storeArticle(params.postsFolder, "first-article.md", {
+    fs.ensureDirSync(config.draftsFolder);
+    fs.ensureDirSync(config.postsFolder);
+    fs.ensureDirSync(config.pagesFolder);
+    if (await isDirectoryEmpty(config.postsFolder)) {
+      storeArticle(config.postsFolder, "first-article.md", {
         title: "My first article",
         content:
           "This is my first article. This is an image:\n\n![RSS](first-article/exampleImage.svg)",
@@ -289,15 +289,15 @@ export function createServer(params: SmallblogParams) {
     }
     if (path.extname(filename)) {
       // if the name contains an ext this is not an article
-      return serveStaticFile(filename, params.pagesFolder);
+      return serveStaticFile(filename, config.pagesFolder);
     }
     return servePage(
       c,
       filename,
-      params.pagesFolder,
+      config.pagesFolder,
       faviconIsUrl,
       customPages,
-      params,
+      config,
       false,
     );
   });
@@ -310,13 +310,13 @@ export function createServer(params: SmallblogParams) {
         <ErrorPage
           errorNumber={typeof err.cause === "number" ? err.cause : 500}
           errorMessage={err.message}
-          siteTitle={params.siteTitle}
+          siteTitle={config.siteTitle}
           url={c.req.url}
-          locale={params.locale}
-          bodyScript={params.customBodyScript}
-          headScript={params.customHeaderScript}
-          favicon={!!params.favicon}
-          faviconLink={faviconIsUrl ? params.favicon : undefined}
+          locale={config.locale}
+          bodyScript={config.customBodyScript}
+          headScript={config.customHeaderScript}
+          favicon={!!config.favicon}
+          faviconLink={faviconIsUrl ? config.favicon : undefined}
           customPages={customPages}
         />
       ),
@@ -330,13 +330,13 @@ export function createServer(params: SmallblogParams) {
         <ErrorPage
           errorNumber={404}
           errorMessage="Not found"
-          siteTitle={params.siteTitle}
+          siteTitle={config.siteTitle}
           url={c.req.url}
-          locale={params.locale}
-          bodyScript={params.customBodyScript}
-          headScript={params.customHeaderScript}
-          favicon={!!params.favicon}
-          faviconLink={faviconIsUrl ? params.favicon : undefined}
+          locale={config.locale}
+          bodyScript={config.customBodyScript}
+          headScript={config.customHeaderScript}
+          favicon={!!config.favicon}
+          faviconLink={faviconIsUrl ? config.favicon : undefined}
           customPages={customPages}
         />
       ),
@@ -356,7 +356,7 @@ function servePage(
   folder: string,
   faviconIsUrl: boolean,
   customPages: { name: string; path: string; external: boolean }[] = [],
-  opts: SmallblogParams,
+  opts: SmallblogConfig,
   article: boolean = true,
 ) {
   const {
@@ -434,7 +434,7 @@ function serveStaticFile(name?: string, folder?: string) {
   }
 }
 
-async function getNoArticlesMessage(opts: SmallblogParams) {
+async function getNoArticlesMessage(opts: SmallblogConfig) {
   const { noArticlesMessage, postsFolder, draftsFolder } = opts;
 
   if (noArticlesMessage) {

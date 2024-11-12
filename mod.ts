@@ -1,4 +1,4 @@
-import type { SmallblogParams } from "./types.ts";
+import type { SmallblogConfig } from "./types.ts";
 import { createServer } from "./server.tsx";
 import { createCli } from "./cli.ts";
 
@@ -6,7 +6,7 @@ export class Smallblog {
   private server;
   private cli;
 
-  constructor(options: Partial<SmallblogParams> = {}) {
+  constructor(options: Partial<SmallblogConfig> = {}) {
     const {
       postsFolder = "posts/",
       draftsFolder = "drafts/",
