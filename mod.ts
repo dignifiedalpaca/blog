@@ -26,7 +26,7 @@ export class Smallblog {
       cacheEnabled = true,
       indexTitle,
       indexSubtitle,
-      defaultAuthors = [],
+      defaultAuthors,
       locale,
       customHeaderScript,
       customBodyScript,
@@ -63,6 +63,9 @@ export class Smallblog {
    * @param args the arguments of the function
    */
   run = (args: string[]): void => {
+    console.log("run");
+    console.log(args);
+    console.log(this.cli);
     return this.cli(args);
   };
 }
