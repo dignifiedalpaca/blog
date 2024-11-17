@@ -489,6 +489,7 @@ export const style = html`
     }
 
     .markdown-body img {
+      background-color: inherit;
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
     }
