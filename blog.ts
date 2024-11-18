@@ -237,26 +237,33 @@ export class Metadata {
 }
 
 function convertNameToLabel(name: string) {
-  const nameWithSpace = name.split("_").join(" ");
+  const nameWithoutStartingUnderscore = name.startsWith("_") ? name.slice(1) : name;
+  const nameWithSpace = nameWithoutStartingUnderscore.split("_").join(" ");
   return nameWithSpace.charAt(0).toUpperCase() + nameWithSpace.slice(1);
 }
 
-function removingTitleFromMD(markdown: string) {
+type ClearedMarkdown = {
+  body: string;
+  title?: string;
+};
+
+function removingTitleFromMD(markdown: string): ClearedMarkdown {
   const titleRegex = /^# +\S+[\S ]*/m;
   const titleMatched = markdown.match(titleRegex);
   if (!titleMatched) {
-    return markdown;
+    return { body: markdown };
   }
   const titlePosition = markdown.indexOf(titleMatched[0]);
   if (titlePosition === undefined || titlePosition < 0) {
-    return markdown;
+    return { body: markdown };
   }
-  return markdown.substring(titlePosition + titleMatched[0].length);
+  return { title: titleMatched[0].substring(2), body: markdown.substring(titlePosition + titleMatched[0].length) };
 }
 
 type ParsedMarkdown = {
   metadata: Metadata;
   body: string;
+  title?: string;
 };
 
 function parseMd(
@@ -266,18 +273,23 @@ function parseMd(
 ): ParsedMarkdown {
   if (fm.test(markdownData)) {
     const data = fm.extractYaml(markdownData);
+    const { title, body } = removingTitleFromMD(data.body);
     return {
       metadata: new Metadata(
         filePath,
         data.attrs as MetadataProps,
         defaultAuthors,
       ),
-      body: removingTitleFromMD(data.body).trim(),
+      body: body.trim(),
+      title,
     };
   }
+  const metadata = new Metadata(filePath, {}, defaultAuthors)
+  const { title, body } = removingTitleFromMD(markdownData);
   return {
-    metadata: new Metadata(filePath, {}, defaultAuthors),
-    body: removingTitleFromMD(markdownData).trim(),
+    metadata ,
+    body: body.trim(),
+    title
   };
 }
 
@@ -311,7 +323,7 @@ export class Article {
     metadata?: Metadata,
     timeToReadMinutes?: number | string,
   ) {
-    const { metadata: parsedMetadata, body: cleanedContent } = parseMd(
+    const { metadata: parsedMetadata, body: cleanedContent, title: h1Title } = parseMd(
       content,
       path.join(postsFolder, name + ".md"),
       defaultAuthors,
@@ -320,7 +332,7 @@ export class Article {
     this.metadata = metadata || parsedMetadata;
     this.name = name;
     this.content = content;
-    this.title = title || this.metadata.title || convertNameToLabel(name);
+    this.title = title || this.metadata.title || h1Title || convertNameToLabel(name);
     this.preview = this.metadata.preview
       ? customRender(this.metadata.preview, true)
       : customRender(
