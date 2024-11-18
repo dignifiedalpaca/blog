@@ -154,23 +154,6 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
       }
     });
 
-  program
-    .command("clear-cache")
-    .alias("cc")
-    .description(
-      "A method to clear the cache of smallblog (must run server-side)",
-    )
-    .action(() => {
-      caches
-        .delete("smallblog")
-        .then(() => {
-          console.log("Cache cleared!");
-        })
-        .catch(() => {
-          console.log("Cache not found.");
-        });
-    });
-
   function run(args: string[]) {
     program.parse(args, { from: "user" });
   }

@@ -15,6 +15,5 @@ export default new Smallblog({
   indexTitle: "A blog about nothing",
   indexSubtitle: "A nice demo of smallblog",
   customBodyScript,
-  cacheEnabled: false,
   defaultAuthors: ["Tayzen"],
 });

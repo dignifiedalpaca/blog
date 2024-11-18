@@ -13,7 +13,7 @@ import {
   getRSS,
   getSitemap,
 } from "./blog.ts";
-import { isDirectoryEmpty, getMtime, isUrl } from "./utils.ts";
+import { isDirectoryEmpty, isUrl } from "./utils.ts";
 import { ArticlePage } from "./templates/article.tsx";
 import { Articles } from "./templates/components/articles.tsx";
 import { storeArticle } from "./article_generator.ts";
@@ -43,74 +43,6 @@ export function createServer(config: SmallblogConfig) {
     });
 
   server.use(compress());
-
-  server.use("*", async (c, next) => {
-    if (!config.cacheEnabled) {
-      await next();
-      return;
-    }
-
-    let filePath: string | undefined = undefined;
-    const urlPath = new URL(c.req.url).pathname;
-
-    if (urlPath === "/favicon" && !faviconIsUrl) {
-      filePath = config.favicon;
-    }
-    if (urlPath.startsWith(postsRoute)) {
-      filePath = path.join(
-        ".",
-        urlPath + (path.extname(c.req.url) ? "" : ".md"),
-      );
-    }
-    if (urlPath.startsWith(draftsRoute)) {
-      filePath = path.join(
-        ".",
-        urlPath + (path.extname(c.req.url) ? "" : ".md"),
-      );
-    }
-    if (urlPath === "/") {
-      filePath = config.postsFolder;
-    }
-    if (urlPath.startsWith("/")) {
-      const filename = c.req.path.slice(1);
-      const tmpPath = path.join(
-        config.pagesFolder,
-        filename + (path.extname(filename) ? "" : ".md"),
-      );
-      if (filename && fs.existsSync(tmpPath)) {
-        filePath = tmpPath;
-      }
-    }
-    if (!filePath || !fs.existsSync(filePath)) {
-      await next();
-      return;
-    }
-
-    const cache = await caches.open("smallblog");
-    const cachedResponse = await cache.match(c.req.url);
-
-    const lastUpdateTime = new Date(
-      (await getMtime(filePath, config.pagesFolder)) * 1000,
-    );
-
-    if (cachedResponse) {
-      const cacheLastUpdate = new Date(
-        cachedResponse.headers.get("X-Last-Update") || 0,
-      );
-
-      if (cacheLastUpdate >= lastUpdateTime) {
-        return cachedResponse;
-      } else {
-        await cache.delete(c.req.url);
-      }
-    }
-
-    await next();
-
-    const response = c.res.clone();
-    response.headers.set("X-Last-Update", lastUpdateTime.toISOString());
-    await cache.put(c.req.url, response);
-  });
 
   server.get("/", async (c) => {
     const page = c.req.query("page") || 1;

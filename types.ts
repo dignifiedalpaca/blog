@@ -35,6 +35,4 @@ export type SmallblogConfig = {
   customHeaderScript?: string;
   /** The script to add to the body of your blog. */
   customBodyScript?: string;
-  /** Whether to cache the responses or not. */
-  cacheEnabled: boolean;
 };

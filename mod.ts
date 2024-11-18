@@ -23,7 +23,6 @@ export class Smallblog {
       favicon,
       siteTitle = "Smallblog",
       siteDescription = `The blog: ${siteTitle}`,
-      cacheEnabled = true,
       indexTitle,
       indexSubtitle,
       defaultAuthors,
@@ -39,7 +38,6 @@ export class Smallblog {
       favicon,
       siteTitle,
       siteDescription,
-      cacheEnabled,
       indexSubtitle,
       indexTitle,
       defaultAuthors,
@@ -63,9 +61,6 @@ export class Smallblog {
    * @param args the arguments of the function
    */
   run = (args: string[]): void => {
-    console.log("run");
-    console.log(args);
-    console.log(this.cli);
     return this.cli(args);
   };
 }
