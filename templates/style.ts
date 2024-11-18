@@ -6,6 +6,7 @@ export const style = html`
   <style>
     :root {
       --color-text: #bfc7d5;
+      --color-caution-alert: #FF5263;
     }
 
     main {
@@ -509,6 +510,14 @@ export const style = html`
     .markdown-body video {
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-caution .markdown-alert-title {
+      color: var(--color-caution-alert);
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-caution {
+      border-left-color: var(--color-caution-alert);
     }
   </style>
 `;
