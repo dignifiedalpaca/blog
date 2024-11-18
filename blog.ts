@@ -30,7 +30,7 @@ export function getArticles(
 ): Article[] {
   let postsNames: string[] = [];
   try {
-    for (const entry of fs.expandGlobSync(path.join(postsFolder, "*.md"))) {
+    for (const entry of fs.expandGlobSync(path.join(postsFolder, "[!_]*.md"))) {
       postsNames = postsNames.concat(entry.name);
     }
   } catch (e) {
@@ -48,7 +48,6 @@ export function getArticles(
         defaultAuthors,
       );
     })
-    .filter((article) => article.metadata.published !== false)
     .filter((article) => article.content !== "");
 
   return articles.sort((a, b) => {
@@ -167,7 +166,6 @@ type MetadataProps = {
   authors?: string | string[];
   tag?: string | string[];
   tags?: string | string[];
-  published?: boolean;
   date?: Date;
   modificationDate?: Date;
   redirect?: string;
@@ -181,7 +179,6 @@ export class Metadata {
   description?: string;
   authors?: string[];
   tags?: string[];
-  published?: boolean;
   date?: Date;
   modificationDate?: Date;
   redirect?: string;
@@ -198,7 +195,6 @@ export class Metadata {
       author,
       tags,
       tag,
-      published,
       date,
       modificationDate,
       redirect,
@@ -231,7 +227,6 @@ export class Metadata {
       this.tags = actualTags;
     }
 
-    this.published = published;
     this.date = date || fileStats?.birthtime || undefined;
     this.modificationDate = modificationDate || fileStats?.mtime || undefined;
     this.redirect = redirect;

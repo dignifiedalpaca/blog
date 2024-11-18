@@ -18,7 +18,6 @@ export class Smallblog {
   constructor(config: Partial<SmallblogConfig> = {}) {
     const {
       postsFolder = "data/posts/",
-      draftsFolder = "data/drafts/",
       pagesFolder = "data/pages/",
       favicon,
       siteTitle = "Smallblog",
@@ -33,7 +32,6 @@ export class Smallblog {
 
     this.server = createServer({
       postsFolder,
-      draftsFolder,
       pagesFolder,
       favicon,
       siteTitle,
@@ -45,7 +43,7 @@ export class Smallblog {
       customBodyScript,
       customHeaderScript,
     });
-    this.cli = createCli(postsFolder, draftsFolder);
+    this.cli = createCli(postsFolder);
   }
 
   /**

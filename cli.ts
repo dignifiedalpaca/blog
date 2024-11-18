@@ -6,7 +6,7 @@ import manifest from "./deno.json" with { type: "json" };
 
 type CLI = (args: string[]) => void;
 
-export function createCli(postsFolder: string, draftsFolder: string): CLI {
+export function createCli(postsFolder: string): CLI {
   const program = new Command();
 
   program
@@ -34,7 +34,9 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
     .action((fileId, options) => {
       console.log("Creating post...");
       try {
-        const folder = options.published ? postsFolder : draftsFolder;
+        const underscoreToAdd = options.published ? false : !fileId.startsWith("_");
+        const filename = path.join(postsFolder, (underscoreToAdd ? "_" : "") + fileId + ".md");
+        const folder = postsFolder;
         const params = {
           title: options.title as string,
           content: options.content as string,
@@ -45,7 +47,7 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
           date: options.date as string,
           section: options.section as string,
         };
-        storeArticle(folder, fileId + ".md", params);
+        storeArticle(folder, filename, params);
         console.log("Post created.");
       } catch (e) {
         console.error("Error while creating post:", e);
@@ -62,12 +64,8 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
       console.log("Publishing post...");
       try {
         fs.moveSync(
-          path.join(draftsFolder, fileId + ".md"),
-          path.join(postsFolder, fileId + ".md"),
-        );
-        fs.moveSync(
-          path.join(draftsFolder, fileId),
-          path.join(postsFolder, fileId),
+          path.join(fileId + ".md"),
+          path.join((!fileId.startsWith("_") ? fileId : fileId.substring(1)) + ".md"),
         );
         console.log("Post published.");
       } catch (e) {
@@ -88,15 +86,15 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
       if (options.all || options.published || !options.drafts) {
         console.log("");
         console.log("Published:");
-        for (const file of fs.expandGlobSync(path.join(postsFolder, "*.md"))) {
+        for (const file of fs.expandGlobSync(path.join(postsFolder, "[!_]*.md"))) {
           console.log("    - ", file.name.replace(".md", ""));
         }
       }
       if (options.all || options.drafts || !options.published) {
         console.log("");
         console.log("Drafts:");
-        for (const file of fs.expandGlobSync(path.join(draftsFolder, "*.md"))) {
-          console.log("    - ", file.name.replace(".md", ""));
+        for (const file of fs.expandGlobSync(path.join(postsFolder, "_*.md"))) {
+          console.log("    - ", file.name.replace(".md", "").replace("_", ""));
         }
       }
       console.log("");
@@ -112,11 +110,7 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
       try {
         fs.moveSync(
           path.join(postsFolder, fileId + ".md"),
-          path.join(draftsFolder, fileId + ".md"),
-        );
-        fs.moveSync(
-          path.join(postsFolder, fileId),
-          path.join(draftsFolder, fileId),
+          path.join((fileId.startsWith("_") ? fileId : "_" + fileId) + ".md"),
         );
         console.log("Post archived.");
       } catch (e) {
@@ -129,27 +123,16 @@ export function createCli(postsFolder: string, draftsFolder: string): CLI {
     .command("remove")
     .alias("rm")
     .description(
-      "Remove a blog post. You can only delete a draft post. If you want to delete a published post, use `smallblog archive` first.",
+      "Remove a blog post. You can only delete a draft post. If you want to delete a published post, use `smallblog archive` first. This does NOT delete the images or videos of the post, You should delete them manually.",
     )
     .argument("<name>", "The id of the post (no space allowed)")
     .action((fileId) => {
       console.log("Removing post...");
-      let errors = 0;
       try {
-        Deno.removeSync(path.join(draftsFolder, fileId + ".md"));
+        Deno.removeSync(path.join(postsFolder, "_" + fileId + ".md"));
         console.log("Post removed.");
       } catch {
         console.log("Post not found.");
-        errors++;
-      }
-      try {
-        Deno.removeSync(path.join(draftsFolder, fileId), { recursive: true });
-        console.log("Resources folder removed.");
-      } catch {
-        console.log("Resources folder not found.");
-        errors++;
-      }
-      if (errors == 2) {
         Deno.exit(1);
       }
     });

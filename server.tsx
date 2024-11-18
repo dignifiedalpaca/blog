@@ -25,7 +25,6 @@ export function createServer(config: SmallblogConfig) {
   const server = new Hono();
 
   const postsRoute = path.join("/", config.postsFolder);
-  const draftsRoute = path.join("/", config.draftsFolder);
   const faviconIsUrl = isUrl(config.favicon || "");
 
   const customPages = getArticles(config.pagesFolder, "/")
@@ -120,27 +119,6 @@ export function createServer(config: SmallblogConfig) {
     );
   });
 
-  server.get(path.join(draftsRoute, ":filename{.+$}"), (c) => {
-    const filename = c.req.param("filename");
-
-    if (!filename) {
-      // if the route is /article/
-      return new Response("Not found", { status: 404 });
-    }
-    if (path.extname(filename)) {
-      // if the name contains an ext this is not an article
-      return serveStaticFile(filename, config.draftsFolder);
-    }
-    return servePage(
-      c,
-      filename,
-      config.draftsFolder,
-      faviconIsUrl,
-      customPages,
-      config,
-    );
-  });
-
   server.get("/rss.xml", (c) => {
     const baseUrl = getBaseUrl(c);
     const articles = getArticles(
@@ -181,7 +159,7 @@ export function createServer(config: SmallblogConfig) {
     const baseUrl = getBaseUrl(c);
     const robotTxt = `
       User-agent: *
-      Disallow: /drafts
+      Disallow: ${new URL(path.join(postsRoute, "_*"), baseUrl).href}
       Sitemap: ${new URL("/sitemap.xml", baseUrl).href}
       `
       .replace(/  +/g, "")
@@ -198,7 +176,6 @@ export function createServer(config: SmallblogConfig) {
   });
 
   server.get("/init", async (c) => {
-    fs.ensureDirSync(config.draftsFolder);
     fs.ensureDirSync(config.postsFolder);
     fs.ensureDirSync(config.pagesFolder);
     if (await isDirectoryEmpty(config.postsFolder)) {
@@ -367,17 +344,17 @@ function serveStaticFile(name?: string, folder?: string) {
 }
 
 async function getNoArticlesMessage(opts: SmallblogConfig) {
-  const { noArticlesMessage, postsFolder, draftsFolder } = opts;
+  const { noArticlesMessage, postsFolder, pagesFolder } = opts;
 
   if (noArticlesMessage) {
     return noArticlesMessage;
   }
 
-  const baseMessage = `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${draftsFolder}</code> folder for your drafts.</p><p>Read the README for more informations.</p>`;
+  const baseMessage = `<p>You have no articles yet, you can add them by creating a folder <code>${postsFolder}</code> and adding markdown files in it. Don't forget to also add a <code>${pagesFolder}</code> folder if you want to add custom pages inside your navbar.</p><p>Read the README for more informations.</p>`;
 
   const writePermission = await Deno.permissions.query({
     name: "write",
-    path: ".",
+    path: postsFolder,
   });
 
   if (writePermission.state === "granted") {
