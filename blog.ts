@@ -208,8 +208,6 @@ export class Metadata {
     }: MetadataProps,
     defaultAuthors?: string[],
   ) {
-    console.log("defaultAuthors in metadata:", defaultAuthors);
-    console.log("authors in metadata:", authors, author);
     let fileStats;
     try {
       fileStats = Deno.statSync(filePath);
@@ -220,7 +218,6 @@ export class Metadata {
     this.description = description;
 
     const actualAuthors = authors || author || defaultAuthors;
-    console.log("actualAuthors in metadata:", actualAuthors);
     if (typeof actualAuthors === "string") {
       this.authors = [actualAuthors];
     } else {
