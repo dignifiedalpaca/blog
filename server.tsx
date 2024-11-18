@@ -159,7 +159,6 @@ export function createServer(config: SmallblogConfig) {
     const baseUrl = getBaseUrl(c);
     const robotTxt = `
       User-agent: *
-      Disallow: ${new URL(path.join(postsRoute, "_*"), baseUrl).href}
       Sitemap: ${new URL("/sitemap.xml", baseUrl).href}
       `
       .replace(/  +/g, "")
