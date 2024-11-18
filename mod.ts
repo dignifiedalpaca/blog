@@ -17,9 +17,9 @@ export class Smallblog {
    */
   constructor(config: Partial<SmallblogConfig> = {}) {
     const {
-      postsFolder = "posts/",
-      draftsFolder = "drafts/",
-      pagesFolder = "pages/",
+      postsFolder = "data/posts/",
+      draftsFolder = "data/drafts/",
+      pagesFolder = "data/pages/",
       favicon,
       siteTitle = "Smallblog",
       siteDescription = `The blog: ${siteTitle}`,
