@@ -459,6 +459,11 @@ export const style = html`
       text-align: center;
     }
 
+    .markdown-body .mermaid svg {
+      display: block;
+      margin: 0 auto;
+    }
+
     .octicon-link {
       fill: #bfc7d5;
     }
