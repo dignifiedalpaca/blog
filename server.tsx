@@ -24,7 +24,7 @@ import type { SmallblogConfig } from "./types.ts";
 export function createServer(config: SmallblogConfig) {
   const server = new Hono();
 
-  const postsRoute = path.join("/", config.postsFolder);
+  const postsRoute = path.basename(path.join("/", config.postsFolder));
   const faviconIsUrl = isUrl(config.favicon || "");
 
   const customPages = getArticles(config.pagesFolder, "/")

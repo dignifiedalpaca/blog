@@ -304,7 +304,7 @@ export class Article {
     postsFolder: string,
     name: string,
     content: string,
-    routeBase: string = postsFolder,
+    routeBase: string = path.basename(postsFolder),
     defaultAuthors?: string[],
     title?: string,
     html?: string,
