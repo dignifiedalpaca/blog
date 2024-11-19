@@ -182,7 +182,6 @@ export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
         data-light-theme="light"
         data-dark-theme="dark"
         hx-ext="head-support"
-        hx-boost="true"
         style="background-color: #27293C; color: #BFC7D5;"
       >
         {bodyScript}
