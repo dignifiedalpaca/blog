@@ -39,9 +39,9 @@ You're already done! Have fun with your new blog!
 
 ### Writing an article
 
-When smallblog is correctly installed you just have to write your markdown files in your drafts folder and preview them on the route: `/drafts/your_file_name_without_extension`.
+When smallblog is correctly installed you just have to write your markdown files in your posts folder and preview them on the route: `/posts/your_file_name_without_extension`. By default, every markdown files in the folder will be indexed. If you want to work on the files directly in this folder you just have to start their names with an underscore `_` (ex: `_first_post.md`).
 
-Then, when you finished your writing, you can move the markdown file to the posts' folder (drafts and posts folders can change with the configuration, in this example, they are respectively: `drafts/` and `posts/`).
+If you choose to not index the articles, when you finished your writing, you just have to rename the markdown file (posts folder can change with the configuration, in this example, it is `data/posts`, the route is named with the last folder of the path).
 
 Smallblog doesn't come with an editor to write blog post. To write this article you can use whatever way you want using the power of smallweb:
 
@@ -50,7 +50,7 @@ Smallblog doesn't come with an editor to write blog post. To write this article 
 - with your local vscode connected to the server through SSH
 - using [mutagen](https://docs.smallweb.run/hosting/vps.html#syncing-files-using-mutagen)
 
-When you're writing your posts don't forget to write the metadata section, as in this example:
+When you're writing your posts you can add a metadata section, as in this example:
 
 ```markdown
 ---
@@ -67,21 +67,23 @@ section: Technology
 This is a text after the metadata.
 ```
 
-This metadata is displayed to the user, except for the `published` and `section` one, which are used as follows:
+This section is not required and most of the properties will be automatically generated if you don't write them.
 
-- `published`: This property is used by the engine to not display articles whose its value is explicitly set to `false` ([posts/private.md](https://github.com/TayzenDev/smallblog/blob/main/posts/private.md) is an example). The article will not be indexed but you can still open it directly from its URL.
+This metadata is displayed to the user, except for the `description` and `section` one, which are used as follows:
+
 - `section`: This property is used to give more details to search engines about your article
+- `description`: This property is used to give more details to search engines about your article
 
 None of this metadata are required, but I highly recommend you to write them, they will improve your SEO, give useful insights to your users and in the index page the articles are sorted by date (so, no date will break the order of your posts).
 
-Note: The configuration of the routes to posts and resources are defined by the name of the folders `posts` and `drafts`. All the readme is written with the default config in mind, in your setup routes can differ.
+> [!NOTE] The configuration of the routes to posts and resources are defined by the name of the folder `posts`. All the README is written with the default config in mind, in your setup routes can differ.
 
 ### Serving static files
 
 There are two kinds of static files which are handled differently:
 
 1. The favicon: The favicon can be placed anywhere in your blog folder, its path has to be configured in smallblog
-2. The static files in your blog posts: They have to be in your drafts or posts folders (or a subfolder) and you can reference them in a relative manner in your markdown files as usual (the preview will work normally in any editors)
+2. The static files in your blog posts: They have to be in your posts folder (or a subfolder) and you can reference them in a relative manner in your markdown files as usual (the preview will work normally in any editors)
 
 In both ways smallblog will serve these files without you have to think about it.
 
@@ -113,16 +115,16 @@ smallweb run blog list
 # Drafts:
 #     - my_article
 smallweb run blog publish my_article
-# Smallblog has moved my_article.md and its companion folder in your posts folder, so it's now pusblished.
+# Smallblog has renamed _my_article.md to my_article.md (without the underscore), so it's now pusblished.
 smallweb run blog archive my_article
-# Smallblog has moved my_article.md and its companion folder in your drafts folder, so it's not public anymore.
+# Smallblog has renamed my_article.md with an underscore, so it's not public anymore.
 smallweb run blog remove my_article
-# Smallblog has removed my_article.md and its companion folder (you can only remove a post from the drafts folder, it's a security mechanism).
+# Smallblog has removed _my_article.md (you can only remove a post from the drafts folder, it's a security mechanism).
 ```
 
 To know more about the commands, you can run `smallweb run blog --help` or `smallweb run blog help [subcommand]`.
 
-Note: edit and open commmands are not working yet. This should be available with a future smallweb release.
+> [!NOTE] more commands are coming, at least edit and an open. This should be available with a future smallblog release.
 
 ### Adding custom scripts
 
@@ -135,16 +137,16 @@ I configured [plausible.io](https://plausible.io) in my personal blog. They are 
 
 ### Adding custom pages
 
-Smallblog enables you to add custom pages to your blog. By default, they are located in the `pages` folder. You can add your pages by creating a markdown file in this folder, it would be render the same way as the posts except there is no metadata.
+Smallblog enables you to add custom pages to your blog. By default, they are located in the `data/pages` folder. You can add your pages by creating a markdown file in this folder, it would be render the same way as the posts except there is no metadata.
 
 These new pages are accessible from the navbar (as you can see in the screenshots at the start of this document).
 
-2 metadatas are exclusive to the custom pages:
+2 metadata are exclusive to the custom pages:
 
 - `redirect`: This will create a link to another website in the navbar (as you can see in the demo with the "GitHub" and "JSR" entries)
-- `order`: This is used to define the order in which the links are displayed in the navbar (in the demo/the screenshot GitHub have `order:1`, and JSR have a value of 2, contact has no value so it is at the end)
+- `order`: This is used to define the order in which the links are displayed in the navbar (in the demo/the screenshot GitHub have `order:1`, and JSR have a value of 2, contact has no value, so it is at the end)
 
-## Detailled installation
+## Detailed installation
 
 2 methods of installation are available:
 
@@ -202,9 +204,9 @@ Please refer to the [documentation](https://jsr.io/@tayzendev/smallblog/doc/~/Bl
 
 To help you edit what you want, this is an overview of the code organization:
 
-- To customize the pages, components and style, you can look into the `pages/` folder
+- To customize the pages, components and style, you can look into the `templates/` folder
 - To look at the "business logic", you can check the file `blog.ts`
-- The hono server and blog creation function are located in the `mod.ts` file.
+- The hono server and blog creation function are located in the `mod.ts`, `server.tsx` and `cli.ts` files.
 
 Note: If you want to customize the layout, you should deactivate the cache in your config.
 
@@ -212,23 +214,11 @@ Note: If you want to customize the layout, you should deactivate the cache in yo
 
 To install smallblog using deno deploy, you just have to run `deployctl deploy --prod` in your blog's folder.
 
-I'm only recommand to use this setup in production because you loose one key feature of smallblog: the auto publishing of new articles, which can be really useful for writting and sharing a first preview of your posts.
+I only recommend using this setup in production because you loose one key feature of smallblog: the auto publishing of new articles, which can be really useful for writing and sharing a first preview of your posts.
 
 The setup can be totally automated inside a CI/CD pipeline.
 
 For more information, please refer to the [deployctl documentation](https://docs.deno.com/deploy/manual/)
-
-### After installation
-
-If you want your drafts to be private, you can use the smallweb authentication on the `/drafts` route. To do so, you can add a file called `smallweb.json` in your project's folder and copy this configuration:
-
-```json
-{
-  "privateRoutes": ["/drafts"]
-}
-```
-
-Note: the `/drafts` route depends of the name of the `drafts` folder, please be careful.
 
 ## Technologies
 
