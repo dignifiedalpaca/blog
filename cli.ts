@@ -34,8 +34,10 @@ export function createCli(postsFolder: string): CLI {
     .action((fileId, options) => {
       console.log("Creating post...");
       try {
-        const underscoreToAdd = options.published ? false : !fileId.startsWith("_");
-        const filename = path.join(postsFolder, (underscoreToAdd ? "_" : "") + fileId + ".md");
+        const underscoreToAdd = options.published
+          ? false
+          : !fileId.startsWith("_");
+        const filename = (underscoreToAdd ? "_" : "") + fileId + ".md";
         const folder = postsFolder;
         const params = {
           title: options.title as string,
@@ -64,8 +66,14 @@ export function createCli(postsFolder: string): CLI {
       console.log("Publishing post...");
       try {
         fs.moveSync(
-          path.join(fileId + ".md"),
-          path.join((!fileId.startsWith("_") ? fileId : fileId.substring(1)) + ".md"),
+          path.join(
+            postsFolder,
+            (!fileId.startsWith("_") ? "_" + fileId : fileId) + ".md",
+          ),
+          path.join(
+            postsFolder,
+            (!fileId.startsWith("_") ? fileId : fileId.substring(1)) + ".md",
+          ),
         );
         console.log("Post published.");
       } catch (e) {
@@ -86,7 +94,9 @@ export function createCli(postsFolder: string): CLI {
       if (options.all || options.published || !options.drafts) {
         console.log("");
         console.log("Published:");
-        for (const file of fs.expandGlobSync(path.join(postsFolder, "[!_]*.md"))) {
+        for (
+          const file of fs.expandGlobSync(path.join(postsFolder, "[!_]*.md"))
+        ) {
           console.log("    - ", file.name.replace(".md", ""));
         }
       }
@@ -110,7 +120,10 @@ export function createCli(postsFolder: string): CLI {
       try {
         fs.moveSync(
           path.join(postsFolder, fileId + ".md"),
-          path.join((fileId.startsWith("_") ? fileId : "_" + fileId) + ".md"),
+          path.join(
+            postsFolder,
+            (fileId.startsWith("_") ? fileId : "_" + fileId) + ".md",
+          ),
         );
         console.log("Post archived.");
       } catch (e) {
@@ -129,7 +142,12 @@ export function createCli(postsFolder: string): CLI {
     .action((fileId) => {
       console.log("Removing post...");
       try {
-        Deno.removeSync(path.join(postsFolder, "_" + fileId + ".md"));
+        Deno.removeSync(
+          path.join(
+            postsFolder,
+            (!fileId.startsWith("_") ? "_" + fileId : fileId) + ".md",
+          ),
+        );
         console.log("Post removed.");
       } catch {
         console.log("Post not found.");
