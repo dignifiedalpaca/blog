@@ -112,7 +112,7 @@ This only works with YouTube videos or videos hosted on your own server. For oth
 
 Example with a YouTube video:
 
-![Blabla](https://www.youtube.com/watch?v=swXWUfufu2w)
+![Deno - Keep it simple](https://www.youtube.com/watch?v=swXWUfufu2w)
 
 ### Maths
 

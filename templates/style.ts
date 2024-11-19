@@ -504,12 +504,21 @@ export const style = html`
       text-align: center;
     }
 
-    .markdown-body iframe {
+    .markdown-body .youtube-embed {
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
       display: block;
-      margin: 1.5em auto;
-      max-width: 100%;
+      margin: 0 auto;
+      max-width: 650px;
+      aspect-ratio: 16 / 9;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-color: black;
+    }
+
+    lite-youtube::after {
+	    padding-bottom: 0 !important;
     }
 
     .markdown-body video {

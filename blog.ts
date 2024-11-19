@@ -298,6 +298,7 @@ function customRender(text: string, noLinks: boolean = false) {
     disableHtmlSanitization: true,
     allowIframes: true,
     allowMath: true,
+    liteYTEmbed: true,
     noLinks,
   });
 }
