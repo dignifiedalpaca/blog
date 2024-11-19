@@ -1,10 +1,7 @@
 import * as path from "@std/path";
 import * as fs from "@std/fs";
 
-const DEFAULT_CONTENT = `This is my first article. This is an image:
-
-![RSS](first-article/exampleImage.svg)
-`
+const DEFAULT_CONTENT = `This is my first article.`
 
 function generateArticle(
   title: string = "My first article",
@@ -53,7 +50,7 @@ export function storeArticle(
     date: new Date().toISOString().split("T")[0],
     section: "tech",
   },
-  withCompanion: boolean = true,
+  withCompanion: boolean = false,
 ) {
   const article = generateArticle(
     params.title,
