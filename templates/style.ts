@@ -517,10 +517,6 @@ export const style = html`
       background-color: black;
     }
 
-    lite-youtube::after {
-	    padding-bottom: 0 !important;
-    }
-
     .markdown-body video {
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
