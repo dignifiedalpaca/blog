@@ -4,7 +4,6 @@ import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
 import { Articles } from "./components/articles.tsx";
-import { scriptFixHtmxBoosting } from "./scripts.ts";
 
 type IndexProps = {
   posts: Article[];
@@ -86,7 +85,6 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           dangerouslySetInnerHTML={{ __html: noArticlesMessage || "" }}
         />
       )}
-      {scriptFixHtmxBoosting}
     </Layout>
   );
 };
