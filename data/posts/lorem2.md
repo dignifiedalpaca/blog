@@ -1,13 +1,13 @@
 ---
-title: Test post 4
-description: A post to test the markdown rendering
+title: Lorem ipsum 2
+description: A post to fill the website with fake content
 authors:
     - Benjamin
 tags:
     - test
     - markdown
     - id123abcn
-date: 2024-10-07
+date: 2024-11-18
 ---
 
 Esse sit culpa id ut ex in magna incididunt duis sint. Officia do ipsum aliquip

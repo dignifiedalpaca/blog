@@ -1,14 +1,13 @@
 ---
-title: Test post private
-description: A post to test the markdown rendering
+title: Lorem ipsum 4
+description: A post to fill the website with fake content
 authors:
     - Benjamin
 tags:
     - test
     - markdown
     - id123abcn
-date: 2024-10-17
-published: false
+date: 2024-11-18
 ---
 
 Esse sit culpa id ut ex in magna incididunt duis sint. Officia do ipsum aliquip

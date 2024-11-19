@@ -1,5 +1,5 @@
 ---
-title: Test post
+title: Markdown syntax demo
 description: A post to test the markdown rendering
 authors:
   - Benjamin
@@ -8,10 +8,8 @@ tags:
   - test
   - markdown
   - id123abc
-date: 2024-10-08
+date: 2024-11-20
 ---
-
-# Test post
 
 Esse sit culpa id ut ex in magna incididunt duis sint. Officia do ipsum aliquip
 irure tempor adipisicing. Elit do ipsum fugiat proident irure et in
@@ -104,17 +102,17 @@ This is a line containing some `inline code`. Does it render great?
 To include a video in your blog post, you can use the following syntax:
 
 ```md
-![Deno 2.0 announcement video YouTube](https://www.youtube.com/watch?v=swXWUfufu2w)
-![Deno 2.0 announcement video](img/deno2.mp4)
+![Deno - Keep it simple (YouTube version)](https://www.youtube.com/watch?v=swXWUfufu2w)
+![Deno - Keep it simple (local version)](img/deno.mp4)
 ```
 
 This only works with YouTube videos or videos hosted on your own server. For other sites, you can search in their documentation how to embed videos, you can use all the html you want in your markdown documents.
 
 Example with a YouTube video:
 
-![Deno - Keep it simple](https://www.youtube.com/watch?v=swXWUfufu2w)
+![Deno - Keep it simple (YouTube version)](https://www.youtube.com/watch?v=swXWUfufu2w)
 
-### Maths
+### Math
 
 This is want math looks like in :
 
