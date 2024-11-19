@@ -208,8 +208,6 @@ To help you edit what you want, this is an overview of the code organization:
 - To look at the "business logic", you can check the file `blog.ts`
 - The hono server and blog creation function are located in the `mod.ts`, `server.tsx` and `cli.ts` files.
 
-Note: If you want to customize the layout, you should deactivate the cache in your config.
-
 ### Method 3: Deno deploy
 
 To install smallblog using deno deploy, you just have to run `deployctl deploy --prod` in your blog's folder.
