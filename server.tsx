@@ -180,8 +180,6 @@ export function createServer(config: SmallblogConfig) {
     if (await isDirectoryEmpty(config.postsFolder)) {
       storeArticle(config.postsFolder, "first-article.md", {
         title: "My first article",
-        content:
-          "This is my first article. This is an image:\n\n![RSS](first-article/exampleImage.svg)",
       });
     }
 
