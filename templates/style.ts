@@ -498,7 +498,7 @@ export const style = html`
       background-color: inherit;
       border-radius: 6px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
-      max-width: 600px;
+      max-width: min(100%, 600px);
       margin: 10px auto;
     }
 

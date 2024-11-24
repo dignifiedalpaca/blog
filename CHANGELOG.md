@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## 1.1.5 - 2024-11-24
+
+### Fixed
+
+- Images now have a max-width of `min(100%, 600px)`
+
 ## 1.1.4 - 2024-11-24
 
 ### Added
