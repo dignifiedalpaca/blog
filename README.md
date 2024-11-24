@@ -40,7 +40,7 @@ From this template you should change some settings in the `main.ts` file.
 Create a new directory in your smallweb folder, add a `main.tsx` and paste this content in it:
 
 ```tsx
-import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.2";
+import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.3";
 
 export default new Smallblog();
 ```
@@ -187,7 +187,7 @@ From this template you should change some settings in the `main.ts` file.
 Minimal `main.tsx` to quick-start a project (as shown above):
 
 ```tsx
-import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.2";
+import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.3";
 
 export default new Smallblog();
 ```
@@ -196,7 +196,7 @@ A `main.tsx` with more parameters:
 
 ```tsx
 import { html } from "hono/html";
-import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.2";
+import { Smallblog } from "jsr:@tayzendev/smallblog@1.1.3";
 
 const customBodyScript = await html`<script
   defer

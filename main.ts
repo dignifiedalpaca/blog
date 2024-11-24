@@ -8,4 +8,5 @@ export default new Smallblog({
   indexTitle: "A blog about nothing",
   indexSubtitle: "A nice demo of smallblog",
   defaultAuthors: ["Tayzen"],
+  noArticlesMessage: "<h3>Coming soon!</h3>",
 });

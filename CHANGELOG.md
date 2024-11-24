@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## 1.1.3 - 2024-11-24
+
+### Fixed
+
+- Fixed the unused parameter `noArticlesMessage`. A custom message can now be set as expected.
+
 ## 1.1.2 - 2024-11-23
 
 ### Fixed
