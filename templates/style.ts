@@ -323,7 +323,6 @@ export const style = html`
       margin-right: 0.5em;
       font-style: italic;
       color: #999aa5;
-      /*color: #91a0b1 ;*/
     }
 
     .metadata span::after {
@@ -336,20 +335,39 @@ export const style = html`
       margin-left: 0em;
     }
 
-    .metadata .tag::after {
+    .tags .tag::after {
       content: "";
       margin-left: 0em;
     }
 
-    .metadata .tag {
+    .tags .tag {
       font-family: monospace;
       font-style: normal;
       font-size: 1.1em;
       font-weight: 500;
     }
 
-    .metadata .tag::before {
+    .tags .tag::before {
       content: "#";
+    }
+
+    .article-element .tags {
+      color: #999aa5;
+      margin-top: 0.7em;
+      display: inline-block;
+    }
+
+    .article-element .tags-label {
+      margin-right: 0.5em;
+      font-family: lato;
+      font-size: 1.05em;
+    }
+
+    .article-element .tags .tag {
+      font-size: 1.2em;
+      margin-right: 0.6em;
+      color: #999aa5;
+      text-decoration: underline;
     }
 
     .metadata a {

@@ -40,6 +40,18 @@ export const Articles: FC<{
                 />
               </div>
             </a>
+            {post.metadata.tags && (
+              <span class={"tags"}>
+                <span class={"tags-label"}>Tags:</span>
+                {post.metadata.tags.map((tag) => {
+                  return (
+                    <a href={`/?search=tag::${tag}`} class={"animated-anchor"}>
+                      <span class={"tag"}>{tag}</span>
+                    </a>
+                  );
+                })}
+              </span>
+            )}
             {i < itemsPerPage - 1 && i !== posts.length - lowerBound - 1 && (
               <hr />
             )}

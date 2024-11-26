@@ -28,16 +28,14 @@ export const MetadataComponent: FC = (props: MetadataProps) => {
           {article.timeToReadMinutes} min read
         </span>
       )}
-      {metadata.tags && (
+      {metadata.tags && withAnchors && (
         <span class={"tags"}>
           {metadata.tags.map((tag) => {
             return (
-              (!withAnchors && <span class={"tag"}>{tag}</span>) || (
                 <a href={`/?search=tag::${tag}`} class={"animated-anchor"}>
                   <span class={"tag"}>{tag}</span>
                 </a>
-              )
-            );
+              );
           })}
         </span>
       )}

@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New markdown examples
+- Updating dates to keep important posts on top
+- Better style for footnote backrefs
+- Clickable tags on the index
+
 ### Changed
 
 ### Fixed
