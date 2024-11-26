@@ -23,6 +23,18 @@ function getMarkdown(fileName: string, postsFolder: string) {
   return content;
 }
 
+export function isPostsFolderEmpty(folder: string) {
+  try {
+    for (const _ of fs.expandGlobSync(path.join(folder, "[!_]*.md"))) {
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("Error while opening folder:", folder, ":", e);
+    return true;
+  }
+}
+
 export function getArticles(
   postsFolder: string,
   routeBase?: string,

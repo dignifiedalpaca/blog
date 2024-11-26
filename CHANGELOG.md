@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- noArticlesMessage is no more displayed when the user has no result on his "enter-triggered search", "No results" instead
+
 ### Removed
 
 ## 1.1.5 - 2024-11-24

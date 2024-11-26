@@ -17,6 +17,7 @@ type IndexProps = {
   locale?: string;
   description?: string;
   noArticlesMessage?: string;
+  noPosts?: boolean;
   bodyScript?: string;
   headScript?: string;
   favicon: boolean;
@@ -36,6 +37,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
     locale,
     description,
     noArticlesMessage,
+    noPosts,
     favicon = false,
     faviconLink,
     customPages = [],
@@ -71,7 +73,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           value={props.search}
         />
       </form>
-      {posts && posts.length > 0 && (
+      {!noPosts && (
         <Articles
           posts={posts}
           search={props.search}
@@ -79,7 +81,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           itemsPerPage={props.itemsPerPage}
         />
       )}
-      {(!posts || posts.length === 0) && (
+      {noPosts && (
         <div
           class="no-articles"
           dangerouslySetInnerHTML={{ __html: noArticlesMessage || "" }}

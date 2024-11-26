@@ -12,6 +12,7 @@ import {
   getArticles,
   getRSS,
   getSitemap,
+  isPostsFolderEmpty,
 } from "./blog.ts";
 import { isDirectoryEmpty, isUrl } from "./utils.ts";
 import { ArticlePage } from "./templates/article.tsx";
@@ -88,6 +89,7 @@ export function createServer(config: SmallblogConfig) {
           locale={config.locale}
           description={config.siteDescription}
           noArticlesMessage={await getNoArticlesMessage(config)}
+          noPosts={isPostsFolderEmpty(config.postsFolder)}
           bodyScript={config.customBodyScript}
           headScript={config.customHeaderScript}
           favicon={!!config.favicon}

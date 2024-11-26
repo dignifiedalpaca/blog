@@ -58,6 +58,11 @@ export const Articles: FC<{
           </div>
         );
       })}
+      {nb_posts === 0 && props.search && (
+        <div class="no-articles">
+          No results
+        </div>
+      )}
 
       {nb_posts > itemsPerPage && (
         <nav class="pagination">
