@@ -353,7 +353,7 @@ export const style = html`
 
     .article-element .tags {
       color: #999aa5;
-      margin-top: 0.7em;
+      margin-top: 0.3em;
       display: inline-block;
     }
 
