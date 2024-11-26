@@ -4,6 +4,7 @@ import type { FC } from "hono/jsx";
 import { Layout } from "./components/layout.tsx";
 import type { Article } from "../blog.ts";
 import { Articles } from "./components/articles.tsx";
+import SearchIcon from "./components/search.tsx";
 
 type IndexProps = {
   posts: Article[];
@@ -60,18 +61,30 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
         {indexTitle && <h1 class={"index-title"}>{indexTitle}</h1>}
         {indexSubtitle && <h2 class={"index-subtitle"}>{indexSubtitle}</h2>}
       </header>
-      <form action="/?page=1" method="get">
+      <form action="/?page=1" method="get" class="search-container">
+        <SearchIcon className="search-icon" />
         <input
           class="search-field"
           id="search-field"
           type="search"
           name="search"
-          placeholder="Look up titles, tags or text"
+          placeholder="Titles, tags or content"
           hx-get="/?page=1"
           hx-trigger="input changed delay:500ms, search"
           hx-target=".articles-list"
           value={props.search}
         />
+        <button
+          type="reset"
+          class="delete-button"
+          aria-label="Clear search"
+          hx-get="/?page=1"
+          hx-trigger="click"
+          hx-target=".articles-list"
+          hx-on--before-request="this.form.reset()"
+        >
+          &times;
+        </button>
       </form>
       {!noPosts && (
         <Articles

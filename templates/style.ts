@@ -157,21 +157,69 @@ export const style = html`
       color: var(--color-fg-muted);
     }
 
-    .search-field {
+    .search-container {
+      display: flex;
+      align-items: center;
+      width: 75%;
       border: 1px solid var(--color-fg-muted);
       border-radius: 0.5em;
-      padding: 0.8em;
-      font-size: 1.1em;
-      width: 75%;
-      display: block;
+      background-color: #2b2f42;
+      padding: 14px;
+      transition: all 0.3s ease;
       margin: 0 auto;
       margin-bottom: 4em;
-      background-color: #2b2f42;
       color: var(--color-text);
+    }
+
+    .search-icon {
+      width: 16px; /* Adjust width */
+      height: 16px; /* Adjust height */
+      margin-right: 8px;
+    }
+
+    .search-field {
+      display: block;
+      outline: none;
+      border: none;
+      background-color: inherit;
+      font-size: 1.1em;
+      color: var(--color-text);
+      width: 100%;
     }
 
     .search-field::placeholder {
       color: #7b8092;
+    }
+
+    .delete-button {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--color-fg-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 8px;
+    }
+
+    .delete-button:hover {
+      color: var(--color-fg-default);
+    }
+
+    .search-field:not(:placeholder-shown) + .delete-button {
+      display: block;
+    }
+
+    .search-container:hover {
+      border: 4px double var(--color-fg-muted);
+      padding: 11px;
+    }
+
+    .search-container:focus-within {
+      border: 4px double var(--color-fg-muted);
+      outline: none;
+      background-color: var(--color-bg-default);
+      padding: 11px;
     }
 
     .no-articles {
