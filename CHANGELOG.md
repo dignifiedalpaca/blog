@@ -9,18 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New markdown examples
-- Updating dates to keep important posts on top
-- Better style for footnote backrefs
-- Clickable tags on the index
-
 ### Changed
 
 ### Fixed
 
-- noArticlesMessage is no more displayed when the user has no result on his "enter-triggered search", "No results" instead
-
 ### Removed
+
+## 1.2.0 - 2024-11-26
+
+### Added
+
+- New markdown examples
+- Clickable tags on the index
+- Reset button for the search field
+
+### Changed
+
+- Updating dates to keep important posts on top
+- Better style for footnote backrefs
+- Better style for the search field
+
+### Fixed
+
+- noArticlesMessage is no more displayed when the user has no result on his "enter-triggered search", "No results" instead
 
 ## 1.1.5 - 2024-11-24
 
