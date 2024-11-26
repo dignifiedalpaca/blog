@@ -531,5 +531,9 @@ export const style = html`
     .markdown-body .markdown-alert.markdown-alert-caution {
       border-left-color: var(--color-caution-alert);
     }
+
+    .markdown-body a[data-footnote-backref] {
+      text-decoration: none;
+    }
   </style>
 `;

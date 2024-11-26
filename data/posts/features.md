@@ -4,7 +4,7 @@ description: A quick explaination of the features of smallblog.
 tags:
     - smallblog
     - features
-date: 2024-11-21
+date: 2024-11-26
 ---
 
 Smallblog is made to be very intuitive to use, you just write your Markdown and everything is automatically generated. However, not everyone knows the syntax and there are other features dedicated to more advanced users.
