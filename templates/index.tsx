@@ -81,7 +81,7 @@ export const Index: FC<IndexProps> = (props: IndexProps) => {
           hx-get="/?page=1"
           hx-trigger="click"
           hx-target=".articles-list"
-          hx-on--before-request="this.form.reset()"
+          hx-on--after-request="this.form.reset()"
         >
           &times;
         </button>
