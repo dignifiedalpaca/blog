@@ -30,6 +30,7 @@
     "npm:marked@12": "12.0.2",
     "npm:minisearch@*": "7.1.0",
     "npm:minisearch@^7.1.0": "7.1.0",
+    "npm:prismjs-gleam@1": "1.0.2",
     "npm:prismjs@1.29.0": "1.29.0",
     "npm:prismjs@^1.29.0": "1.29.0",
     "npm:rss@*": "1.2.2",
@@ -244,6 +245,9 @@
         "picocolors",
         "source-map-js"
       ]
+    },
+    "prismjs-gleam@1.0.2": {
+      "integrity": "sha512-0UdrDPAeTzACBZnawZ1cX9y3ECH5pgevrVvU2LOoChWIdiaYMRxVp0TvXRN7WQIwPevVWZsChYNDpxx9bnON+w=="
     },
     "prismjs@1.29.0": {
       "integrity": "sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q=="

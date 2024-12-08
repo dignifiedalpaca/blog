@@ -6,5 +6,5 @@ export default new Smallblog({
   siteTitle: "&c.",
   indexTitle: "posts",
   defaultAuthors: ["sail"],
-  noArticlesMessage: "<h3>Coming soon!</h3>",
+  noArticlesMessage: "<h3>coming eventually</h3>",
 });
